@@ -1,0 +1,13 @@
+node_modules
+.DS_Store
+dist
+dist-ssr
+*.local
+.vscode
+.env
+
+# Testing
+cypress/integration/1-getting-started
+cypress/integration/2-advanced-examples
+videos
+screenshots
