@@ -1,6 +1,7 @@
 import { mount } from '@cypress/vue';
 import FormLogin from './FormLogin.vue';
 import '../../styles/main.scss';
+import { createPinia, setActivePinia } from 'pinia';
 
 const loginData = {
   email: 'tester@test.de',
@@ -9,6 +10,8 @@ const loginData = {
 
 describe('FormLogin', () => {
   beforeEach(() => {
+    setActivePinia(createPinia());
+
     mount(FormLogin);
   });
 
@@ -61,6 +64,7 @@ describe('FormLogin', () => {
 
     cy.intercept('POST', '/api/v1/login', {
       fixture: 'auth/login',
+      statusCode: 200,
     }).as('loginResponse');
 
     cy.get('button[type="submit"]').click();

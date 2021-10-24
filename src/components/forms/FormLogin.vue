@@ -1,8 +1,10 @@
 <script setup lang='ts'>
 import { ref, reactive } from 'vue';
-import { apiClient } from '../../api';
 import LoaderIndeterminate from '../gfx/loaders/LoaderIndeterminate.vue';
 import SvgIcon from '../gfx/icons/SvgIcon.vue';
+import { useAuthStore } from '../../stores/auth';
+
+const authStore = useAuthStore();
 
 const loginData = reactive({ email: '', password: '' });
 const isLoading = ref(false);
@@ -19,9 +21,7 @@ async function togglePasswordVisibility() {
 async function onFormSubmit() {
   isLoading.value = true
   try {
-    const res = await apiClient.post({ url: '/api/v1/login', body: JSON.stringify(loginData), mode: 'cors', });
-    console.log(res.data);
-    console.log(res.status);
+    await authStore.login(loginData.email, loginData.password);
   } catch (error) {
     console.log((error as Error).message);
   } finally {
