@@ -86,6 +86,7 @@ article.form-login.card
 .heading {
   text-align: center;
   font-size: 1.25em;
+  margin-bottom: 1em;
 
   @include mq("t-p") {
     font-size: 2em;
@@ -94,6 +95,7 @@ article.form-login.card
 
 button[type="submit"] {
   width: 100%;
+  font-size: 1.25em;
 }
 
 .btn-icon {
@@ -105,6 +107,14 @@ button[type="submit"] {
   &:hover,
   &:focus {
     opacity: 1;
+  }
+}
+
+.svg-icon:deep() {
+  @media (prefers-color-scheme: light) {
+    path {
+      fill: black;
+    }
   }
 }
 </style>

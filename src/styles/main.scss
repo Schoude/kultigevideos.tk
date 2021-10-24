@@ -1,5 +1,6 @@
 @forward 'color-theme';
 @forward 'resets';
+@forward 'animations';
 @forward 'transitions';
 @forward 'scrollbar';
 @forward 'mixins';
@@ -8,6 +9,12 @@
 @forward 'buttons';
 
 @import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@300;500;600;700&display=swap');
+
+html,
+body,
+#app {
+  height: 100%;
+}
 
 body {
   -webkit-font-smoothing: antialiased;

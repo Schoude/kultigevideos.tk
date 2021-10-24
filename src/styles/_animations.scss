@@ -1,0 +1,26 @@
+@keyframes rotation {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes loader-indeterminate {
+  0% {
+    transform: translate(-100%);
+  }
+  100% {
+    transform: translate(400%);
+  }
+}
+
+@keyframes skeleton-loading {
+  from {
+    background-color: rgb(87, 89, 95);
+  }
+  to {
+    background-color: rgb(138, 140, 150);
+  }
+}
