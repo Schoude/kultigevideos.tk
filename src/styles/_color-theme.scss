@@ -1,0 +1,21 @@
+:root {
+  --color-page: #232323;
+  --color-header: #4b4b4b;
+  --text-color: white;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-page: #232323;
+    --color-header: #4b4b4b;
+    --text-color: white;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-page: #ffffff;
+    --color-header: #c2c2c2;
+    --text-color: #232323;
+  }
+}

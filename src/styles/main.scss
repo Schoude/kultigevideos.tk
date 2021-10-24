@@ -1,2 +1,14 @@
 @forward 'resets';
 @forward 'scrollbar';
+@forward 'color-theme';
+
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@300;500;600;700&display=swap');
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-page);
+  color: var(--text-color);
+  font-family: 'Urbanist', 'Trebuchet MS', 'Lucida Sans Unicode',
+    'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
