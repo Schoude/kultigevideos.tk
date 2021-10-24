@@ -1,4 +1,4 @@
-import { ENVIRONMENT } from './../../types/base.d';
+import { ENVIRONMENT } from '../types/base.d';
 import router from '../router/index';
 import { ROUTE_NAMES } from '../router/routing-info';
 // import { useAuthStore } from '../stores/auth';
