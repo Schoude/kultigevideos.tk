@@ -1,0 +1,61 @@
+import { mount } from '@cypress/vue';
+import FormLogin from './FormLogin.vue';
+import '../../styles/main.scss';
+
+const loginData = {
+  email: 'tester@test.de',
+  password: 'password',
+};
+
+describe('FormLogin', () => {
+  beforeEach(() => {
+    mount(FormLogin);
+  });
+
+  it('has a heading', () => {
+    cy.get('[data-cy="heading"]')
+      .should('exist')
+      .should('have.text', 'Bitte melde dich an.');
+  });
+
+  it('has two form fields with labels for email and password', () => {
+    cy.get('[data-cy="label-email"]')
+      .should('exist')
+      .should('have.text', 'E-Mail');
+    cy.get('[data-cy="email"]').should('exist');
+
+    cy.get('[data-cy="label-password"]')
+      .should('exist')
+      .should('have.text', 'Passwort');
+    cy.get('[data-cy="password"]').should('exist');
+  });
+
+  it('has a submit button', () => {
+    cy.get('button[type="submit"]').should('exist');
+  });
+
+  it('the user can fill in the login fields and submit the data', () => {
+    cy.get('[data-cy="email"]')
+      .type(loginData.email)
+      .should('have.value', loginData.email);
+    cy.get('[data-cy="password"]')
+      .type(loginData.password)
+      .should('have.value', loginData.password);
+
+    cy.intercept('POST', '/api/v1/login', req => {
+      expect(req.body.email).to.equal(loginData.email);
+      expect(req.body.password).to.equal(loginData.password);
+    });
+
+    cy.intercept('POST', '/api/v1/login', {
+      fixture: 'auth/login',
+    }).as('loginResponse');
+
+    cy.get('button[type="submit"]').click();
+
+    // Loader indicator
+    cy.get('.loader').should('have.class', 'visible');
+    cy.wait('@loginResponse');
+    cy.get('.loader').should('not.have.class', 'visible');
+  });
+});

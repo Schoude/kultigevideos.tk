@@ -1,0 +1,13 @@
+{
+  "me": {
+    "_id": "612ffd922c8d16b3319593e1",
+    "username": "E2E-Tester",
+    "email": "e2etester@gmail.com",
+    "role": "admin",
+    "meta": {
+      "avatarUrl": "https://test.de/avatar"
+    }
+  },
+  "jwt": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzQ5Mjk2MjcsIm1lIjp7Il9pZCI6IjYxMmZmZDkyMmM4ZDE2YjMzMTk1OTNlMSIsInVzZXJuYW1lIjoiTWFyYyIsImVtYWlsIjoibWFyY2JhcXVlMTMxMUBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4ifX0._LLHJElEAbjYvQKCpwztyJ2QKzS-JVu4rUuujUr2ubGtfguFeY0PgbYJUxhVOxqrM1FW3Z0uoWvX4_lS0b9A2w",
+  "expires": 300
+}

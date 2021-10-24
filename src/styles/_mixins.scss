@@ -1,0 +1,88 @@
+@mixin loader-indeterminate {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-radius: inherit;
+  height: 5px;
+  background-color: rgb(54, 54, 54);
+  overflow: hidden;
+
+  .indicator {
+    height: inherit;
+    width: 25%;
+    background-color: var(--color-confirm);
+    border-radius: inherit;
+    animation: loader-indeterminate 0.8s ease infinite;
+  }
+}
+
+// @mixin shimmer($size: 800px, $endposition: 600px, $duration: 1.5s) {
+//   @keyframes skeleton-shimmer {
+//     0% {
+//       background-position: -200px;
+//     }
+//     100% {
+//       background-position: $endposition;
+//     }
+//   }
+
+//   &:empty {
+//     background-image: linear-gradient(
+//       90deg,
+//       rgb(87, 89, 95) 6%,
+//       rgba(colors.$color-confirm, 0.4) 18%,
+//       rgb(87, 89, 95) 28%
+//     );
+//     background-size: $size;
+//     animation: skeleton-shimmer $duration infinite linear;
+//     @content;
+//   }
+// }
+
+// @mixin shimmer-dark($size: 800px, $endposition: 600px, $duration: 1.5s) {
+//   @keyframes skeleton-shimmer {
+//     0% {
+//       background-position: -200px;
+//     }
+//     100% {
+//       background-position: $endposition;
+//     }
+//   }
+
+//   &:empty {
+//     background-image: linear-gradient(
+//       90deg,
+//       darken(colors.$ui-dark, 3) 6%,
+//       rgba(colors.$ui-dark, 0.2) 16%,
+//       rgba(colors.$ui-dark, 0.4) 18%,
+//       rgba(colors.$ui-dark, 0.6) 20%,
+//       darken(colors.$ui-dark, 3) 28%
+//     );
+//     background-size: $size;
+//     animation: skeleton-shimmer $duration infinite linear;
+//     @content;
+//   }
+// }
+
+$breakpoints: (
+  'p-s': 320px,
+  'p-m': 375px,
+  'p-l': 414px,
+  't-p': 768px,
+  't-l': 1024px,
+  laptop: 1280px,
+  desktop: 1920px,
+  4k: 3840px,
+);
+
+@mixin mq($point) {
+  $size: map-get(
+    $map: $breakpoints,
+    $key: $point,
+  );
+
+  @media only screen and (min-width: $size) {
+    @content;
+  }
+}

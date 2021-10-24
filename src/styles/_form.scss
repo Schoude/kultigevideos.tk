@@ -1,0 +1,49 @@
+form {
+  // margin top for every element in the form except the first
+  > *:not(:first-child) {
+    margin-top: 1em;
+  }
+}
+
+.form-field {
+  &__inner {
+    display: flex;
+  }
+
+  label {
+    display: block;
+  }
+
+  input {
+    --color-accent-full: white;
+    --color-accent-med: rgba(255, 255, 255, 0.7);
+    --color-accent-low: rgba(255, 255, 255, 0.5);
+
+    @media (prefers-color-scheme: dark) {
+      --color-accent-full: white;
+      --color-accent-med: rgba(255, 255, 255, 0.7);
+      --color-accent-low: rgba(255, 255, 255, 0.5);
+    }
+
+    @media (prefers-color-scheme: light) {
+      --color-accent-full: rgb(35, 35, 35);
+      --color-accent-med: rgba(35, 35, 35, 0.7);
+      --color-accent-low: rgba(35, 35, 35, 0.5);
+    }
+
+    padding: 0.25em 0;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid var(--color-accent-low);
+    transition: border-bottom 0.3s ease;
+
+    &:hover {
+      border-bottom: 1px solid var(--color-accent-med);
+    }
+
+    &:focus {
+      border-bottom: 1px solid var(--color-accent-full);
+    }
+  }
+}
