@@ -30,6 +30,18 @@ describe('FormLogin', () => {
     cy.get('[data-cy="password"]').should('exist');
   });
 
+  it('the password visibility can be toggled', () => {
+    cy.get('[data-cy="password"]')
+      .as('passwordInput')
+      .type(loginData.password)
+      .should('have.value', loginData.password);
+    cy.get('@passwordInput').should('have.attr', 'type', 'password');
+    cy.get('.btn-icon').click();
+    cy.get('@passwordInput').should('have.attr', 'type', 'text');
+    cy.get('.btn-icon').click();
+    cy.get('@passwordInput').should('have.attr', 'type', 'password');
+  });
+
   it('has a submit button', () => {
     cy.get('button[type="submit"]').should('exist');
   });

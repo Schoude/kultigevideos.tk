@@ -2,9 +2,19 @@
 import { ref, reactive } from 'vue';
 import { apiClient } from '../../api';
 import LoaderIndeterminate from '../gfx/loaders/LoaderIndeterminate.vue';
+import SvgIcon from '../gfx/icons/SvgIcon.vue';
 
 const loginData = reactive({ email: '', password: '' });
 const isLoading = ref(false);
+const inputPassword = ref<HTMLInputElement | null>(null);
+const passwordVisible = ref(false);
+
+async function togglePasswordVisibility() {
+  passwordVisible.value = !passwordVisible.value;
+
+  if (passwordVisible.value) inputPassword.value?.setAttribute('type', 'text');
+  else inputPassword.value?.setAttribute('type', 'password');
+}
 
 async function onFormSubmit() {
   isLoading.value = true
@@ -18,7 +28,6 @@ async function onFormSubmit() {
     isLoading.value = false;
   }
 }
-
 </script>
 
 <template lang='pug'>
@@ -44,14 +53,24 @@ article.form-login.card
         data-cy="label-password"
         for="password"
       ) Passwort
-      input#password(
-        data-cy="password"
-        type="password"
-        name="password"
-        autocomplete="password"
-        required
-        v-model.trim='loginData.password'
-      )
+      .form-field__inner
+        input#password(
+          ref="inputPassword"
+          data-cy="password"
+          type="password"
+          name="password"
+          autocomplete="password"
+          required
+          v-model.trim='loginData.password'
+        )
+        button.btn-icon(
+          type="button"
+          @click="togglePasswordVisibility"
+          :title="passwordVisible ? 'Passwort nicht mehr anzeigen' : 'Passwort anzeigen'"
+        )
+          Transition(name="fade-fast" mode="out-in")
+            SvgIcon(icon-name="eye-slash" v-if="passwordVisible")
+            SvgIcon(icon-name="eye" v-else)
     .form-actions
       button.btn.btn_primary(type="submit") Einloggen
   LoaderIndeterminate(:class="{ visible: isLoading }")
@@ -70,6 +89,22 @@ article.form-login.card
 
   @include mq("t-p") {
     font-size: 2em;
+  }
+}
+
+button[type="submit"] {
+  width: 100%;
+}
+
+.btn-icon {
+  width: 45px;
+  background: transparent;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+
+  &:hover,
+  &:focus {
+    opacity: 1;
   }
 }
 </style>

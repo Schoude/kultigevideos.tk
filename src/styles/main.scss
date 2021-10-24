@@ -1,9 +1,11 @@
 @forward 'color-theme';
 @forward 'resets';
+@forward 'transitions';
 @forward 'scrollbar';
+@forward 'mixins';
+@forward 'ui-elements';
 @forward 'form';
 @forward 'buttons';
-@forward 'mixins';
 
 @import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@300;500;600;700&display=swap');
 
@@ -14,4 +16,12 @@ body {
   color: var(--text-color);
   font-family: 'Urbanist', 'Trebuchet MS', 'Lucida Sans Unicode',
     'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+main {
+  padding: 1em;
+}
+
+svg {
+  transition: fill 0.3s ease;
 }
