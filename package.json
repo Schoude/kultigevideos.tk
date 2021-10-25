@@ -1,5 +1,5 @@
 {
-  "name": "kultige-videos.tk",
+  "name": "kultigevideos.tk",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
@@ -19,10 +19,10 @@
     "@cypress/vue": "^3.0.3",
     "@vitejs/plugin-vue": "^1.9.3",
     "cypress": "^8.6.0",
-    "pinia": "^2.0.0-rc.14",
+    "pinia": "^2.0.0-rc.15",
     "sass": "^1.43.3",
     "typescript": "^4.4.4",
-    "vite": "^2.6.10",
-    "vue-tsc": "^0.28.7"
+    "vite": "^2.6.11",
+    "vue-tsc": "^0.28.8"
   }
 }
