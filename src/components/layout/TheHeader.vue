@@ -1,7 +1,19 @@
 <script setup lang='ts'>
+import { useRouter } from 'vue-router';
+import { ROUTE_NAMES } from '../../router/routing-info';
+import { useAuthStore } from '../../stores/auth';
 import { ICON_SIZE } from '../gfx/icons/icon-data';
 import SvgIcon from '../gfx/icons/SvgIcon.vue';
-ICON_SIZE
+
+const authStore = useAuthStore();
+const router = useRouter();
+
+async function onLogoutClick() {
+  await authStore.logout()
+  await router.push({ name: ROUTE_NAMES.LOGIN });
+  authStore.user = null;
+}
+
 </script>
 
 <template lang='pug'>
@@ -9,6 +21,7 @@ header.the-header
   button.btn_icon.outline.rounded.btn_logout(
     name="button logout"
     title="Klicken zum Ausloggen"
+    @click="onLogoutClick"
   )
     SvgIcon(icon-name="sign-out" :size="ICON_SIZE.xs")
 </template>

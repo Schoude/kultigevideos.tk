@@ -42,9 +42,19 @@ describe('visit the login page', () => {
     cy.reload();
     cy.url().should('eq', 'http://localhost:5000/');
 
-    // TODO: test loggin out
-    // cy.get('button[title="Abmelden"]').click();
+    cy.intercept('POST', '/api/v1/logout', {
+      fixture: 'auth/logout.json',
+      statusCode: 200,
+    }).as('logout');
 
-    // cy.url().should('eq', 'http://localhost:5000/login');
+    cy.intercept('GET', '/api/v1/refresh', {
+      fixture: 'auth/refresh-401',
+      statusCode: 401,
+    });
+
+    cy.get('.btn_logout').click();
+    cy.wait('@logout');
+
+    cy.url().should('eq', 'http://localhost:5000/login');
   });
 });
