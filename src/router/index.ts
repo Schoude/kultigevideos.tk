@@ -49,19 +49,19 @@ const router = createRouter({
   routes,
 });
 
-// router.beforeEach(async (to, from, next) => {
-//   const authStore = useAuthStore();
+router.beforeEach(async (to, from, next) => {
+  const authStore = useAuthStore();
 
-//   if (!authStore.isLoggedIn) {
-//     try {
-//       await authStore.refreshToken();
-//     } catch (error) {
-//       next();
-//       return;
-//     }
-//   }
+  if (!authStore.isLoggedIn) {
+    try {
+      await authStore.refreshToken();
+    } catch (error) {
+      next();
+      return;
+    }
+  }
 
-//   next();
-// });
+  next();
+});
 
 export default router;

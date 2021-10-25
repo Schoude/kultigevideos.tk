@@ -3,8 +3,11 @@ import { ref, reactive } from 'vue';
 import LoaderIndeterminate from '../gfx/loaders/LoaderIndeterminate.vue';
 import SvgIcon from '../gfx/icons/SvgIcon.vue';
 import { useAuthStore } from '../../stores/auth';
+import { useRouter } from 'vue-router';
+import { ROUTE_NAMES } from '../../router/routing-info';
 
 const authStore = useAuthStore();
+const router = useRouter();
 
 const loginData = reactive({ email: '', password: '' });
 const isLoading = ref(false);
@@ -22,6 +25,7 @@ async function onFormSubmit() {
   isLoading.value = true
   try {
     await authStore.login(loginData.email, loginData.password);
+    await router.push({ name: ROUTE_NAMES.HOME });
   } catch (error) {
     console.log((error as Error).message);
   } finally {
