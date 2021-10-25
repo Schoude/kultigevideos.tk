@@ -22,6 +22,10 @@ async function togglePasswordVisibility() {
 }
 
 async function onFormSubmit() {
+  if (isLoading.value) {
+    return;
+  }
+
   isLoading.value = true
   try {
     await authStore.login(loginData.email, loginData.password);
@@ -76,7 +80,10 @@ article.form-login.card
             SvgIcon(icon-name="eye-slash" v-if="passwordVisible")
             SvgIcon(icon-name="eye" v-else)
     .form-actions
-      button.btn.btn_primary(type="submit") Einloggen
+      button.btn.btn_primary(
+        type="submit"
+        :disabled="isLoading"
+      ) Einloggen
   LoaderIndeterminate(:class="{ visible: isLoading }")
 </template>
 

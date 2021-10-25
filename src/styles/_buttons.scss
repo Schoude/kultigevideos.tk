@@ -1,11 +1,16 @@
 .btn {
   border-radius: 3px;
   padding: 0.25em 0.5em;
+  transition: background-color 0.3s ease, opacity 0.25s ease;
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
 }
 
 .btn_primary {
   background-color: rgb(25, 114, 230);
-  transition: background-color 0.3s ease;
 
   @media (prefers-color-scheme: light) {
     color: white;

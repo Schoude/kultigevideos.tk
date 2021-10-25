@@ -67,7 +67,8 @@ describe('FormLogin', () => {
       statusCode: 200,
     }).as('loginResponse');
 
-    cy.get('button[type="submit"]').click();
+    cy.get('button[type="submit"]').as('submit').click();
+    cy.get('@submit').should('have.attr', 'disabled');
 
     // Loader indicator
     cy.get('.loader').should('have.class', 'visible');
