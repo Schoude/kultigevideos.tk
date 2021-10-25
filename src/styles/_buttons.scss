@@ -10,7 +10,7 @@
 }
 
 .btn_primary {
-  background-color: rgb(25, 114, 230);
+  background-color: #456c83;
 
   @media (prefers-color-scheme: light) {
     color: white;
@@ -18,7 +18,7 @@
 
   &:hover,
   &:focus {
-    background-color: lighten(rgb(25, 114, 230), 5);
+    background-color: lighten(#456c83, 5);
   }
 }
 
