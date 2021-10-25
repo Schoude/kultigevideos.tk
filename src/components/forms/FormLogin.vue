@@ -40,6 +40,7 @@ async function onFormSubmit() {
 
 <template lang='pug'>
 article.form-login.card
+  img.logo(src="../../assets/kv-logo-light-large.svg")
   h1.heading(data-cy="heading") Bitte melde dich an.
   form(@submit.prevent="onFormSubmit")
     .form-field
@@ -93,9 +94,21 @@ article.form-login.card
 .form-login {
   position: relative;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   @include mq("p-l") {
     width: revert;
+  }
+}
+
+.logo {
+  margin-bottom: 1em;
+  max-width: 250px;
+
+  @include mq("p-m") {
+    max-width: 300px;
   }
 }
 
@@ -107,6 +120,10 @@ article.form-login.card
   @include mq("p-m") {
     font-size: 2em;
   }
+}
+
+form {
+  width: 100%;
 }
 
 button[type="submit"] {

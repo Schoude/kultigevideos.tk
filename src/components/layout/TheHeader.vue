@@ -18,6 +18,8 @@ async function onLogoutClick() {
 
 <template lang='pug'>
 header.the-header
+  .logo
+    img(src="../../assets/kv-logo-light.svg")
   button.btn_icon.outline.rounded.btn_logout(
     name="button logout"
     title="Klicken zum Ausloggen"
@@ -27,19 +29,31 @@ header.the-header
 </template>
 
 <style lang='scss' scoped>
+@use '../../styles/mixins' as *;
+
 .the-header {
   position: sticky;
   top: 0;
   padding: 0 1em;
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: space-between;
 
   background-color: var(--color-header);
   height: var(--header-height);
 
   @media (prefers-color-scheme: light) {
     box-shadow: var(--shadow-weak);
+  }
+}
+
+.logo {
+  img {
+    height: 38px;
+
+    @include mq("t-p") {
+      height: 52px;
+    }
   }
 }
 
