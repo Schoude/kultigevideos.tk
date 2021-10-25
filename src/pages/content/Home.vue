@@ -3,8 +3,7 @@
 
 <template lang='pug'>
 main.home
-  img(alt="Vue logo" src="../../assets/logo.png")
-  h1 This is the Home Page.
+  h1 List the video feed here.
 </template>
 
 <style lang='scss' scoped>

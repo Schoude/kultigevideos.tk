@@ -6,9 +6,10 @@ import { verify } from 'cypress/types/sinon';
 describe('TheHeader', () => {
   beforeEach(() => mount(TheHeader));
 
-  it('sticks to the top of the page', () => {
+  it('sticks to the top of the page and has padding left and right', () => {
     cy.get('.the-header').should('have.css', 'position', 'sticky');
     cy.get('.the-header').should('have.css', 'top', '0px');
+    cy.get('.the-header').should('have.css', 'padding', '0px 16px');
   });
 
   it('is larger on bigger screens', () => {
