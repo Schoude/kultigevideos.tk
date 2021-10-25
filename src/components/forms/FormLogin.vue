@@ -81,14 +81,19 @@ article.form-login.card
 
 .form-login {
   position: relative;
+  width: 100%;
+
+  @include mq("p-l") {
+    width: revert;
+  }
 }
 
 .heading {
   text-align: center;
-  font-size: 1.25em;
+  font-size: 1.5em;
   margin-bottom: 1em;
 
-  @include mq("t-p") {
+  @include mq("p-m") {
     font-size: 2em;
   }
 }
