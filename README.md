@@ -27,6 +27,8 @@ New integration tests files must be placed in `cypress/integration` in order to 
 
 2. For integration tests run `npm run cy:open` to open the interactive test runner. The test can also be run in the console with `npm run cy:run`.
 
+**IMPORTANT: The integration tests test the assets after the production build. Therefore, first build the app with `npm run build` and then serve it with `npm run serve`.**
+
 ## Author(s)
 
 [Schoude](https://github.com/Schoude)

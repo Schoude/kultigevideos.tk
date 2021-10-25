@@ -1,10 +1,13 @@
 import { mount } from '@cypress/vue';
 import TheHeader from './TheHeader.vue';
 import '../../styles/main.scss';
-import { verify } from 'cypress/types/sinon';
+import { createPinia, setActivePinia } from 'pinia';
 
 describe('TheHeader', () => {
-  beforeEach(() => mount(TheHeader));
+  beforeEach(() => {
+    setActivePinia(createPinia());
+    mount(TheHeader);
+  });
 
   it('sticks to the top of the page and has padding left and right', () => {
     cy.get('.the-header').should('have.css', 'position', 'sticky');

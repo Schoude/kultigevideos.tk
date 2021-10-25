@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe('visit the login page', () => {
+describe('login and logout', () => {
   beforeEach(() => {
     cy.intercept('GET', '/api/v1/refresh', {
       fixture: 'auth/refresh-401',
@@ -16,7 +16,7 @@ describe('visit the login page', () => {
     cy.get('@password').should('have.attr', 'type', 'text');
   });
 
-  it('fills out the login form loggs the user', () => {
+  it('fills out the login form logs the user in - then logs the user out', () => {
     cy.url().should('eq', 'http://localhost:5000/login');
 
     cy.get('[data-cy="email"]')
