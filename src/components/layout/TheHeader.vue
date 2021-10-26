@@ -21,7 +21,8 @@ async function onLogoutClick() {
 <template lang='pug'>
 header.the-header
   .logo
-    img(:src="getLogoPathSmall")
+    RouterLink(to='/' data-cy="home-link")
+      img(:src="getLogoPathSmall" alt="Logo Kultige Videos")
   button.btn_icon.outline.rounded.btn_logout(
     name="button logout"
     title="Klicken zum Ausloggen"
