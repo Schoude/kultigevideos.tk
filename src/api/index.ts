@@ -1,7 +1,7 @@
 import { ENVIRONMENT } from '../types/base.d';
 import router from '../router/index';
 import { ROUTE_NAMES } from '../router/routing-info';
-// import { useAuthStore } from '../stores/auth';
+import { useAuthStore } from '../stores/auth';
 import type {
   ApiResponse,
   BaseRequestParams,
@@ -93,19 +93,19 @@ class ApiClient {
 const apiClient = new ApiClient();
 
 // //interceptor for fetch
-// const { fetch: origFetch } = window;
-// window.fetch = async (...args) => {
-//   const response = await origFetch(...args);
+const { fetch: origFetch } = window;
+window.fetch = async (...args) => {
+  const response = await origFetch(...args);
 
-//   // logout on unauthorized response if already logged in
-//   const authStore = useAuthStore();
-//   if (response.status === 401 && authStore.isLoggedIn) {
-//     const authStore = useAuthStore();
-//     router.push({ name: ROUTE_NAMES.LOGIN });
-//     authStore.logout();
-//   }
+  // logout on unauthorized response if already logged in
+  const authStore = useAuthStore();
+  if (response.status === 401 && authStore.isLoggedIn) {
+    const authStore = useAuthStore();
+    router.push({ name: ROUTE_NAMES.LOGIN });
+    authStore.logout();
+  }
 
-//   return response;
-// };
+  return response;
+};
 
 export { apiClient };
