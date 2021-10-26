@@ -15,6 +15,10 @@ describe('FormLogin', () => {
     mount(FormLogin);
   });
 
+  it('has a logo', () => {
+    cy.get('[data-cy="logo"]').should('exist');
+  });
+
   it('has a heading', () => {
     cy.get('[data-cy="heading"]')
       .should('exist')

@@ -41,7 +41,7 @@ async function onFormSubmit() {
 
 <template lang='pug'>
 article.form-login.card
-  img.logo(:src="getLogoPath")
+  img.logo(data-cy="logo" :src="getLogoPath" alt="Logo Kultige Videos")
   h1.heading(data-cy="heading") Bitte melde dich an.
   form(@submit.prevent="onFormSubmit")
     .form-field
