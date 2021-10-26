@@ -1,0 +1,64 @@
+<script setup lang='ts'>
+import { useRouter } from 'vue-router';
+import { ROUTE_NAMES } from '../../router/routing-info';
+import { useAuthStore } from '../../stores/auth';
+import { ICON_SIZE } from '../gfx/icons/icon-data';
+import SvgIcon from '../gfx/icons/SvgIcon.vue';
+
+const authStore = useAuthStore();
+const router = useRouter();
+
+async function onLogoutClick() {
+  await authStore.logout()
+  await router.push({ name: ROUTE_NAMES.LOGIN });
+  authStore.user = null;
+}
+</script>
+
+<template lang='pug'>
+nav.menu-header
+  span(data-cy="username") {{ authStore.getUserName }}
+  RouterLink(to='/profile')
+    img.avatar(data-cy="avatar" :src="authStore.getAvatarUrl")
+  button.btn_icon.outline.rounded.btn_logout(
+    name="button logout"
+    title="Klicken zum Ausloggen"
+    @click="onLogoutClick"
+  )
+    SvgIcon(icon-name="sign-out" :size="ICON_SIZE.xs")
+</template>
+
+<style lang='scss' scoped>
+.menu-header {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+}
+
+.avatar {
+  max-width: 38px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.btn_logout {
+  --color: white;
+  --color-bg: rgba(255, 255, 255, 0.15);
+
+  @media (prefers-color-scheme: light) {
+    --color: black;
+    --color-bg: rgba(0, 0, 0, 0.15);
+  }
+
+  outline: none;
+
+  &:focus,
+  &:hover {
+    background-color: var(--color-bg);
+  }
+
+  .svg-icon {
+    fill: var(--color);
+  }
+}
+</style>

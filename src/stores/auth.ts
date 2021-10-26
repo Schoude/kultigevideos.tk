@@ -84,5 +84,8 @@ export const useAuthStore = defineStore('auth', {
     getUserName(): string {
       return this.user?.username as string;
     },
+    getAvatarUrl(): string {
+      return this.user?.meta.avatarUrl as string;
+    },
   },
 });
