@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import { useRouter } from 'vue-router';
+import { usePageHelpers } from '../../composables/page-helpers';
 import { ROUTE_NAMES } from '../../router/routing-info';
 import { useAuthStore } from '../../stores/auth';
 import { ICON_SIZE } from '../gfx/icons/icon-data';
@@ -7,6 +8,7 @@ import SvgIcon from '../gfx/icons/SvgIcon.vue';
 
 const authStore = useAuthStore();
 const router = useRouter();
+const { getLogoPathSmall } = usePageHelpers();
 
 async function onLogoutClick() {
   await authStore.logout()
@@ -19,7 +21,7 @@ async function onLogoutClick() {
 <template lang='pug'>
 header.the-header
   .logo
-    img(src="../../assets/kv-logo-light.svg")
+    img(:src="getLogoPathSmall")
   button.btn_icon.outline.rounded.btn_logout(
     name="button logout"
     title="Klicken zum Ausloggen"

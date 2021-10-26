@@ -5,10 +5,11 @@ import SvgIcon from '../gfx/icons/SvgIcon.vue';
 import { useAuthStore } from '../../stores/auth';
 import { useRouter } from 'vue-router';
 import { ROUTE_NAMES } from '../../router/routing-info';
+import { usePageHelpers } from '../../composables/page-helpers';
 
 const authStore = useAuthStore();
 const router = useRouter();
-
+const { getLogoPath } = usePageHelpers();
 const loginData = reactive({ email: '', password: '' });
 const isLoading = ref(false);
 const inputPassword = ref<HTMLInputElement | null>(null);
@@ -40,7 +41,7 @@ async function onFormSubmit() {
 
 <template lang='pug'>
 article.form-login.card
-  img.logo(src="../../assets/kv-logo-light-large.svg")
+  img.logo(:src="getLogoPath")
   h1.heading(data-cy="heading") Bitte melde dich an.
   form(@submit.prevent="onFormSubmit")
     .form-field
