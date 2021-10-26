@@ -17,7 +17,7 @@ async function onLogoutClick() {
 
 <template lang='pug'>
 nav.menu-header
-  span(data-cy="username") {{ authStore.getUserName }}
+  span.username(data-cy="username") {{ authStore.getUserName }}
   RouterLink(to='/profile')
     img.avatar(data-cy="avatar" :src="authStore.getAvatarUrl")
   button.btn_icon.outline.rounded.btn_logout(
@@ -33,6 +33,10 @@ nav.menu-header
   display: flex;
   gap: 1em;
   align-items: center;
+}
+
+.username {
+  font-weight: 500;
 }
 
 .avatar {
