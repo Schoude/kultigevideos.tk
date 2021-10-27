@@ -87,5 +87,20 @@ export const useAuthStore = defineStore('auth', {
     getAvatarUrl(): string {
       return this.user?.meta.avatarUrl as string;
     },
+    getUserRoleText(): string {
+      let role = '';
+      switch (this.user?.role) {
+        case 'admin':
+          role = 'Admin';
+          break;
+        case 'maintainer':
+          role = 'Maintainer';
+          break;
+        case 'user':
+          role = 'User';
+          break;
+      }
+      return role;
+    },
   },
 });
