@@ -137,6 +137,9 @@ button[type="submit"] {
   background: transparent;
   opacity: 0.5;
   transition: opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover,
   &:focus {
