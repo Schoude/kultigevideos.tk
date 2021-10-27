@@ -37,6 +37,20 @@ describe('FormLogin', () => {
     cy.get('[data-cy="password"]').should('exist');
   });
 
+  it('has form validations for email and password', () => {
+    cy.get('[data-cy="email"]').as('email').focus().blur();
+    cy.get('[data-cy="password"]').as('password').focus().blur();
+
+    cy.get('[data-cy="error-email-required"]').should('exist');
+    cy.get('[data-cy="error-password-required"]').should('exist');
+
+    cy.get('@email').type('tester').blur();
+    cy.get('@password').type('test').blur();
+
+    cy.get('[data-cy="error-email-format"]').should('exist');
+    cy.get('[data-cy="error-password-min"]').should('exist');
+  });
+
   it('the password visibility can be toggled', () => {
     cy.get('[data-cy="password"]')
       .as('passwordInput')

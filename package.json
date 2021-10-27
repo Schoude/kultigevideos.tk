@@ -18,6 +18,8 @@
     "@cypress/vite-dev-server": "^2.2.0",
     "@cypress/vue": "^3.0.3",
     "@vitejs/plugin-vue": "^1.9.3",
+    "@vuelidate/core": "^2.0.0-alpha.30",
+    "@vuelidate/validators": "^2.0.0-alpha.24",
     "cypress": "^8.7.0",
     "pinia": "^2.0.0-rc.15",
     "sass": "^1.43.3",

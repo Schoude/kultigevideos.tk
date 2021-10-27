@@ -1,19 +1,36 @@
 <script setup lang='ts'>
-import { ref, reactive } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import LoaderIndeterminate from '../gfx/loaders/LoaderIndeterminate.vue';
 import SvgIcon from '../gfx/icons/SvgIcon.vue';
 import { useAuthStore } from '../../stores/auth';
 import { useRouter } from 'vue-router';
 import { ROUTE_NAMES } from '../../router/routing-info';
 import { usePageHelpers } from '../../composables/page-helpers';
+import { useVuelidate } from '@vuelidate/core'
+import { minLength, required, email } from '@vuelidate/validators'
 
 const authStore = useAuthStore();
 const router = useRouter();
+
 const { getLogoPath } = usePageHelpers();
-const loginData = reactive({ email: '', password: '' });
 const isLoading = ref(false);
 const inputPassword = ref<HTMLInputElement | null>(null);
 const passwordVisible = ref(false);
+
+const loginData = reactive({ email: '', password: '' });
+const passwordMinLength = ref(5);
+const rules = computed(() => ({
+  email: {
+    required,
+    email
+  },
+  password: {
+    required,
+    minLength: minLength(passwordMinLength.value),
+  }
+}))
+
+const v$ = useVuelidate(rules, loginData, { $rewardEarly: true })
 
 async function togglePasswordVisibility() {
   passwordVisible.value = !passwordVisible.value;
@@ -24,6 +41,11 @@ async function togglePasswordVisibility() {
 
 async function onFormSubmit() {
   if (isLoading.value) {
+    return;
+  }
+
+  const res = await v$.value.$validate()
+  if (!res) {
     return;
   }
 
@@ -43,6 +65,7 @@ async function onFormSubmit() {
 article.form-login.card
   img.logo(data-cy="logo" :src="getLogoPath" alt="Logo Kultige Videos")
   h1.heading(data-cy="heading") Bitte melde dich an.
+
   form(@submit.prevent="onFormSubmit")
     .form-field
       label(
@@ -55,8 +78,14 @@ article.form-login.card
         name="email"
         autocomplete="email"
         required
-        v-model.trim='loginData.email'
+        v-model.trim='v$.email.$model'
+        @blur="v$.email.$validate()"
       )
+      Transition(name="fade-fast" mode="out-in")
+        template(v-if="v$.email.$dirty && v$.email.$invalid")
+          Transition(name="fade-fast" mode="out-in")
+            p.form-validation_error-message(data-cy="error-email-required" v-if="v$.email.required.$invalid") Feld ist erforderlich.
+            p.form-validation_error-message(data-cy="error-email-format" v-else-if="v$.email.email.$invalid") Keine gültige E-Mail-Adresse.
 
     .form-field
       label(
@@ -71,7 +100,8 @@ article.form-login.card
           name="password"
           autocomplete="password"
           required
-          v-model.trim='loginData.password'
+          v-model.trim='v$.password.$model'
+          @blur="v$.password.$validate()"
         )
         button.btn-icon(
           type="button"
@@ -81,11 +111,18 @@ article.form-login.card
           Transition(name="fade-fast" mode="out-in")
             SvgIcon(icon-name="eye-slash" v-if="passwordVisible")
             SvgIcon(icon-name="eye" v-else)
+      Transition(name="fade-fast" mode="out-in")
+        template(v-if="v$.password.$dirty && v$.password.$invalid")
+          Transition(name="fade-fast" mode="out-in")
+            p.form-validation_error-message(data-cy="error-password-required" v-if="v$.password.required.$invalid") Feld ist erforderlich.
+            p.form-validation_error-message(data-cy="error-password-min" v-else-if="v$.password.minLength.$invalid") Das Passwort muss min. {{ passwordMinLength }} Zeichen lang sein.
+
     .form-actions
       button.btn.btn_primary(
         type="submit"
-        :disabled="isLoading"
+        :disabled="isLoading || v$.$invalid"
       ) Einloggen
+
   LoaderIndeterminate(:class="{ visible: isLoading }")
 </template>
 
@@ -100,7 +137,7 @@ article.form-login.card
   align-items: center;
 
   @include mq("p-l") {
-    width: revert;
+    width: 350px;
   }
 }
 
