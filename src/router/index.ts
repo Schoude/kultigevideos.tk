@@ -40,6 +40,19 @@ const routes: Array<RouteRecordRaw> = [
         name: ROUTE_NAMES.PROFILE,
         component: () => import('../pages/content/Profile.vue'),
       },
+      {
+        path: 'upload',
+        name: ROUTE_NAMES.UPLOAD,
+        component: () => import('../pages/content/Upload.vue'),
+        beforeEnter: (to, from, next) => {
+          const authStore = useAuthStore();
+          if (authStore.user?.role === 'user') {
+            next({ name: ROUTE_NAMES.HOME });
+            return;
+          }
+          next();
+        },
+      },
     ],
   },
   {
