@@ -7,7 +7,13 @@ export interface Video {
   hash: string;
   url: string;
   thumb: string;
-  uploader: Uploader;
   viewCount: number;
+  listed: boolean;
+  approved: boolean;
+  approvedBy?: {
+    _id: string;
+    username: string;
+  };
+  uploader: Uploader;
   uploadedAt: Date;
 }
