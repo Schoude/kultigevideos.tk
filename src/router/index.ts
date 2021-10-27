@@ -35,6 +35,11 @@ const routes: Array<RouteRecordRaw> = [
         name: ROUTE_NAMES.HOME,
         component: () => import('../pages/content/Home.vue'),
       },
+      {
+        path: '/profile',
+        name: ROUTE_NAMES.PROFILE,
+        component: () => import('../pages/content/Profile.vue'),
+      },
     ],
   },
   {
