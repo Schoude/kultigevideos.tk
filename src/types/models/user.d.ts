@@ -1,4 +1,4 @@
-type UserRole = 'admin' | 'maintainer' | 'user';
+export type UserRole = 'admin' | 'maintainer' | 'user';
 
 interface UserMetaData {
   avatarUrl: string;

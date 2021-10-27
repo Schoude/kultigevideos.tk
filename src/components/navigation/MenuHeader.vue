@@ -4,6 +4,7 @@ import { ROUTE_NAMES } from '../../router/routing-info';
 import { useAuthStore } from '../../stores/auth';
 import { ICON_SIZE } from '../gfx/icons/icon-data';
 import SvgIcon from '../gfx/icons/SvgIcon.vue';
+import SvgIcon1 from '../gfx/icons/SvgIcon.vue';
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -17,6 +18,13 @@ async function onLogoutClick() {
 
 <template lang='pug'>
 nav.menu-header
+  RouterLink.link-profile(
+    v-if="authStore.user?.role !== 'user'"
+    to='/upload'
+    title="Ein neues Video hochladen"
+    data-cy="link-upload"
+  )
+    SvgIcon(icon-name="upload" :size="ICON_SIZE.m")
   span.username(data-cy="username") {{ authStore.getUserName }}
   RouterLink(to='/profile' title="Zu deinem Profil")
     img.avatar(data-cy="avatar" :src="authStore.getAvatarUrl" alt="Dein Avatar-Bild")
@@ -33,6 +41,13 @@ nav.menu-header
   display: flex;
   gap: 1em;
   align-items: center;
+}
+
+.link-profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
 }
 
 .username {

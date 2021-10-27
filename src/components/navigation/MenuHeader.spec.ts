@@ -18,11 +18,22 @@ describe('MenuHeader', () => {
     },
   };
 
-  beforeEach(() => {
-    setActivePinia(createPinia());
-    const authStore = useAuthStore();
-    authStore.user = mockUser;
+  const mockUserNotAdmin: User = {
+    _id: '612ffd922c8d16b3319593e1',
+    username: 'E2E-Tester (not admin)',
+    email: 'e2etester@gmail.com',
+    role: 'user',
+    meta: {
+      avatarUrl:
+        'https://pbs.twimg.com/profile_images/453956388851445761/8BKnRUXg.png',
+    },
+  };
 
+  setActivePinia(createPinia());
+  const authStore = useAuthStore();
+  authStore.user = mockUser;
+
+  beforeEach(() => {
     mount(MenuHeader);
   });
 
@@ -34,5 +45,14 @@ describe('MenuHeader', () => {
 
   it('displays the avatar of the user', () => {
     cy.get('[data-cy="avatar"]').should('exist');
+  });
+
+  it('displays the link to the upload page for admins and mainters', () => {
+    cy.get('[data-cy="link-upload"]').should('exist');
+  });
+
+  it('hides the link to the upload page for regular users', () => {
+    authStore.user = mockUserNotAdmin;
+    cy.get('[data-cy="link-upload"]').should('not.exist');
   });
 });
