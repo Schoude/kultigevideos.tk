@@ -43,6 +43,16 @@ const routes: Array<RouteRecordRaw> = [
         path: '/profile/:id',
         name: ROUTE_NAMES.PROFILE_USER,
         component: () => import('../pages/content/ProfileUser.vue'),
+        beforeEnter: (to, from, next) => {
+          const authStore = useAuthStore();
+
+          if (to.params.id === authStore.user?._id) {
+            next({ name: ROUTE_NAMES.PROFILE });
+            return;
+          }
+
+          next();
+        },
       },
       {
         path: '/watch/:hash',
