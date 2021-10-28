@@ -28,8 +28,8 @@ describe('VideoFeedEntry', () => {
           'https://pbs.twimg.com/profile_images/453956388851445761/8BKnRUXg.png',
       },
     },
-    uploadedAt: new Date('2021-10-28T19:27:52.994Z'),
-    approvedAt: new Date('2021-10-28T20:27:52.994Z'),
+    uploadedAt: '2021-10-28T19:27:52.994Z',
+    approvedAt: '2021-10-28T20:27:52.994Z',
   };
 
   beforeEach(() => {
@@ -69,7 +69,7 @@ describe('VideoFeedEntry', () => {
   it('displays the upload date', () => {
     cy.get('[data-cy="upload-date"]').should(
       'have.text',
-      `am ${mockVideoData.uploadedAt?.toLocaleDateString()}`
+      `am ${new Date(mockVideoData.uploadedAt).toLocaleDateString()}`
     );
   });
 });

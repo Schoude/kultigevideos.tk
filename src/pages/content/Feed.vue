@@ -1,9 +1,10 @@
 <script setup lang='ts'>
+import TheVideoFeed from '../../components/feed/TheVideoFeed.vue';
 </script>
 
 <template lang='pug'>
 main.feed
-  h1 List the video feed here.
+  TheVideoFeed
 </template>
 
 <style lang='scss' scoped>

@@ -56,6 +56,12 @@ nav.menu-header
 
 .link-profile {
   width: 38px;
+
+  @media (prefers-color-scheme: light) {
+    svg {
+      fill: black;
+    }
+  }
 }
 
 .username {

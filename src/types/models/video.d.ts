@@ -16,7 +16,7 @@ export interface Video {
     username: string;
     meta: UserMetaData;
   };
-  approvedAt?: Date;
+  approvedAt?: string;
   uploader: Uploader;
-  uploadedAt?: Date;
+  uploadedAt?: string;
 }

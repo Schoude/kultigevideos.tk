@@ -14,10 +14,14 @@ const getLogoPathSmall = computed(() =>
 );
 
 export const usePageHelpers = () => {
+  function getLocaleDateString(dateString: undefined | string) {
+    return new Date(dateString as string).toLocaleDateString();
+  }
   return {
     isDarkMode,
     getLogoPath,
     getLogoPathSmall,
+    getLocaleDateString,
   };
 };
 

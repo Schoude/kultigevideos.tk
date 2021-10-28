@@ -1,12 +1,24 @@
 <script setup lang='ts'>
+import { useRouter } from 'vue-router';
+import { usePageHelpers } from '../../composables/page-helpers';
+import { ROUTE_NAMES } from '../../router/routing-info';
 import type { Video } from '../../types/models/video';
 
-defineProps<{ video: Video }>()
+const router = useRouter();
+const { getLocaleDateString } = usePageHelpers();
+
+const props = defineProps<{ video: Video }>()
+
+function onCardClick() {
+  router.push({ name: ROUTE_NAMES.WATCH, params: { hash: props.video.hash } })
+}
+
 </script>
 
 <template lang='pug'>
 article.video-feed-entry
-  img.thumbnail(data-cy="thumbnail" :src="video.thumb")
+  button.btn-thumbnail(@click="onCardClick")
+    img.thumbnail(data-cy="thumbnail" :src="video.thumb")
 
   .metadata
     img.avatar(:src="video.uploader.meta.avatarUrl")
@@ -15,20 +27,30 @@ article.video-feed-entry
       h3.title(data-cy="title")
         RouterLink(:to="`/watch/${video.hash}`") {{ video.title }}
       .metadata-line.uploader(data-cy="uploader-name")
-        RouterLink(:to="`/profile/${video.uploader._id}`") {{ video.uploader.username }}      
+        RouterLink.uploader-link(:to="`/profile/${video.uploader._id}`") {{ video.uploader.username }}
       .metadata-line
         span.video-meta-block.viewcount(data-cy="viewcount") {{ video.viewCount }} Aufrufe
-        span.video-meta-block.upload-date(data-cy="upload-date") am {{ video.uploadedAt?.toLocaleDateString() }}
+        span.video-meta-block.upload-date(data-cy="upload-date") am {{ getLocaleDateString(video.uploadedAt) }}
 
 </template>
 
 <style lang='scss' scoped>
+.btn-thumbnail {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+}
+
 .thumbnail {
-  aspect-ratio: 16 / 9;
+  position: absolute;
+  inset: 0;
+  aspect-ratio: 16/9;
+  cursor: pointer;
 }
 
 .metadata {
   display: flex;
+  margin-top: 0.5em;
 }
 
 .avatar {
@@ -37,6 +59,7 @@ article.video-feed-entry
   height: 2.25em;
   border-radius: 50%;
   overflow: hidden;
+  margin-right: 0.75em;
 }
 
 .title {
@@ -46,7 +69,31 @@ article.video-feed-entry
 .viewcount {
   &:after {
     content: "•";
-    margin: 0 4 px;
+    margin: 0 4px;
+  }
+}
+
+a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.metadata-line {
+  a,
+  .video-meta-block {
+    opacity: 0.7;
+
+    @media (prefers-color-scheme: light) {
+      font-weight: 500;
+    }
+  }
+}
+
+.metadata-line {
+  a {
+    &:hover {
+      opacity: 1;
+    }
   }
 }
 </style>

@@ -1,4 +1,3 @@
-// import { useAuthStore } from './../stores/auth';
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 import { ROUTE_NAMES } from './routing-info';
@@ -38,6 +37,16 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/profile',
         name: ROUTE_NAMES.PROFILE,
+        component: () => import('../pages/content/Profile.vue'),
+      },
+      {
+        path: '/profile/:hash',
+        name: ROUTE_NAMES.PROFILE_USER,
+        component: () => import('../pages/content/Profile.vue'),
+      },
+      {
+        path: '/watch/:hash',
+        name: ROUTE_NAMES.WATCH,
         component: () => import('../pages/content/Profile.vue'),
       },
       {
