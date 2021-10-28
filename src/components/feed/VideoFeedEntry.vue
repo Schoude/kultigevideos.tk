@@ -18,10 +18,12 @@ function onCardClick() {
 <template lang='pug'>
 article.video-feed-entry
   button.btn-thumbnail(@click="onCardClick")
-    img.thumbnail(data-cy="thumbnail" :src="video.thumb")
+    img.thumbnail(data-cy="thumbnail" :src="video.thumb" :alt="`video thumbnail for video ${video.title}`")
 
   .metadata
-    img.avatar(:src="video.uploader.meta.avatarUrl")
+    .avatar-box
+      RouterLink.uploader-link(:to="`/profile/${video.uploader._id}`")
+        img.avatar(:src="video.uploader.meta.avatarUrl" :alt="`avatar picture of user ${video.uploader.username}`")
 
     .info
       h3.title(data-cy="title")

@@ -16,8 +16,14 @@ section.the-video-feed
 
 <style lang='scss' scoped>
 .the-video-feed {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   gap: 1em;
-  grid-template-columns: repeat(4, 1fr);
+  // TODO: add if at least 4 vids are available
+  // justify-content: space-around;
+}
+
+.video-feed-entry {
+  width: 420px;
 }
 </style>

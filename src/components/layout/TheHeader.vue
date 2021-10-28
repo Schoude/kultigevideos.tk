@@ -18,6 +18,7 @@ header.the-header
 .the-header {
   position: sticky;
   top: 0;
+  z-index: 1;
   padding: 0 1em;
   display: flex;
   align-items: center;
