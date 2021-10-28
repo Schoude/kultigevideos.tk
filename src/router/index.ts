@@ -11,7 +11,7 @@ const routes: Array<RouteRecordRaw> = [
     beforeEnter: (to, from, next) => {
       const authStore = useAuthStore();
       if (authStore.isLoggedIn) {
-        next({ name: ROUTE_NAMES.HOME });
+        next({ name: ROUTE_NAMES.FEED });
         return;
       }
       next();
@@ -32,8 +32,8 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: '',
-        name: ROUTE_NAMES.HOME,
-        component: () => import('../pages/content/Home.vue'),
+        name: ROUTE_NAMES.FEED,
+        component: () => import('../pages/content/Feed.vue'),
       },
       {
         path: '/profile',
@@ -47,7 +47,7 @@ const routes: Array<RouteRecordRaw> = [
         beforeEnter: (to, from, next) => {
           const authStore = useAuthStore();
           if (authStore.user?.role === 'user') {
-            next({ name: ROUTE_NAMES.HOME });
+            next({ name: ROUTE_NAMES.FEED });
             return;
           }
           next();
@@ -58,7 +58,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    redirect: { name: ROUTE_NAMES.HOME },
+    redirect: { name: ROUTE_NAMES.FEED },
   },
 ];
 

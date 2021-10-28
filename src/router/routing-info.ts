@@ -1,6 +1,6 @@
 export enum ROUTE_NAMES {
   APP_CONTENT = 'APP_CONTENT',
-  HOME = 'HOME',
+  FEED = 'FEED',
   PROFILE = 'PROFILE',
   UPLOAD = 'UPLOAD',
   LOGIN = 'LOGIN',

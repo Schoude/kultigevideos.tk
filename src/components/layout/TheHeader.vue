@@ -7,7 +7,7 @@ const { getLogoPathSmall } = usePageHelpers();
 <template lang='pug'>
 header.the-header
   .logo
-    RouterLink(to='/' data-cy="home-link")
+    RouterLink(to='/' data-cy="feed-link")
       img(:src="getLogoPathSmall" alt="Logo Kultige Videos")
   MenuHeader
 </template>

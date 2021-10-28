@@ -52,7 +52,7 @@ async function onFormSubmit() {
   isLoading.value = true
   try {
     await authStore.login(loginData.email, loginData.password);
-    await router.push({ name: ROUTE_NAMES.HOME });
+    await router.push({ name: ROUTE_NAMES.FEED });
   } catch (error) {
     console.log((error as Error).message);
   } finally {

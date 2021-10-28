@@ -2,7 +2,7 @@
 </script>
 
 <template lang='pug'>
-main.home
+main.feed
   h1 List the video feed here.
 </template>
 
