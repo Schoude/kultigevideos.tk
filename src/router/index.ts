@@ -40,14 +40,14 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../pages/content/Profile.vue'),
       },
       {
-        path: '/profile/:hash',
+        path: '/profile/:id',
         name: ROUTE_NAMES.PROFILE_USER,
-        component: () => import('../pages/content/Profile.vue'),
+        component: () => import('../pages/content/ProfileUser.vue'),
       },
       {
         path: '/watch/:hash',
         name: ROUTE_NAMES.WATCH,
-        component: () => import('../pages/content/Profile.vue'),
+        component: () => import('../pages/content/Watch.vue'),
       },
       {
         path: 'upload',
