@@ -75,6 +75,12 @@ const videoStore = useVideoStore();
 .count {
   cursor: pointer;
   padding: 0;
+
+  @media (prefers-color-scheme: light) {
+    svg {
+      fill: black;
+    }
+  }
 }
 
 .counter {

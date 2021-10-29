@@ -4,6 +4,7 @@ import { useVideoStore } from '../../stores/video';
 import VideoPlayer from '../../components/video/VideoPlayer.vue';
 import { onMounted } from 'vue';
 import TheVideoMetadataDisplay from './TheVideoMetadataDisplay.vue';
+import TheVideoDescriptionDisplay from './TheVideoDescriptionDisplay.vue';
 
 const router = useRouter();
 const videoStore = useVideoStore();
@@ -20,6 +21,8 @@ section.the-video-display
       :poster="videoStore.currentVideo.thumb"
     )
     TheVideoMetadataDisplay
+    TheVideoDescriptionDisplay
+    .commets COMMENTS GO HERE
   .recommended-col
     h1 Recommended go here
 </template>
@@ -28,6 +31,11 @@ section.the-video-display
 .the-video-display {
   display: flex;
   gap: 1.25em;
+}
+
+.video-col,
+.recommended-col {
+  flex: 1;
 }
 
 .video-player {

@@ -1,0 +1,82 @@
+<script setup lang='ts'>
+import { ref } from 'vue';
+import { useVideoStore } from '../../stores/video';
+
+const videoStore = useVideoStore();
+const showMore = ref(false);
+
+function onTriggerShowMore() {
+  showMore.value = !showMore.value;
+}
+</script>
+
+<template lang='pug'>
+.the-video-description-display
+  .uploader
+    .avatar-box
+      RouterLink.uploader-link(:to="`/profile/${videoStore.currentVideo?.uploader._id}`")
+        img.avatar(:src="videoStore.currentVideo?.uploader.meta.avatarUrl" :alt="`avatar picture of user ${videoStore.currentVideo?.uploader.username}`")
+    h3.title
+      RouterLink(:to="`/profile/${videoStore.currentVideo?.uploader._id}`") {{ videoStore.currentVideo?.uploader.username }}
+  .description-container
+    .description-text(:class="{ 'open': showMore }") {{ videoStore.currentVideo?.description }}
+    button.more-button(@click="onTriggerShowMore") {{ showMore ? 'WENIGER ANZEIGEN' : 'MEHR ANSEHEN' }}
+</template>
+
+<style lang='scss' scoped>
+.the-video-description-display {
+  margin-top: 1em;
+  margin-bottom: 2em;
+}
+
+.uploader {
+  display: flex;
+  gap: 1em;
+}
+
+.avatar {
+  width: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.title {
+  margin-bottom: 0.5em;
+  margin-top: 0.25em;
+}
+
+a {
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.description-container {
+  margin-left: 4em;
+}
+
+.description-text {
+  max-width: 50%;
+  max-height: 3em;
+  overflow: hidden;
+
+  &.open {
+    min-height: 100px;
+    max-height: revert;
+    overflow: visible;
+  }
+}
+
+.more-button {
+  --color: #aaaaaa;
+
+  margin-top: 0.5em;
+  padding: 0;
+  font-size: 0.9em;
+  color: var(--color);
+
+  @media (prefers-color-scheme: light) {
+    --color: #232323;
+  }
+}
+</style>
