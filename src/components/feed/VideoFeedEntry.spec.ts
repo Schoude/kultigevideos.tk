@@ -8,6 +8,7 @@ describe('VideoFeedEntry', () => {
     hash: 'TYNKGOKyDah',
     url: 'https://firebasestorage.googleapis.com/v0/b/kultige-videos.appspot.com/o/TYNKGOKyDah.mp4?alt=media&token=a37c261d-99bb-4568-9b18-bea1cf998235',
     title: 'Oliver Kahn Interview - Best Of',
+    description: 'Der Titan Oliver Kahn in Bestform.',
     thumb: 'https://i.ytimg.com/vi/qTa5rj2wvWI/hqdefault.jpg',
     viewCount: 0,
     listed: true,
