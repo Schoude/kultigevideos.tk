@@ -3,7 +3,7 @@ import { apiClient } from '../api';
 import { Video } from '../types/models/video';
 
 interface VideoState {
-  videos: [] | Video[];
+  videos: Video[];
 }
 
 export const useVideoStore = defineStore('video-store', {
