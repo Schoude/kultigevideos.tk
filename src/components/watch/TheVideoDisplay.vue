@@ -3,6 +3,7 @@ import { useRouter } from 'vue-router';
 import { useVideoStore } from '../../stores/video';
 import VideoPlayer from '../../components/video/VideoPlayer.vue';
 import { onMounted } from 'vue';
+import TheVideoMetadataDisplay from './TheVideoMetadataDisplay.vue';
 
 const router = useRouter();
 const videoStore = useVideoStore();
@@ -18,8 +19,7 @@ section.the-video-display
       :url="videoStore.getCurrentVideoUrl"
       :poster="videoStore.currentVideo.thumb"
     )
-    // VideoStatisticsDisplay
-    // VideoMeta
+    TheVideoMetadataDisplay
   .recommended-col
     h1 Recommended go here
 </template>
