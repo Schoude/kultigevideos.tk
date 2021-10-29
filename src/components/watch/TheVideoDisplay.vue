@@ -15,9 +15,8 @@ await videoStore.getByHash(router.currentRoute.value.params.hash as string)
 section.the-video-display
   .video-col
     VideoPlayer(
-      v-if="videoStore.currentVideo"
       :url="videoStore.getCurrentVideoUrl"
-      :poster="videoStore.currentVideo.thumb"
+      :poster="videoStore.currentVideo?.thumb"
     )
     TheVideoMetadataDisplay
     TheVideoDescriptionDisplay
