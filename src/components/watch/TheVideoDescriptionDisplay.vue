@@ -15,12 +15,22 @@ function onTriggerShowMore() {
   .uploader
     .avatar-box
       RouterLink.uploader-link(:to="`/profile/${videoStore.currentVideo?.uploader._id}`")
-        img.avatar(:src="videoStore.currentVideo?.uploader.meta.avatarUrl" :alt="`avatar picture of user ${videoStore.currentVideo?.uploader.username}`")
+        img.avatar(
+          :src="videoStore.currentVideo?.uploader.meta.avatarUrl"
+          :alt="`avatar picture of user ${videoStore.currentVideo?.uploader.username}`"
+          data-cy="avatar"
+        )
     h3.title
       RouterLink(:to="`/profile/${videoStore.currentVideo?.uploader._id}`") {{ videoStore.currentVideo?.uploader.username }}
   .description-container
-    .description-text(:class="{ 'open': showMore }") {{ videoStore.currentVideo?.description }}
-    button.more-button(@click="onTriggerShowMore") {{ showMore ? 'WENIGER ANZEIGEN' : 'MEHR ANSEHEN' }}
+    .description-text(
+      :class="{ 'open': showMore }"
+      data-cy="description-text"
+    ) {{ videoStore.currentVideo?.description }}
+    button.more-button(
+      @click="onTriggerShowMore"
+      data-cy="more-button"
+    ) {{ showMore ? 'WENIGER ANZEIGEN' : 'MEHR ANSEHEN' }}
 </template>
 
 <style lang='scss' scoped>
