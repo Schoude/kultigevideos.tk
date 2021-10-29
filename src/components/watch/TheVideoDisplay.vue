@@ -2,14 +2,13 @@
 import { useRouter } from 'vue-router';
 import { useVideoStore } from '../../stores/video';
 import VideoPlayer from '../../components/video/VideoPlayer.vue';
-import { onMounted } from 'vue';
 import TheVideoMetadataDisplay from './TheVideoMetadataDisplay.vue';
 import TheVideoDescriptionDisplay from './TheVideoDescriptionDisplay.vue';
 
 const router = useRouter();
 const videoStore = useVideoStore();
 
-onMounted(async () => await videoStore.getByHash(router.currentRoute.value.params.hash as string));
+await videoStore.getByHash(router.currentRoute.value.params.hash as string)
 </script>
 
 <template lang='pug'>

@@ -4,7 +4,11 @@ import TheVideoDisplay from '../../components/watch/TheVideoDisplay.vue';
 
 <template lang='pug'>
 main.watch
-  TheVideoDisplay
+  Suspense
+    template(#default)
+      TheVideoDisplay
+    template(#fallback)
+      h1 Lade Video
 </template>
 
 <style lang='scss' scoped>

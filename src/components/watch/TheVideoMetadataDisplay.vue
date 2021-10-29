@@ -32,6 +32,7 @@ const videoStore = useVideoStore();
   font-size: 1.125em;
   font-weight: 500;
   line-height: 2;
+  margin-top: 0.5em;
 }
 
 .statistics {
