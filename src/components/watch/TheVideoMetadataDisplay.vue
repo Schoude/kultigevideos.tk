@@ -9,22 +9,22 @@ const videoStore = useVideoStore();
 
 <template lang='pug'>
 .the-video-metadata-display
-  h1.video-title {{ videoStore.currentVideo?.title }}
+  h1.video-title(data-cy="video-title") {{ videoStore.currentVideo?.title }}
   .statistics
     .text
-      span.video-meta-block.viewcount {{ videoStore.currentVideo?.viewCount }} Aufrufe
-      span.video-meta-block.upload-date {{ getLocaleDateString(videoStore.currentVideo?.uploadedAt) }}
+      span.video-meta-block.viewcount(data-cy="viewcount") {{ videoStore.currentVideo?.viewCount }} Aufrufe
+      span.video-meta-block.upload-date(data-cy="upload-date") {{ getLocaleDateString(videoStore.currentVideo?.uploadedAt) }}
     .interactions
       .sentiment
         .counts
           button.count(title="Mag ich")
             SvgIcon.icon-like(icon-name="thumbs-up")
-            span.counter 0
+            span.counter(data-cy="counter-likes") 0
           button.count(title="Mag ich nicht")
             SvgIcon.icon.icon-dislike(icon-name="thumbs-down")
-            span.counter 0
+            span.counter(data-cy="counter-dislikes") 0
         .sentiment-bar
-          .indicator
+          .indicator(data-cy="indicator")
 </template>
 
 <style lang='scss' scoped>
