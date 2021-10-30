@@ -1,6 +1,6 @@
 name: Component and End-to-end tests
 
-on: [push]
+# on: [push]
 
 env:
   NODE_VERSION: '14.x'
