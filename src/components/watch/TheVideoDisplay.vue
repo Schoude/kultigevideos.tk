@@ -18,17 +18,26 @@ section.the-video-display
       :url="videoStore.getCurrentVideoUrl"
       :poster="videoStore.currentVideo?.thumb"
     )
-    TheVideoMetadataDisplay
-    TheVideoDescriptionDisplay
-    .commets COMMENTS GO HERE
+    .video-col__inner
+      TheVideoMetadataDisplay
+      TheVideoDescriptionDisplay
+      .comments COMMENTS GO HERE
   .recommended-col
-    h1 Recommended go here
+    .recommended-col__inner
+      h1 Recommended go here
 </template>
 
 <style lang='scss' scoped>
+@use '../../styles/mixins' as *;
+
 .the-video-display {
   display: flex;
   gap: 1.25em;
+  flex-direction: column;
+
+  @include mq("laptop") {
+    flex-direction: row;
+  }
 }
 
 .video-col,
@@ -36,7 +45,20 @@ section.the-video-display
   flex: 1;
 }
 
-.video-player {
-  width: 1280px;
+.video-col {
+  flex-basis: 51.5%;
+}
+
+.video-col__inner,
+.recommended-col__inner {
+  margin: 0 0.5em;
+
+  @include mq("t-p") {
+    margin: 0 1em;
+  }
+
+  @include mq("laptop") {
+    margin: revert;
+  }
 }
 </style>

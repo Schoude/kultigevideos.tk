@@ -12,8 +12,17 @@ main.watch
 </template>
 
 <style lang='scss' scoped>
+@use '../../styles/mixins' as *;
+
 .watch {
-  // desktop-wide
-  padding: 1em 100px;
+  padding: 1em 0 0 0;
+
+  @include mq("laptop") {
+    padding: 1em 75px;
+  }
+
+  @include mq("desktop") {
+    padding: 1em 100px;
+  }
 }
 </style>

@@ -29,8 +29,9 @@ function onPlay(event: Event) {
 .video-player {
   position: relative;
 }
+
 video {
-  width: inherit;
+  width: 100%;
   position: absolute;
   inset: 0;
 }

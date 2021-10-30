@@ -9,7 +9,7 @@ const videoStore = useVideoStore();
 
 <template lang='pug'>
 .the-video-metadata-display
-  h1.video-title(data-cy="video-title") {{ videoStore.currentVideo?.title }}
+  h1.video-title(data-cy="video-title" :title="videoStore.currentVideo?.title") {{ videoStore.currentVideo?.title }}
   .statistics
     .text
       span.video-meta-block.viewcount(data-cy="viewcount") {{ videoStore.currentVideo?.viewCount }} Aufrufe
@@ -28,19 +28,36 @@ const videoStore = useVideoStore();
 </template>
 
 <style lang='scss' scoped>
+@use '../../styles/mixins' as *;
+
 .video-title {
   font-size: 1.125em;
   font-weight: 500;
-  line-height: 2;
-  margin-top: 0.5em;
+  margin: 0.75em 0 0.75em 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @include mq("t-p") {
+    margin: 1em 0 0.5em 0;
+    white-space: revert;
+    overflow: revert;
+    text-overflow: revert;
+  }
 }
 
 .statistics {
-  height: 40px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 1em;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  @include mq("p-m") {
+    height: 40px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 }
 
 .viewcount {
@@ -59,7 +76,15 @@ const videoStore = useVideoStore();
 }
 
 .interactions {
-  align-self: flex-end;
+  height: 40px;
+
+  @include mq("desktop") {
+    align-self: flex-end;
+  }
+}
+
+.sentiment {
+  max-width: fit-content;
 }
 
 .counts,

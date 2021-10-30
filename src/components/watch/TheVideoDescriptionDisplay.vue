@@ -34,6 +34,8 @@ function onTriggerShowMore() {
 </template>
 
 <style lang='scss' scoped>
+@use '../../styles/mixins' as *;
+
 .the-video-description-display {
   margin-top: 1em;
   padding-bottom: 1em;
@@ -68,9 +70,16 @@ a {
 }
 
 .description-text {
-  max-width: 50%;
   max-height: 3em;
   overflow: hidden;
+
+  @include mq("t-p") {
+    max-width: 75%;
+  }
+
+  @include mq("laptop") {
+    max-width: 50%;
+  }
 
   &.open {
     min-height: 100px;
