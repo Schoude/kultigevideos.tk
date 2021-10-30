@@ -1,0 +1,44 @@
+name: 'Build and deployment to Droplet'
+
+on:
+  workflow_run:
+    workflows: ['Component and End-to-end tests']
+    branches: [master]
+    types:
+      - completed
+
+env:
+  NODE_VERSION: '14.x'
+
+jobs:
+  build:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.3.4
+
+      - name: Setup Node.js environment ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v2.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build the project
+        if: success()
+        env:
+          VITE_API_HOST_PROD: ${{secrets.VITE_API_HOST_PROD}}
+        run: npm run build
+
+      - name: Push the built assets to server.
+        if: success()
+        uses: Pendect/action-rsyncer@v1.1.0
+        env:
+          DEPLOY_KEY: ${{secrets.DEPLOY_KEY}}
+        with:
+          flags: '-avzr --delete'
+          options: ''
+          ssh_options: ''
+          src: 'dist/'
+          dest: ${{secrets.DEPLOY_DEST}}
