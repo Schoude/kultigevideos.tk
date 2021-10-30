@@ -15,7 +15,7 @@ function onPlay(event: Event) {
     if (ratioInstrinsic !== getRatio.value) {
       intrinsicRatio.value = ratioInstrinsic;
     }
-  }, 50)
+  }, 150)
 }
 </script>
 

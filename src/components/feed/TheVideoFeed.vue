@@ -15,15 +15,27 @@ section.the-video-feed
 </template>
 
 <style lang='scss' scoped>
+@use '../../styles/mixins' as *;
+
 .the-video-feed {
   display: flex;
   flex-wrap: wrap;
   gap: 1em;
-  // TODO: add if at least 4 vids are available
-  // justify-content: space-around;
+  justify-content: space-around;
 }
 
 .video-feed-entry {
   width: 420px;
+  @include mq("t-p") {
+    width: 320px;
+  }
+
+  @include mq("laptop") {
+    width: 280px;
+  }
+
+  @include mq("desktop") {
+    width: 420px;
+  }
 }
 </style>

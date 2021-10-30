@@ -37,6 +37,8 @@ article.video-feed-entry
 </template>
 
 <style lang='scss' scoped>
+@use '../../styles/mixins.scss' as *;
+
 .btn-thumbnail {
   position: relative;
   width: 100%;
@@ -53,6 +55,16 @@ article.video-feed-entry
 .metadata {
   display: flex;
   margin-top: 0.5em;
+  gap: 0.5em;
+}
+
+.avatar-box {
+  flex-shrink: 0;
+  flex-basis: 38px;
+
+  // @include mq("desktop") {
+  //   flex: revert;
+  // }
 }
 
 .avatar {
