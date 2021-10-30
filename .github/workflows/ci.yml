@@ -1,12 +1,11 @@
 name: 'Build and deployment to Droplet'
 
-on: [push]
-# on:
-#   workflow_run:
-#     workflows: ['Component and End-to-end tests']
-#     branches: [master]
-#     types:
-#       - completed
+on:
+  workflow_run:
+    workflows: ['Component and End-to-end tests']
+    branches: [master]
+    types:
+      - completed
 
 env:
   NODE_VERSION: '14.x'
