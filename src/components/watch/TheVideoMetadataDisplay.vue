@@ -1,12 +1,15 @@
 <script setup lang='ts'>
-import { computed } from '@vue/reactivity';
+import { ref, computed } from 'vue';
 import { usePageHelpers } from '../../composables/page-helpers';
+import { useAuthStore } from '../../stores/auth';
 import { useVideoStore } from '../../stores/video';
 import SvgIcon from '../gfx/icons/SvgIcon.vue';
 
 const { getLocaleDateString } = usePageHelpers();
 const videoStore = useVideoStore();
+const authStore = useAuthStore();
 
+const sentimentLoading = ref(false);
 const getSentimentWidth = computed(() => {
   if (videoStore.currentVideo?.likes.length === 0 && videoStore.currentVideo?.dislikes.length === 0) {
     return '50%';
@@ -15,6 +18,24 @@ const getSentimentWidth = computed(() => {
     return `${Math.round((videoStore.currentVideo?.likes.length as number) / totalVotes * 100)}%`
   }
 });
+const getIconLike = computed(() => videoStore.currentVideo?.likes.includes(authStore.user?._id as string)
+  ? 'thumbs-up-solid' : 'thumbs-up');
+const getIconDislike = computed(() => videoStore.currentVideo?.dislikes.includes(authStore.user?._id as string)
+  ? 'thumbs-down-solid' : 'thumbs-down');
+
+async function likeVideo() {
+  if (sentimentLoading.value) return;
+  sentimentLoading.value = true;
+  await videoStore.likeVideo();
+  sentimentLoading.value = false;
+}
+
+async function dislikeVideo() {
+  if (sentimentLoading.value) return;
+  sentimentLoading.value = true;
+  await videoStore.dislikeVideo();
+  sentimentLoading.value = false;
+}
 </script>
 
 <template lang='pug'>
@@ -27,12 +48,12 @@ const getSentimentWidth = computed(() => {
     .interactions
       .sentiment
         .counts
-          button.count(title="Mag ich")
-            SvgIcon.icon-like(icon-name="thumbs-up")
-            span.counter(data-cy="counter-likes") 0
-          button.count(title="Mag ich nicht")
-            SvgIcon.icon.icon-dislike(icon-name="thumbs-down")
-            span.counter(data-cy="counter-dislikes") 0
+          button.count(title="Mag ich" @click="likeVideo")
+            SvgIcon.icon-like(:icon-name="getIconLike")
+            span.counter(data-cy="counter-likes") {{ videoStore.currentVideo?.likes.length }}
+          button.count(title="Mag ich nicht" @click="dislikeVideo")
+            SvgIcon.icon.icon-dislike(:icon-name="getIconDislike")
+            span.counter(data-cy="counter-dislikes") {{ videoStore.currentVideo?.dislikes.length }}
         .sentiment-bar
           .indicator(
             data-cy="indicator"

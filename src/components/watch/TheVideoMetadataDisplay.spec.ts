@@ -3,6 +3,7 @@ import TheVideoMetadataDisplay from './TheVideoMetadataDisplay.vue';
 import '../../styles/main.scss';
 import { createPinia, setActivePinia } from 'pinia';
 import { useVideoStore } from '../../stores/video';
+import { Video } from '../../types/models/video';
 
 describe('TheVideoMetadataDisplay', () => {
   const mockVideo = {
@@ -24,6 +25,10 @@ describe('TheVideoMetadataDisplay', () => {
     uploadedAt: '2021-10-28T19:27:52.994Z',
     title: 'Oliver Kahn Interview - Best Of',
     description: 'Der Titan Oliver Kahn in gewohnter Bestform.',
+    likes: [],
+    dislikes: [],
+    approvedById: '6177176029676e6d4369bff7',
+    uploaderId: '6177176029676e6d4369bff7',
   };
 
   setActivePinia(createPinia());
@@ -46,6 +51,6 @@ describe('TheVideoMetadataDisplay', () => {
     );
     cy.get('[data-cy="counter-likes"]').should('have.text', 0);
     cy.get('[data-cy="counter-dislikes"]').should('have.text', 0);
-    cy.get('[data-cy="indicator"]').should('have.css', 'width', '104.25px');
+    cy.get('[data-cy="indicator"]').should('have.css', 'width', '69.5px');
   });
 });

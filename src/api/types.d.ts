@@ -14,6 +14,8 @@ export interface PostRequestParams extends BaseRequestParams {
   headers?: Record<Exclude<HeaderKey, 'Authentication'>, HeaderValue>;
 }
 
+export interface PutRequestParams extends PostRequestParams {}
+
 export interface ApiResponse<T> {
   data: T;
   status: number;

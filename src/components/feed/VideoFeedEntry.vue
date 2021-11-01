@@ -22,14 +22,14 @@ article.video-feed-entry
 
   .metadata
     .avatar-box
-      RouterLink.uploader-link(:to="`/profile/${video.uploader._id}`")
-        img.avatar(:src="video.uploader.meta.avatarUrl" :alt="`avatar picture of user ${video.uploader.username}`")
+      RouterLink.uploader-link(:to="`/profile/${video.uploader?._id}`")
+        img.avatar(:src="video.uploader?.meta.avatarUrl" :alt="`avatar picture of user ${video.uploader?.username}`")
 
     .info
       h3.title(data-cy="title")
         RouterLink(:to="`/watch/${video.hash}`") {{ video.title }}
       .metadata-line.uploader(data-cy="uploader-name")
-        RouterLink.uploader-link(:to="`/profile/${video.uploader._id}`") {{ video.uploader.username }}
+        RouterLink.uploader-link(:to="`/profile/${video.uploader?._id}`") {{ video.uploader?.username }}
       .metadata-line
         span.video-meta-block.viewcount(data-cy="viewcount") {{ video.viewCount }} Aufrufe
         span.video-meta-block.upload-date(data-cy="upload-date") am {{ getLocaleDateString(video.uploadedAt) }}

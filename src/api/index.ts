@@ -7,6 +7,7 @@ import type {
   BaseRequestParams,
   DefaultHeaders,
   PostRequestParams,
+  PutRequestParams,
 } from './types.d';
 
 export const apiHost =
@@ -67,6 +68,29 @@ class ApiClient {
   }: PostRequestParams): Promise<ApiResponse<Data>> {
     const res = await fetch(`${this.#host}${url}`, {
       method: 'POST',
+      mode,
+      credentials,
+      headers: {
+        ...this.headers,
+        ...headers,
+      },
+      body,
+    });
+
+    // TODO: handle res.text();
+    const data = (await res.json()) as Data;
+    return new Promise(resolve => resolve({ data, status: res.status }));
+  }
+
+  async put<Data>({
+    url,
+    credentials,
+    mode,
+    headers,
+    body,
+  }: PutRequestParams): Promise<ApiResponse<Data>> {
+    const res = await fetch(`${this.#host}${url}`, {
+      method: 'PUT',
       mode,
       credentials,
       headers: {

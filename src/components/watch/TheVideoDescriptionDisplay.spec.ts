@@ -24,6 +24,10 @@ describe('TheVideoDescriptionDisplay', () => {
     uploadedAt: '2021-10-28T19:27:52.994Z',
     title: 'Oliver Kahn Interview - Best Of',
     description: 'Der Titan Oliver Kahn in gewohnter Bestform.',
+    likes: [],
+    dislikes: [],
+    approvedById: '6177176029676e6d4369bff7',
+    uploaderId: '6177176029676e6d4369bff7',
   };
 
   setActivePinia(createPinia());

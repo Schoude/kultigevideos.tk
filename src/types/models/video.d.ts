@@ -19,7 +19,7 @@ export interface Video {
     meta: UserMetaData;
   };
   approvedAt?: Date;
-  uploaderId: Uploader;
+  uploaderId: string;
   uploader?: Uploader;
   uploadedAt: string;
   likes: string[];

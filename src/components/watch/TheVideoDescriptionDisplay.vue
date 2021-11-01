@@ -14,14 +14,14 @@ function onTriggerShowMore() {
 .the-video-description-display
   .uploader
     .avatar-box
-      RouterLink.uploader-link(:to="`/profile/${videoStore.currentVideo?.uploader._id}`")
+      RouterLink.uploader-link(:to="`/profile/${videoStore.currentVideo?.uploader?._id}`")
         img.avatar(
-          :src="videoStore.currentVideo?.uploader.meta.avatarUrl"
-          :alt="`avatar picture of user ${videoStore.currentVideo?.uploader.username}`"
+          :src="videoStore.currentVideo?.uploader?.meta.avatarUrl"
+          :alt="`avatar picture of user ${videoStore.currentVideo?.uploader?.username}`"
           data-cy="avatar"
         )
     h3.title
-      RouterLink(:to="`/profile/${videoStore.currentVideo?.uploader._id}`") {{ videoStore.currentVideo?.uploader.username }}
+      RouterLink(:to="`/profile/${videoStore.currentVideo?.uploader?._id}`") {{ videoStore.currentVideo?.uploader?.username }}
   .description-container
     .description-text(
       :class="{ 'open': showMore }"
