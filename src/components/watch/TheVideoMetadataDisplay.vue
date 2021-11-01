@@ -1,10 +1,20 @@
 <script setup lang='ts'>
+import { computed } from '@vue/reactivity';
 import { usePageHelpers } from '../../composables/page-helpers';
 import { useVideoStore } from '../../stores/video';
 import SvgIcon from '../gfx/icons/SvgIcon.vue';
 
 const { getLocaleDateString } = usePageHelpers();
 const videoStore = useVideoStore();
+
+const getSentimentWidth = computed(() => {
+  if (videoStore.currentVideo?.likes.length === 0 && videoStore.currentVideo?.dislikes.length === 0) {
+    return '50%';
+  } else {
+    const totalVotes = (videoStore.currentVideo?.likes.length as number) + (videoStore.currentVideo?.dislikes.length as number);
+    return `${Math.round((videoStore.currentVideo?.likes.length as number) / totalVotes * 100)}%`
+  }
+});
 </script>
 
 <template lang='pug'>
@@ -24,7 +34,10 @@ const videoStore = useVideoStore();
             SvgIcon.icon.icon-dislike(icon-name="thumbs-down")
             span.counter(data-cy="counter-dislikes") 0
         .sentiment-bar
-          .indicator(data-cy="indicator")
+          .indicator(
+            data-cy="indicator"
+            :style="{ width: getSentimentWidth }"
+          )
 </template>
 
 <style lang='scss' scoped>
@@ -123,7 +136,6 @@ const videoStore = useVideoStore();
   .indicator {
     height: inherit;
     background-color: green;
-    width: 75%;
     position: absolute;
     left: 0;
   }
