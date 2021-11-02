@@ -9,9 +9,13 @@ const previewImageFile = ref<File | null>(null);
 
 function onFileChange(event: Event) {
   const file = (event.target as HTMLInputElement).files?.item(0);
+  console.log(file);
+
 
   if (file) {
     (previewImageEl.value as HTMLImageElement).src = URL.createObjectURL(file);
+    console.log((previewImageEl.value as HTMLImageElement).src);
+
     previewImageFile.value = file
     previewImageLoaded.value = true;
   }
@@ -26,22 +30,24 @@ function onDeselectClick() {
 
 <template lang='pug'>
 .user-avatar-editor
-  img.user-avatar(data-cy="user-avatar" :src="authStore.getAvatarUrl")
-  .file-picker(v-if="!previewImageLoaded")
-    label.btn.btn_primary.btn_file-picker(
-      for="new-avatar"
-      data-cy="new-avatar-label"
-    ) Neues Avatarbild auswählen...
-    input#new-avatar(
-      type="file"
-      accept="image/jpeg"
-      name="new-avatar"
-      data-cy="input-new-avatar"
-      @change="onFileChange"
-    )
+  .current-avatar
+    h3.avatar-label(data-cy="current-label") Aktueller Avatar
+    img.user-avatar(data-cy="user-avatar" :src="authStore.getAvatarUrl")
+    .file-picker(v-show="!previewImageLoaded")
+      label.btn.btn_primary.btn_file-picker(
+        for="new-avatar"
+        data-cy="new-avatar-label"
+      ) Neues Avatarbild auswählen...
+      input#new-avatar(
+        type="file"
+        accept="image/jpeg"
+        name="new-avatar"
+        data-cy="input-new-avatar"
+        @change="onFileChange"
+      )
   Transition(name="fade")
     .new-avatar__preview(v-show="previewImageLoaded")
-      h3.preview-label(data-cy="preview-label") Vorschau
+      h3.avatar-label(data-cy="preview-label") Vorschau
       img.preview-image.user-avatar(
         ref="previewImageEl"
         data-cy="preview-image"
@@ -52,7 +58,10 @@ function onDeselectClick() {
           @click="onDeselectClick"
           data-cy="preview-avatar-deselect"
         ) Rückgängig
-        button.btn.btn_primary.btn_upload(data-cy="button-upload") Hochladen
+        button.btn.btn_primary.btn_upload(
+          v-if="previewImageLoaded"
+          data-cy="button-upload"
+        ) Hochladen
 </template>
 
 <style lang='scss' scoped>
@@ -60,6 +69,11 @@ function onDeselectClick() {
 
 .user-avatar-editor {
   margin-bottom: 2em;
+
+  @include mq("t-p") {
+    display: flex;
+    gap: 8em;
+  }
 }
 
 .user-avatar {
@@ -84,7 +98,7 @@ function onDeselectClick() {
   display: none;
 }
 
-.preview-label {
+.avatar-label {
   margin-bottom: 0.5em;
   font-weight: 500;
 }
