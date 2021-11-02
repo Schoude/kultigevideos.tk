@@ -29,7 +29,7 @@ describe('TheVideoMetadataDisplay', () => {
     dislikes: [],
     approvedById: '6177176029676e6d4369bff7',
     uploaderId: '6177176029676e6d4369bff7',
-  };
+  } as Video;
 
   setActivePinia(createPinia());
   const videoStore = useVideoStore();

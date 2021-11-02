@@ -3,6 +3,7 @@ import TheVideoDescriptionDisplay from './TheVideoDescriptionDisplay.vue';
 import '../../styles/main.scss';
 import { createPinia, setActivePinia } from 'pinia';
 import { useVideoStore } from '../../stores/video';
+import { Video } from './../../types/models/video.d';
 
 describe('TheVideoDescriptionDisplay', () => {
   const mockVideo = {
@@ -28,7 +29,7 @@ describe('TheVideoDescriptionDisplay', () => {
     dislikes: [],
     approvedById: '6177176029676e6d4369bff7',
     uploaderId: '6177176029676e6d4369bff7',
-  };
+  } as Video;
 
   setActivePinia(createPinia());
   const videoStore = useVideoStore();
@@ -40,11 +41,11 @@ describe('TheVideoDescriptionDisplay', () => {
 
   it('displays the relevant data', () => {
     cy.get('[data-cy="avatar"]')
-      .should('have.attr', 'src', mockVideo.uploader.meta.avatarUrl)
+      .should('have.attr', 'src', mockVideo.uploader?.meta.avatarUrl)
       .should(
         'have.attr',
         'alt',
-        `avatar picture of user ${mockVideo.uploader.username}`
+        `avatar picture of user ${mockVideo.uploader?.username}`
       );
 
     cy.get('[data-cy="description-text"]').should(

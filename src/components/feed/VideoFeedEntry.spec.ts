@@ -1,6 +1,7 @@
 import { mount } from '@cypress/vue';
 import VideoFeedEntry from './VideoFeedEntry.vue';
 import '../../styles/main.scss';
+import { Video } from '../../types/models/video';
 
 describe('VideoFeedEntry', () => {
   const mockVideoData = {
@@ -26,7 +27,7 @@ describe('VideoFeedEntry', () => {
     dislikes: [],
     approvedById: '6177176029676e6d4369bff7',
     uploaderId: '6177176029676e6d4369bff7',
-  };
+  } as Video;
 
   beforeEach(() => {
     mount(VideoFeedEntry, {
@@ -51,7 +52,7 @@ describe('VideoFeedEntry', () => {
   it('displays the uploader name', () => {
     cy.get('[data-cy="uploader-name"]').should(
       'have.text',
-      mockVideoData.uploader.username
+      mockVideoData.uploader?.username
     );
   });
 
