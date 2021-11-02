@@ -1,13 +1,13 @@
 <script setup lang='ts'>
-import '../styles/main.scss';
 import { useAuthStore } from '../stores/auth';
+import UserAvatarEditor from './profile/UserAvatarEditor.vue';
 
 const authStore = useAuthStore()
 </script>
 
 <template lang='pug'>
 section.user-profile-details
-  img.user-avatar(data-cy="user-avatar" :src="authStore.getAvatarUrl")
+  UserAvatarEditor
   .detail-infos
     .entry
       h2.headline Name
@@ -22,13 +22,6 @@ section.user-profile-details
 
 <style lang='scss' scoped>
 @use '../styles/mixins' as *;
-
-.user-avatar {
-  width: 64px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-bottom: 1em;
-}
 
 .detail-infos {
   display: flex;

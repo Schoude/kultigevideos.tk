@@ -3,6 +3,7 @@ import { useAuthStore } from './../stores/auth';
 import { mount } from '@cypress/vue';
 import { setActivePinia, createPinia } from 'pinia';
 import UserProfileDetails from './UserProfileDetails.vue';
+import '../styles/main.scss';
 
 describe('UserProfileDetails', () => {
   const mockUser: User = {
