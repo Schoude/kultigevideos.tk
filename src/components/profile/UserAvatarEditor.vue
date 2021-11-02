@@ -4,6 +4,7 @@ import { useAuthStore } from '../../stores/auth';
 const authStore = useAuthStore();
 
 const previewImageLoaded = ref(false)
+const previewImageInputEl = ref<HTMLInputElement | null>(null);
 const previewImageEl = ref<HTMLImageElement | null>(null);
 const previewImageFile = ref<File | null>(null);
 
@@ -22,6 +23,7 @@ function onFileChange(event: Event) {
 }
 
 function onDeselectClick() {
+  (previewImageInputEl.value as HTMLInputElement).value = '';
   (previewImageEl.value as HTMLImageElement).src = '';
   previewImageFile.value = null;
   previewImageLoaded.value = false;
@@ -39,6 +41,7 @@ function onDeselectClick() {
         data-cy="new-avatar-label"
       ) Neues Avatarbild auswählen...
       input#new-avatar(
+        ref="previewImageInputEl"
         type="file"
         accept="image/jpeg"
         name="new-avatar"
