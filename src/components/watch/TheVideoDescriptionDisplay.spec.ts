@@ -6,7 +6,7 @@ import { useVideoStore } from '../../stores/video';
 import { Video } from './../../types/models/video.d';
 
 describe('TheVideoDescriptionDisplay', () => {
-  const mockVideo = {
+  const mockVideo: Video = {
     _id: '617af9b8e45059e41a89d5a1',
     hash: 'TYNKGOKyDah',
     url: 'https://firebasestorage.googleapis.com/v0/b/kultige-videos.appspot.com/o/TYNKGOKyDah.mp4?alt=media&token=a37c261d-99bb-4568-9b18-bea1cf998235',
@@ -29,7 +29,7 @@ describe('TheVideoDescriptionDisplay', () => {
     dislikes: [],
     approvedById: '6177176029676e6d4369bff7',
     uploaderId: '6177176029676e6d4369bff7',
-  } as Video;
+  };
 
   setActivePinia(createPinia());
   const videoStore = useVideoStore();
