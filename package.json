@@ -11,15 +11,15 @@
     "cy:run-ct": "cypress run-ct"
   },
   "dependencies": {
-    "vue": "^3.2.20",
+    "vue": "^3.2.21",
     "vue-router": "^4.0.12"
   },
   "devDependencies": {
     "@cypress/vite-dev-server": "^2.2.0",
     "@cypress/vue": "^3.0.3",
     "@vitejs/plugin-vue": "^1.9.4",
-    "@vuelidate/core": "^2.0.0-alpha.30",
-    "@vuelidate/validators": "^2.0.0-alpha.24",
+    "@vuelidate/core": "^2.0.0-alpha.32",
+    "@vuelidate/validators": "^2.0.0-alpha.25",
     "cypress": "^8.7.0",
     "pinia": "^2.0.0",
     "sass": "^1.43.4",
