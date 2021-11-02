@@ -11,7 +11,7 @@
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
     "useUnknownInCatchVariables": true,
-    "types": ["cypress"]
+    "types": ["cypress", "cypress-file-upload"]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
 }

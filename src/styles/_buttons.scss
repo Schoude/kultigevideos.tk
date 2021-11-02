@@ -28,6 +28,19 @@
   }
 }
 
+.btn_cancel {
+  background-color: #d11d1d;
+
+  @media (prefers-color-scheme: light) {
+    color: white;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: lighten(#d11d1d, 5);
+  }
+}
+
 .btn_icon {
   display: flex;
   align-items: center;

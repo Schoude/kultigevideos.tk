@@ -27,3 +27,4 @@
 // Cypress.Commands.add('dataCy', value => {
 //   return cy.get(`[data-cy=${value}]`);
 // });
+import 'cypress-file-upload';
