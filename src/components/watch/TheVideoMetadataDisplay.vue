@@ -48,10 +48,10 @@ async function dislikeVideo() {
     .interactions
       .sentiment
         .counts
-          button.count(title="Mag ich" @click="likeVideo")
+          button.count(data-cy="btn-like" title="Mag ich" @click="likeVideo")
             SvgIcon.icon-like(:icon-name="getIconLike")
             span.counter(data-cy="counter-likes") {{ videoStore.currentVideo?.likes.length }}
-          button.count(title="Mag ich nicht" @click="dislikeVideo")
+          button.count(data-cy="btn-dislike" title="Mag ich nicht" @click="dislikeVideo")
             SvgIcon.icon.icon-dislike(:icon-name="getIconDislike")
             span.counter(data-cy="counter-dislikes") {{ videoStore.currentVideo?.dislikes.length }}
         .sentiment-bar
