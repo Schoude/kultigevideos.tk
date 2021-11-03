@@ -40,7 +40,7 @@ function onTriggerShowMore() {
   margin-top: 1em;
   padding-bottom: 1em;
   margin-bottom: 2em;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border-color-container);
 }
 
 .uploader {
