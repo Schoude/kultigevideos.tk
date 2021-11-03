@@ -4,6 +4,7 @@ import { useAuthStore } from '../../stores/auth';
 const authStore = useAuthStore();
 
 const previewImageLoaded = ref(false)
+const newAvatarLabel = ref<HTMLLabelElement | null>(null);
 const previewImageInputEl = ref<HTMLInputElement | null>(null);
 const previewImageEl = ref<HTMLImageElement | null>(null);
 const previewImageFile = ref<File | null>(null);
@@ -34,12 +35,13 @@ function onDeselectClick() {
 .user-avatar-editor
   .current-avatar
     h3.avatar-label(data-cy="current-label") Aktueller Avatar
-    img.user-avatar(data-cy="user-avatar" :src="authStore.getAvatarUrl")
+    img.user-avatar.avatar(data-cy="user-avatar" :src="authStore.getAvatarUrl")
     .file-picker(v-show="!previewImageLoaded")
-      label.btn.btn_primary.btn_file-picker(
-        for="new-avatar"
+      button.btn.btn_primary.btn_file-picker(
         data-cy="new-avatar-label"
+        @click="() => newAvatarLabel?.click()"
       ) Neues Avatarbild auswählen...
+      label(for="new-avatar" ref="newAvatarLabel")
       input#new-avatar(
         ref="previewImageInputEl"
         type="file"
@@ -48,23 +50,22 @@ function onDeselectClick() {
         data-cy="input-new-avatar"
         @change="onFileChange"
       )
-  Transition(name="fade")
-    .new-avatar__preview(v-show="previewImageLoaded")
-      h3.avatar-label(data-cy="preview-label") Vorschau
-      img.preview-image.user-avatar(
-        ref="previewImageEl"
-        data-cy="preview-image"
-      )
-      .actions
-        button.btn.btn_cancel.file-deselect(
-          v-if="previewImageLoaded"
-          @click="onDeselectClick"
-          data-cy="preview-avatar-deselect"
-        ) Rückgängig
-        button.btn.btn_primary.btn_upload(
-          v-if="previewImageLoaded"
-          data-cy="button-upload"
-        ) Hochladen
+  .new-avatar__preview(v-show="previewImageLoaded")
+    h3.avatar-label(data-cy="preview-label") Vorschau
+    img.preview-image.user-avatar.avatar(
+      ref="previewImageEl"
+      data-cy="preview-image"
+    )
+    .actions
+      button.btn.btn_cancel.file-deselect(
+        v-if="previewImageLoaded"
+        @click="onDeselectClick"
+        data-cy="preview-avatar-deselect"
+      ) Rückgängig
+      button.btn.btn_primary.btn_upload(
+        v-if="previewImageLoaded"
+        data-cy="button-upload"
+      ) Hochladen
 </template>
 
 <style lang='scss' scoped>
@@ -87,8 +88,6 @@ function onDeselectClick() {
 }
 
 .btn_file-picker {
-  cursor: pointer;
-  display: inline-block;
   width: 100%;
   text-align: center;
 

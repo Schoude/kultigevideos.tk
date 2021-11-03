@@ -69,10 +69,7 @@ describe('UserAvatarEditor', () => {
     loadFile();
 
     cy.get('[data-cy="preview-label"]').should('have.text', 'Vorschau');
-    // BUG: preview image does not get loaded properly.
-    // it worked once but after restarting the test suite it failed.
-
-    // cy.get('[data-cy="preview-image"]').should('be.visible');
+    cy.get('[data-cy="preview-image"]').should('be.visible');
   });
 
   it('the preview image can be deselected', () => {
