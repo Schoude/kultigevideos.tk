@@ -1,16 +1,19 @@
 <script setup lang='ts'>
-import { ref, watch } from 'vue';
+import { ref, watch, watchEffect } from 'vue';
 import { useImageHelpers } from '../../composables/image-helpers';
+import { useStorage } from '../../firebase/use-storage';
 import { useAuthStore } from '../../stores/auth';
 
 const authStore = useAuthStore();
 const { resize } = useImageHelpers();
+const { uploadUserAvatar } = useStorage();
 
 const previewImageLoaded = ref(false)
 const newAvatarLabel = ref<HTMLLabelElement | null>(null);
 const previewImageInputEl = ref<HTMLInputElement | null>(null);
 const previewImageEl = ref<HTMLImageElement | null>(null);
 const previewImageFile = ref<File | null>(null);
+const isUploading = ref(false);
 
 function onFileChange(event: Event) {
   const file = (event.target as HTMLInputElement).files?.item(0);
@@ -26,14 +29,38 @@ function onFileChange(event: Event) {
       previewImageFile.value = newVal
       previewImageLoaded.value = true;
     });
-  } 
+  }
 }
 
-function onDeselectClick() {
+function clearPreviewImage() {
   (previewImageInputEl.value as HTMLInputElement).value = '';
   (previewImageEl.value as HTMLImageElement).src = '';
   previewImageFile.value = null;
   previewImageLoaded.value = false;
+}
+
+function onDeselectClick() {
+  if (isUploading.value) return;
+
+  clearPreviewImage();
+}
+
+async function onUploadClick() {
+  if (isUploading.value) return;
+
+  isUploading.value = true;
+  const { progress, newDownloadURL } = uploadUserAvatar(previewImageFile.value as File, authStore.getUserId)
+
+  watch(progress, (newVal) => {
+    console.log('progress', newVal);
+  })
+
+  watch(newDownloadURL, (url) => {
+    authStore.setUserAvatar(url);
+    // TODO: url to user model in DB
+    clearPreviewImage();
+    isUploading.value = false;
+  })
 }
 </script>
 
@@ -72,6 +99,7 @@ function onDeselectClick() {
       button.btn.btn_primary.btn_upload(
         v-if="previewImageLoaded"
         data-cy="button-upload"
+        @click="onUploadClick"
       ) Hochladen
 </template>
 

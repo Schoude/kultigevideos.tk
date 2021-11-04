@@ -33,11 +33,11 @@ describe('UserAvatarEditor', () => {
     },
   };
 
-  setActivePinia(createPinia());
-  const authStore = useAuthStore();
-  authStore.user = mockUser;
-
   beforeEach(() => {
+    setActivePinia(createPinia());
+    const authStore = useAuthStore();
+    authStore.user = mockUser;
+
     mount(UserAvatarEditor);
   });
 

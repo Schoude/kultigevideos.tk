@@ -11,6 +11,7 @@
     "cy:run-ct": "cypress run-ct"
   },
   "dependencies": {
+    "firebase": "^9.2.0",
     "vue": "^3.2.21",
     "vue-router": "^4.0.12"
   },

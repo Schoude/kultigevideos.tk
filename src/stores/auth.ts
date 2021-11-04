@@ -79,8 +79,14 @@ export const useAuthStore = defineStore('auth', {
         }, res.data.expires * 1000 - 500);
       }
     },
+    setUserAvatar(url: string) {
+      (this.user as User).meta.avatarUrl = url;
+    },
   },
   getters: {
+    getUserId(): string {
+      return this.user?._id as string;
+    },
     getUserName(): string {
       return this.user?.username as string;
     },
