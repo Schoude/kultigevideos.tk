@@ -1,19 +1,12 @@
-import { initializeApp } from 'firebase/app';
-import type { FirebaseOptions } from 'firebase/app';
 import {
-  getStorage,
   ref as firebaseRef,
   uploadBytesResumable,
   getDownloadURL,
 } from 'firebase/storage';
 import type { UploadMetadata } from 'firebase/storage';
 import { ref } from 'vue';
-
-const config = JSON.parse(
-  import.meta.env.VITE_FIREBASE_CONFIG
-) as FirebaseOptions;
-const firebaseApp = initializeApp(config);
-const storage = getStorage(firebaseApp);
+import { setupStorage } from './setup';
+const { storage } = setupStorage();
 
 export function useStorage() {
   /**
