@@ -75,11 +75,6 @@ describe('FormLogin', () => {
       .type(loginData.password)
       .should('have.value', loginData.password);
 
-    cy.intercept('POST', '/api/v1/login', req => {
-      expect(req.body.email).to.equal(loginData.email);
-      expect(req.body.password).to.equal(loginData.password);
-    });
-
     cy.intercept('POST', '/api/v1/login', {
       fixture: 'auth/login',
       statusCode: 200,
@@ -90,7 +85,10 @@ describe('FormLogin', () => {
 
     // Loader indicator
     cy.get('.loader').should('have.class', 'visible');
-    cy.wait('@loginResponse');
+    cy.wait('@loginResponse').then(interception => {
+        expect(interception.request.body.email).to.equal(loginData.email);
+        expect(interception.request.body.password).to.equal(loginData.password);
+    });
     cy.get('.loader').should('not.have.class', 'visible');
   });
 });
