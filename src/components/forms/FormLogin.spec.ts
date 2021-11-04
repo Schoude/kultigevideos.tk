@@ -86,7 +86,7 @@ describe('FormLogin', () => {
     }).as('loginResponse');
 
     cy.get('button[type="submit"]').as('submit').click();
-    cy.get('@submit').should('have.attr', 'disabled');
+    cy.get('@submit').should('be.disabled');
 
     // Loader indicator
     cy.get('.loader').should('have.class', 'visible');
