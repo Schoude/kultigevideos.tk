@@ -79,8 +79,20 @@ export const useAuthStore = defineStore('auth', {
         }, res.data.expires * 1000 - 500);
       }
     },
-    setUserAvatar(url: string) {
+    async setAvatarUrl(url: string) {
       (this.user as User).meta.avatarUrl = url;
+    },
+    async updateUser() {
+      const res = await apiClient.put<{ jwt: string }>({
+        url: '/api/v1/user',
+        body: JSON.stringify({
+          updatedUser: this.user,
+        }),
+        mode: 'cors',
+        credentials: 'include',
+      });
+
+      apiClient.headers = { Authentication: `Bearer ${res.data.jwt}` };
     },
   },
   getters: {

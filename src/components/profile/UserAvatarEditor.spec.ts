@@ -23,7 +23,7 @@ function loadFile() {
 
 describe('UserAvatarEditor', () => {
   const mockUser: User = {
-    _id: '612ffd922c8d16b3319593e1',
+    _id: 'testing-avatar',
     username: 'Tester',
     email: 'tester@gmail.com',
     role: 'admin',
@@ -33,11 +33,11 @@ describe('UserAvatarEditor', () => {
     },
   };
 
-  beforeEach(() => {
-    setActivePinia(createPinia());
-    const authStore = useAuthStore();
-    authStore.user = mockUser;
+  setActivePinia(createPinia());
+  const authStore = useAuthStore();
+  authStore.user = mockUser;
 
+  beforeEach(() => {
     mount(UserAvatarEditor);
   });
 
@@ -94,5 +94,16 @@ describe('UserAvatarEditor', () => {
     cy.get('[data-cy="button-upload"]')
       .should('exist')
       .should('have.text', 'Hochladen');
+  });
+
+  it('saves the new avatar in the db', () => {
+    cy.intercept('PUT', '/api/v1/user').as('updateUser');
+    loadFile();
+    cy.get('[data-cy="button-upload"]').click();
+    cy.wait('@updateUser').then(interception => {
+      expect(
+        JSON.parse(interception.request.body).updatedUser.meta.avatarUrl
+      ).to.equal(authStore.user?.meta.avatarUrl);
+    });
   });
 });

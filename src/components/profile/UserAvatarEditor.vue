@@ -55,9 +55,10 @@ async function onUploadClick() {
     console.log('progress', newVal);
   })
 
-  watch(newDownloadURL, (url) => {
-    authStore.setUserAvatar(url);
-    // TODO: url to user model in DB
+  watch(newDownloadURL, async (url) => {
+    authStore.setAvatarUrl(url);
+    await authStore.updateUser();
+
     clearPreviewImage();
     isUploading.value = false;
   })
