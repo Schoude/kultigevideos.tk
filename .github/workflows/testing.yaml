@@ -3,7 +3,7 @@ name: Component and End-to-end tests
 on: [push]
 
 env:
-  NODE_VERSION: '14.x'
+  NODE_VERSION: '16.x'
 
 jobs:
   cypress-run:
