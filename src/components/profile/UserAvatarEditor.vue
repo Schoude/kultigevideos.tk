@@ -1,7 +1,10 @@
 <script setup lang='ts'>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+import { useImageHelpers } from '../../composables/image-helpers';
 import { useAuthStore } from '../../stores/auth';
+
 const authStore = useAuthStore();
+const { resize } = useImageHelpers();
 
 const previewImageLoaded = ref(false)
 const newAvatarLabel = ref<HTMLLabelElement | null>(null);
@@ -13,11 +16,17 @@ function onFileChange(event: Event) {
   const file = (event.target as HTMLInputElement).files?.item(0);
 
   if (file) {
-    canvasResize(file);
+    const { dataURI, convertedFile } = resize(file, 256);
 
-    // previewImageFile.value = file
-    previewImageLoaded.value = true;
-  }
+    watch(dataURI, (newVal) => {
+      (previewImageEl.value as HTMLImageElement).src = newVal;
+    });
+
+    watch(convertedFile, (newVal) => {
+      previewImageFile.value = newVal
+      previewImageLoaded.value = true;
+    });
+  } 
 }
 
 function onDeselectClick() {
@@ -25,46 +34,6 @@ function onDeselectClick() {
   (previewImageEl.value as HTMLImageElement).src = '';
   previewImageFile.value = null;
   previewImageLoaded.value = false;
-}
-
-function canvasResize(imageFile: File) {
-  const tempImage = new Image();
-  tempImage.src = URL.createObjectURL(imageFile);
-
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
-
-  tempImage.addEventListener('load', () => {
-    const ratio = parseFloat((tempImage.width / tempImage.height).toFixed(2));
-
-    canvas.height = 256;
-    canvas.width = canvas.height * ratio;
-
-    // Draw image and export to a data-uri
-    // ctx?.drawImage(previewImageEl.value as HTMLImageElement,
-    //   600, 800,
-    //   1200, 1200,
-    //   0, 0,
-    //   canvas.width, canvas.height);
-    // TODO: figure out how to center and square crop
-
-    ctx?.drawImage(tempImage, 0, 0, canvas.width, canvas.height);
-
-    const dataURI = canvas.toDataURL();
-
-    // get array parts for Uint8Array
-    const blobBin = atob(dataURI.split(',')[1]);
-    const array = [];
-    for (let i = 0; i < blobBin.length; i++) {
-      array.push(blobBin.charCodeAt(i));
-    }
-
-    const convertedFile = new File([new Uint8Array(array)], imageFile.name, { type: 'image/jpg' });
-
-    (previewImageEl.value as HTMLImageElement).src = dataURI;
-    previewImageFile.value = convertedFile
-    tempImage.remove();
-  })
 }
 </script>
 
