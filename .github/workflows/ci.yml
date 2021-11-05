@@ -29,6 +29,7 @@ jobs:
         if: success()
         env:
           VITE_API_HOST_PROD: ${{secrets.VITE_API_HOST_PROD}}
+          VITE_FIREBASE_CONFIG: ${{secrets.VITE_FIREBASE_CONFIG}}
         run: npm run build
 
       - name: Push the built assets to server.

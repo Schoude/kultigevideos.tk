@@ -27,6 +27,7 @@ jobs:
         timeout-minutes: 3
         env:
           VITE_API_HOST_PROD: ${{secrets.VITE_API_HOST_PROD}}
+          VITE_FIREBASE_CONFIG: ${{secrets.VITE_FIREBASE_CONFIG}}
         with:
           install: false
           config: screenshotOnRunFailure=false,video=false
