@@ -10,7 +10,7 @@ import '../../styles/main.scss';
  * it to the input element so the native Event gets triggered.
  */
 function loadFile() {
-  cy.fixture('pics/dummy-avatar.jpg').then(fileContent => {
+  cy.fixture('pics/dummy-avatar.jpg').then((fileContent) => {
     const fileBlob = Cypress.Blob.base64StringToBlob(fileContent.toString());
 
     cy.get('[data-cy="input-new-avatar"]').attachFile({
@@ -99,11 +99,20 @@ describe('UserAvatarEditor', () => {
   it('saves the new avatar in the db', () => {
     cy.intercept('PUT', '/api/v1/user').as('updateUser');
     loadFile();
+
+    cy.get('[data-cy="progress-indicator"]').should('have.css', 'width', '0px');
+
     cy.get('[data-cy="button-upload"]').click();
-    cy.wait('@updateUser').then(interception => {
+    cy.wait('@updateUser').then((interception) => {
       expect(
         JSON.parse(interception.request.body).updatedUser.meta.avatarUrl
       ).to.equal(authStore.user?.meta.avatarUrl);
+
+      cy.get('[data-cy="progress-indicator"]').should(
+        'have.css',
+        'width',
+        '0%'
+      );
     });
   });
 });

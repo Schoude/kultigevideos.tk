@@ -1,8 +1,9 @@
 <script setup lang='ts'>
-import { ref, watch, watchEffect } from 'vue';
+import { ref, watch, } from 'vue';
 import { useImageHelpers } from '../../composables/image-helpers';
 import { useStorage } from '../../firebase/use-storage';
 import { useAuthStore } from '../../stores/auth';
+import ProgressBar from '../gfx/loaders/ProgressBar.vue';
 
 const authStore = useAuthStore();
 const { resize } = useImageHelpers();
@@ -14,6 +15,7 @@ const previewImageInputEl = ref<HTMLInputElement | null>(null);
 const previewImageEl = ref<HTMLImageElement | null>(null);
 const previewImageFile = ref<File | null>(null);
 const isUploading = ref(false);
+const loaderProgress = ref(0);
 
 function onFileChange(event: Event) {
   const file = (event.target as HTMLInputElement).files?.item(0);
@@ -52,7 +54,7 @@ async function onUploadClick() {
   const { progress, newDownloadURL } = uploadUserAvatar(previewImageFile.value as File, authStore.getUserId)
 
   watch(progress, (newVal) => {
-    console.log('progress', newVal);
+    loaderProgress.value = newVal;
   })
 
   watch(newDownloadURL, async (url) => {
@@ -61,6 +63,7 @@ async function onUploadClick() {
 
     clearPreviewImage();
     isUploading.value = false;
+    loaderProgress.value = 0;
   })
 }
 </script>
@@ -102,6 +105,10 @@ async function onUploadClick() {
         data-cy="button-upload"
         @click="onUploadClick"
       ) Hochladen
+    ProgressBar(
+      :loaded="loaderProgress"
+      data-cy="progress-bar"
+    )
 </template>
 
 <style lang='scss' scoped>
