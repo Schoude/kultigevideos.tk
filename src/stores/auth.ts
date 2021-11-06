@@ -94,6 +94,23 @@ export const useAuthStore = defineStore('auth', {
 
       apiClient.headers = { Authentication: `Bearer ${res.data.jwt}` };
     },
+    async updatePassword(newPassword: string) {
+      try {
+        const res = await apiClient.put({
+          url: '/api/v1/user/password',
+          body: JSON.stringify({
+            userId: this.getUserId,
+            newPassword,
+          }),
+          mode: 'cors',
+          credentials: 'include',
+        });
+
+        return res;
+      } catch (error) {
+        console.log((error as Error).message);
+      }
+    },
   },
   getters: {
     getUserId(): string {
