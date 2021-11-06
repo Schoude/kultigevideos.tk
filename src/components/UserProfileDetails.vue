@@ -27,7 +27,7 @@ section.user-profile-details
       p.detail-info(data-cy="role") {{ authStore.getUserRoleText }}
   template(v-if="authStore.userIsAdmin")
     hr
-    button.btn.btn_secondary(
+    button.btn.btn_secondary.btn_admin-panel(
       data-cy="link-admin-panel"
       @click="goToAdminPanel"
     ) Zum Adminpanel
@@ -53,5 +53,13 @@ section.user-profile-details
 
 hr {
   opacity: 0.4;
+}
+
+.btn_admin-panel {
+  width: 100%;
+
+  @include mq("p-l") {
+    width: max-content;
+  }
 }
 </style>
