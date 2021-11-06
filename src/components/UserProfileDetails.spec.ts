@@ -42,4 +42,10 @@ describe('UserProfileDetails', () => {
       .should('exist')
       .should('have.text', authStore.getUserRoleText);
   });
+
+  it('displays a link to the admin panel for admin users', () => {
+    cy.get('[data-cy="link-admin-panel"]')
+      .should('exist')
+      .should('have.text', 'Zum Adminpanel');
+  });
 });

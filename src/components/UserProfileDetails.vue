@@ -1,8 +1,15 @@
 <script setup lang='ts'>
+import { useRouter } from 'vue-router';
+import { ROUTE_NAMES } from '../router/routing-info';
 import { useAuthStore } from '../stores/auth';
 import UserAvatarEditor from './profile/UserAvatarEditor.vue';
 
 const authStore = useAuthStore()
+const router = useRouter();
+
+async function goToAdminPanel() {
+  await router.push({ name: ROUTE_NAMES.ADMIN_PANEL })
+}
 </script>
 
 <template lang='pug'>
@@ -18,6 +25,12 @@ section.user-profile-details
     .entry
       h2.headline Rolle
       p.detail-info(data-cy="role") {{ authStore.getUserRoleText }}
+  template(v-if="authStore.userIsAdmin")
+    hr
+    button.btn.btn_secondary(
+      data-cy="link-admin-panel"
+      @click="goToAdminPanel"
+    ) Zum Adminpanel
 </template>
 
 <style lang='scss' scoped>
@@ -36,5 +49,9 @@ section.user-profile-details
 
 .detail-info {
   font-size: 1.125em;
+}
+
+hr {
+  opacity: 0.4;
 }
 </style>

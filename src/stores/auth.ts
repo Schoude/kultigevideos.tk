@@ -120,5 +120,8 @@ export const useAuthStore = defineStore('auth', {
       }
       return role;
     },
+    userIsAdmin(): boolean {
+      return this.user?.role === 'admin';
+    },
   },
 });

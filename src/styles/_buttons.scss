@@ -1,6 +1,6 @@
 .btn {
   border-radius: 3px;
-  padding: 0.25em 0.5em;
+  padding: 0.4em 0.5em;
   transition: background-color 0.3s ease, opacity 0.25s ease;
 
   &:disabled {
@@ -25,6 +25,19 @@
   &:hover,
   &:focus {
     background-color: lighten(#456c83, 5);
+  }
+}
+
+.btn_secondary {
+  background-color: #598e7d;
+
+  @media (prefers-color-scheme: light) {
+    color: white;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: lighten(#598e7d, 5);
   }
 }
 
