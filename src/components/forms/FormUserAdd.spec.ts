@@ -65,6 +65,10 @@ describe('FormUserAdd', () => {
     cy.get('@passwordInput').should('have.attr', 'type', 'password');
   });
 
+  it('has three radio buttons to chose a user role', () => {
+    cy.get('.kv-radio-button').should('have.length', 3);
+  });
+
   it('has a submit button', () => {
     cy.get('button[type="submit"]').should('exist');
   });
