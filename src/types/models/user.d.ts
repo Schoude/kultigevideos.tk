@@ -11,3 +11,5 @@ export type User = {
   role: UserRole;
   meta: UserMetaData;
 };
+
+export type NewUserData = Omit<User, '_id' | 'meta'> & { password: string };

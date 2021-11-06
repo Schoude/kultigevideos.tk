@@ -1,7 +1,9 @@
+import { NewUserData } from './../../types/models/user.d';
 import { mount } from '@cypress/vue';
 import FormUserAdd from './FormUserAdd.vue';
 import '../../styles/main.scss';
 import type { UserRole } from '../../types/models/user';
+import { setActivePinia, createPinia } from 'pinia';
 
 describe('FormUserAdd', () => {
   const newUser = {
@@ -17,6 +19,8 @@ describe('FormUserAdd', () => {
   };
 
   beforeEach(() => {
+    setActivePinia(createPinia());
+
     mount(FormUserAdd);
   });
 
@@ -71,5 +75,41 @@ describe('FormUserAdd', () => {
 
   it('has a submit button', () => {
     cy.get('button[type="submit"]').should('exist');
+  });
+
+  it('the user can fill in the login fields and submit the data', () => {
+    cy.get('[data-cy="username"]')
+      .type(newUser.username)
+      .should('have.value', newUser.username);
+    cy.get('[data-cy="email"]')
+      .type(newUser.email)
+      .should('have.value', newUser.email);
+    cy.get('[data-cy="password"]')
+      .type(newUser.password)
+      .should('have.value', newUser.password);
+    cy.get('.kv-radio-button[name="admin"]').click();
+    cy.get('.kv-radio-button[name="maintainer"]').click();
+    cy.get('.kv-radio-button[name="user"]').click();
+
+    cy.intercept('POST', '/api/v1/user', {
+      statusCode: 200,
+    }).as('createUserIntercept');
+
+    cy.get('button[type="submit"]').as('submit').click();
+    cy.get('@submit').should('be.disabled');
+
+    // Loader indicator
+    cy.get('.loader').should('have.class', 'visible');
+    cy.wait('@createUserIntercept').then(interception => {
+      const { email, password, role, username } = JSON.parse(
+        interception.request.body
+      ) as NewUserData;
+
+      expect(username).to.equal(newUser.username);
+      expect(email).to.equal(newUser.email);
+      expect(password).to.equal(newUser.password);
+      expect(role).to.equal(newUser.role);
+    });
+    cy.get('.loader').should('not.have.class', 'visible');
   });
 });

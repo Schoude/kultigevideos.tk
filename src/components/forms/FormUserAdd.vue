@@ -1,20 +1,18 @@
 <script setup lang='ts'>
-import type { UserRole } from '../../types/models/user';
+import type { NewUserData } from '../../types/models/user';
 import { useVuelidate } from '@vuelidate/core'
 import { minLength, required, email } from '@vuelidate/validators'
 import { computed, ref, reactive } from 'vue';
 import SvgIcon from '../gfx/icons/SvgIcon.vue';
 import KvRadioButton from './elements/KvRadioButton.vue';
 import LoaderIndeterminate from '../gfx/loaders/LoaderIndeterminate.vue';
+import { useUserStore } from '../../stores/user';
+
+const userStore = useUserStore();
 
 const isLoading = ref(false);
 
-const newUser = reactive<{
-  username: string,
-  email: string,
-  role: UserRole,
-  password: string
-}>({
+const newUser = reactive<NewUserData>({
   username: '',
   email: '',
   role: 'user',
@@ -44,6 +42,7 @@ const v$ = useVuelidate(rules, newUser, { $rewardEarly: true })
 
 const inputPassword = ref<HTMLInputElement | null>(null);
 const passwordVisible = ref(false);
+
 async function togglePasswordVisibility() {
   passwordVisible.value = !passwordVisible.value;
 
@@ -51,12 +50,19 @@ async function togglePasswordVisibility() {
   else inputPassword.value?.setAttribute('type', 'password');
 }
 
+async function onSubmit() {
+  if (isLoading.value || v$.value.$invalid) return;
+
+  isLoading.value = true;
+  await userStore.createUser(newUser)
+  isLoading.value = false;
+}
 </script>
 
 <template lang='pug'>
 .form-user-add
   h1 Neuen Benutzer anlegen
-  form
+  form(@submit.prevent="onSubmit")
     .form-field
       label(
         data-cy="label-username"
