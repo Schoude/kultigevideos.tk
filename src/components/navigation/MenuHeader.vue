@@ -24,7 +24,6 @@ nav.menu-header
     data-cy="link-upload"
   )
     SvgIcon(icon-name="upload" :size="ICON_SIZE.m")
-  span.username(data-cy="username") {{ authStore.getUserName }}
   RouterLink.link(to='/profile' title="Zu deinem Profil")
     img.avatar(data-cy="avatar" :src="authStore.getAvatarUrl" alt="Dein Avatar-Bild")
   button.btn_icon.outline.rounded.btn_logout(
@@ -62,10 +61,6 @@ nav.menu-header
       fill: black;
     }
   }
-}
-
-.username {
-  font-weight: 500;
 }
 
 .avatar {

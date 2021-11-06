@@ -37,12 +37,6 @@ describe('MenuHeader', () => {
     mount(MenuHeader);
   });
 
-  it('displays the user name of the logged in user', () => {
-    cy.get('[data-cy="username"]')
-      .should('exist')
-      .should('have.text', mockUser.username);
-  });
-
   it('displays the avatar of the user', () => {
     cy.get('[data-cy="avatar"]').should('exist');
   });
