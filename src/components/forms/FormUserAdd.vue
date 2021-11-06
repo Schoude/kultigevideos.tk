@@ -2,7 +2,7 @@
 import type { NewUserData } from '../../types/models/user';
 import { useVuelidate } from '@vuelidate/core'
 import { minLength, required, email } from '@vuelidate/validators'
-import { computed, ref, reactive } from 'vue';
+import { computed, ref, reactive, onMounted } from 'vue';
 import SvgIcon from '../gfx/icons/SvgIcon.vue';
 import KvRadioButton from './elements/KvRadioButton.vue';
 import LoaderIndeterminate from '../gfx/loaders/LoaderIndeterminate.vue';
@@ -40,6 +40,7 @@ const rules = computed(() => ({
 const v$ = useVuelidate(rules, newUser, { $rewardEarly: true })
 
 
+const inputUsername = ref<HTMLInputElement | null>(null);
 const inputPassword = ref<HTMLInputElement | null>(null);
 const passwordVisible = ref(false);
 
@@ -50,13 +51,29 @@ async function togglePasswordVisibility() {
   else inputPassword.value?.setAttribute('type', 'password');
 }
 
+function clearFormValues() {
+  newUser.username = '';
+  newUser.email = '';
+  newUser.password = '';
+  newUser.role = 'user';
+}
+
 async function onSubmit() {
   if (isLoading.value || v$.value.$invalid) return;
 
   isLoading.value = true;
-  await userStore.createUser(newUser)
+  const res = await userStore.createUser(newUser)
+
+  if (res?.status === 201) {
+    clearFormValues();
+    v$.value.$reset();
+  }
   isLoading.value = false;
 }
+
+onMounted(() => {
+  inputUsername.value?.focus();
+})
 </script>
 
 <template lang='pug'>
@@ -69,6 +86,7 @@ async function onSubmit() {
         for="username"
       ) Benutzername
       input#username(
+        ref="inputUsername"
         data-cy="username"
         type="text"
         name="username"
