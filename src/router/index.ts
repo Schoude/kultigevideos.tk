@@ -72,6 +72,20 @@ const routes: Array<RouteRecordRaw> = [
           next();
         },
       },
+      {
+        path: 'panel',
+        name: ROUTE_NAMES.ADMIN_PANEL,
+        component: () => import('../pages/admin/AdminPanel.vue'),
+        beforeEnter: (to, from, next) => {
+          const authStore = useAuthStore();
+          if (authStore.user?.role === 'admin') {
+            next();
+          } else {
+            next({ name: ROUTE_NAMES.FEED });
+            return;
+          }
+        },
+      },
     ],
   },
   {
