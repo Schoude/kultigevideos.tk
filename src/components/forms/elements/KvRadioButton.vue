@@ -69,6 +69,10 @@ label {
 .indicator {
   --border-color: white;
 
+  @media (prefers-color-scheme: light) {
+    --border-color: black;
+  }
+
   height: 24px;
   width: 24px;
   border: 1px solid var(--border-color);
@@ -91,9 +95,15 @@ label {
 }
 
 .indicator__dot {
+  --color-dot: var(--color-confirm);
+
+  @media (prefers-color-scheme: light) {
+    --color-dot: #6ea134;
+  }
+
   height: 12px;
   width: 12px;
-  background-color: var(--color-confirm);
+  background-color: var(--color-dot);
   border-radius: inherit;
   transform: scale(0);
   transition: transform 0.2s ease;

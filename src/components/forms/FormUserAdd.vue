@@ -74,7 +74,7 @@ async function onSubmit() {
 onMounted(() => {
   inputUsername.value?.focus();
 })
-</script>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      </script>
 
 <template lang='pug'>
 .form-user-add
@@ -195,6 +195,14 @@ button[type="submit"] {
 
   @include mq("p-l") {
     width: max-content;
+  }
+}
+
+.svg-icon:deep() {
+  @media (prefers-color-scheme: light) {
+    path {
+      fill: black;
+    }
   }
 }
 </style>
