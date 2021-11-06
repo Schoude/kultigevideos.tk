@@ -86,6 +86,48 @@ const routes: Array<RouteRecordRaw> = [
           }
         },
       },
+      {
+        path: 'panel/user/add',
+        name: ROUTE_NAMES.USER_ADD,
+        component: () => import('../pages/admin/UserAdd.vue'),
+        beforeEnter: (to, from, next) => {
+          const authStore = useAuthStore();
+          if (authStore.user?.role === 'admin') {
+            next();
+          } else {
+            next({ name: ROUTE_NAMES.FEED });
+            return;
+          }
+        },
+      },
+      {
+        path: 'panel/users',
+        name: ROUTE_NAMES.USERS_OVERVIEW,
+        component: () => import('../pages/admin/UsersOverview.vue'),
+        beforeEnter: (to, from, next) => {
+          const authStore = useAuthStore();
+          if (authStore.user?.role === 'admin') {
+            next();
+          } else {
+            next({ name: ROUTE_NAMES.FEED });
+            return;
+          }
+        },
+      },
+      {
+        path: 'panel/videos',
+        name: ROUTE_NAMES.VIDEOS_OVERVIEW,
+        component: () => import('../pages/admin/VideosOverview.vue'),
+        beforeEnter: (to, from, next) => {
+          const authStore = useAuthStore();
+          if (authStore.user?.role === 'admin') {
+            next();
+          } else {
+            next({ name: ROUTE_NAMES.FEED });
+            return;
+          }
+        },
+      },
     ],
   },
   {

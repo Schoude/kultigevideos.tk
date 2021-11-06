@@ -1,6 +1,14 @@
 <script setup lang='ts'>
+import { useRouter } from 'vue-router';
 import { ICON_SIZE } from '../../components/gfx/icons/icon-data';
 import SvgIcon from '../../components/gfx/icons/SvgIcon.vue';
+import { ROUTE_NAMES } from '../../router/routing-info';
+
+const router = useRouter();
+
+async function navigateToRoute(name: ROUTE_NAMES) {
+  await router.push({ name });
+}
 </script>
 
 <template lang='pug'>
@@ -8,11 +16,18 @@ main.admin-panel
   nav.admin-navigation
     section.admin-navigation__card.with-header
       header
-        button.btn_user__add.btn_icon.outline.rounded(title="Neuen Benutzer hinzufügen")
+        button.btn_user__add.btn_icon.outline.rounded(
+          title="Neuen Benutzer hinzufügen"
+          @click="navigateToRoute(ROUTE_NAMES.USER_ADD)"
+        )
           SvgIcon(icon-name="user-plus" :size="ICON_SIZE.xs")
-      button.btn.btn_primary.btn_admin--navigation Zur Benutzerübersicht
+      button.btn.btn_primary.btn_admin--navigation(
+        @click="navigateToRoute(ROUTE_NAMES.USERS_OVERVIEW)"
+      ) Zur Benutzerübersicht
     section.admin-navigation__card
-      button.btn.btn_secondary.btn_admin--navigation Zur Videoübersicht
+      button.btn.btn_secondary.btn_admin--navigation(
+        @click="navigateToRoute(ROUTE_NAMES.VIDEOS_OVERVIEW)"
+      ) Zur Videoübersicht
 </template>
 
 <style lang='scss' scoped>
