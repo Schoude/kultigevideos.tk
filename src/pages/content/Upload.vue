@@ -11,7 +11,8 @@ main.upload
     VideoFilePicker
     template(v-if="newVideoStore.videoFileLoaded")
       section.video-text-data
-        .title title
+        .form-field
+          input(type="text" v-model.trim='newVideoStore.newVideoTitle')
         .description description
       .actions
         button.btn.btn_primary Video hochladen
