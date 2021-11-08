@@ -29,7 +29,7 @@
 }
 
 .btn_secondary {
-  background-color: #598e7d;
+  background-color: #37584e;
 
   @media (prefers-color-scheme: light) {
     color: white;
@@ -37,7 +37,7 @@
 
   &:hover,
   &:focus {
-    background-color: lighten(#598e7d, 5);
+    background-color: lighten(#37584e, 5);
   }
 }
 
