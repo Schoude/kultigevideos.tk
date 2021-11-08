@@ -12,6 +12,8 @@ const authStore = useAuthStore();
 const router = useRouter();
 const isLoading = ref(false);
 
+const emits = defineEmits(['loading:start', 'loading:end'])
+
 const passwordChange = reactive({ newPassword: '', newPasswordConfirm: '' });
 const passwordMinLength = ref(5);
 const rules = computed(() => ({
@@ -33,8 +35,10 @@ const v$ = useVuelidate(rules, passwordChange, { $rewardEarly: true });
 async function onPasswordChange() {
   if (isLoading.value || v$.value.$invalid) return;
   isLoading.value = true;
+  emits('loading:start')
   const res = await authStore.updatePassword(passwordChange.newPassword);
   isLoading.value = false;
+  emits('loading:end')
 
   if (res?.status === 200) {
     passwordChange.newPassword = '';
@@ -103,8 +107,14 @@ section.user-profile-details
         Transition(name="fade-fast" mode="out-in")
           template(v-if="v$.newPassword.$dirty && v$.newPassword.$invalid")
             Transition(name="fade-fast" mode="out-in")
-              p.form-validation_error-message(data-cy="error-new-password-required" v-if="v$.newPassword.required.$invalid") Feld ist erforderlich.
-              p.form-validation_error-message(data-cy="error-new-password-min" v-else-if="v$.newPassword.minLength.$invalid") Das Passwort muss min. {{ passwordMinLength }} Zeichen lang sein.
+              p.form-validation_error-message(
+                data-cy="error-new-password-required"
+                v-if="v$.newPassword.required.$invalid"
+              ) Feld ist erforderlich.
+              p.form-validation_error-message(
+                data-cy="error-new-password-min"
+                v-else-if="v$.newPassword.minLength.$invalid"
+              ) Das Passwort muss min. {{ passwordMinLength }} Zeichen lang sein.
 
       .form-field
         label(
@@ -133,8 +143,14 @@ section.user-profile-details
         Transition(name="fade-fast" mode="out-in")
           template(v-if="v$.newPasswordConfirm.$dirty && v$.newPasswordConfirm.$invalid")
             Transition(name="fade-fast" mode="out-in")
-              p.form-validation_error-message(data-cy="error-new-password-confirm-required" v-if="v$.newPasswordConfirm.required.$invalid") Feld ist erforderlich.
-              p.form-validation_error-message(data-cy="error-new-password-confirm-same-as" v-else-if="v$.newPasswordConfirm.sameAs.$invalid") Muss mit dem anderen Passwort übereinstimmen.
+              p.form-validation_error-message(
+                data-cy="error-new-password-confirm-required" 
+                v-if="v$.newPasswordConfirm.required.$invalid"
+              ) Feld ist erforderlich.
+              p.form-validation_error-message(
+                data-cy="error-new-password-confirm-same-as"
+                v-else-if="v$.newPasswordConfirm.sameAs.$invalid"
+              ) Muss mit dem anderen Passwort übereinstimmen.
 
       .form-actions
         button.btn.btn_primary.btn_password-change(
@@ -155,6 +171,8 @@ section.user-profile-details
 @use '../styles/mixins' as *;
 
 .user-profile-details {
+  position: relative;
+
   @include mq("t-l") {
     margin: 0 25%;
   }
