@@ -6,6 +6,7 @@ import UserAvatarEditor from './profile/UserAvatarEditor.vue';
 import { useVuelidate } from '@vuelidate/core'
 import { minLength, required, sameAs } from '@vuelidate/validators'
 import { computed, reactive, ref } from 'vue';
+import SvgIcon from './gfx/icons/SvgIcon.vue';
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -23,6 +24,9 @@ const rules = computed(() => ({
     sameAs: sameAs(passwordChange.newPassword),
   }
 }))
+const passwordVisible = ref(false);
+const inputPassword = ref<HTMLInputElement | null>(null);
+const inputPasswordConfirm = ref<HTMLInputElement | null>(null);
 
 const v$ = useVuelidate(rules, passwordChange, { $rewardEarly: true });
 
@@ -40,6 +44,18 @@ async function onPasswordChange() {
 
 async function goToAdminPanel() {
   await router.push({ name: ROUTE_NAMES.ADMIN_PANEL });
+}
+
+async function togglePasswordVisibility() {
+  passwordVisible.value = !passwordVisible.value;
+
+  if (passwordVisible.value) {
+    inputPassword.value?.setAttribute('type', 'text');
+    inputPasswordConfirm.value?.setAttribute('type', 'text');
+  } else {
+    inputPassword.value?.setAttribute('type', 'password');
+    inputPasswordConfirm.value?.setAttribute('type', 'password');
+  }
 }
 </script>
 
@@ -65,15 +81,25 @@ section.user-profile-details
           data-cy="label-new-password"
           for="new-password"
         ) Neues Passwort
-        input#new-password(
-          data-cy="new-password"
-          type="text"
-          name="new-password"
-          autocomplete="new-password"
-          required
-          v-model.trim='v$.newPassword.$model'
-          @blur="v$.newPassword.$validate()"
-        )
+        .form-field__inner
+          input#new-password(
+            ref="inputPassword"
+            data-cy="new-password"
+            type="password"
+            name="new-password"
+            autocomplete="new-password"
+            required
+            v-model.trim='v$.newPassword.$model'
+            @blur="v$.newPassword.$validate()"
+          )
+          button.btn-icon(
+            type="button"
+            @click="togglePasswordVisibility"
+            :title="passwordVisible ? 'Passwort nicht mehr anzeigen' : 'Passwort anzeigen'"
+          )
+            Transition(name="fade-fast" mode="out-in")
+              SvgIcon(icon-name="eye-slash" v-if="passwordVisible")
+              SvgIcon(icon-name="eye" v-else)
         Transition(name="fade-fast" mode="out-in")
           template(v-if="v$.newPassword.$dirty && v$.newPassword.$invalid")
             Transition(name="fade-fast" mode="out-in")
@@ -85,23 +111,34 @@ section.user-profile-details
           data-cy="label-new-password-confirm"
           for="new-password-confirm"
         ) Passwort bestätigen
-        input#new-password-confirm(
-          data-cy="new-password-confirm"
-          type="text"
-          name="new-password-confirm"
-          autocomplete="new-password-confirm"
-          required
-          v-model.trim='v$.newPasswordConfirm.$model'
-          @blur="v$.newPasswordConfirm.$validate()"
-        )
+        .form-field__inner
+          input#new-password-confirm(
+            ref="inputPasswordConfirm"
+            data-cy="new-password-confirm"
+            type="password"
+            name="new-password-confirm"
+            autocomplete="new-password-confirm"
+            required
+            v-model.trim='v$.newPasswordConfirm.$model'
+            @blur="v$.newPasswordConfirm.$validate()"
+          )
+          button.btn-icon(
+            type="button"
+            @click="togglePasswordVisibility"
+            :title="passwordVisible ? 'Passwort nicht mehr anzeigen' : 'Passwort anzeigen'"
+          )
+            Transition(name="fade-fast" mode="out-in")
+              SvgIcon(icon-name="eye-slash" v-if="passwordVisible")
+              SvgIcon(icon-name="eye" v-else)
         Transition(name="fade-fast" mode="out-in")
           template(v-if="v$.newPasswordConfirm.$dirty && v$.newPasswordConfirm.$invalid")
             Transition(name="fade-fast" mode="out-in")
-              p.form-validation_error-message(data-cy="error-new-password-required" v-if="v$.newPasswordConfirm.required.$invalid") Feld ist erforderlich.
-              p.form-validation_error-message(data-cy="error-new-password-min" v-else-if="v$.newPasswordConfirm.sameAs.$invalid") Muss mit dem anderen Passwort übereinstimmen.
+              p.form-validation_error-message(data-cy="error-new-password-confirm-required" v-if="v$.newPasswordConfirm.required.$invalid") Feld ist erforderlich.
+              p.form-validation_error-message(data-cy="error-new-password-confirm-same-as" v-else-if="v$.newPasswordConfirm.sameAs.$invalid") Muss mit dem anderen Passwort übereinstimmen.
 
       .form-actions
         button.btn.btn_primary.btn_password-change(
+          data-cy="btn-password-change"
           type="submit"
           :disabled="isLoading || v$.$invalid"
         ) Passwort ändern
@@ -140,10 +177,14 @@ section.user-profile-details
 
 hr {
   opacity: 0.4;
+  margin: 1.5em 0;
+
+  @include mq("t-p") {
+    margin: 3em 0;
+  }
 }
 
 .password-change {
-  margin-top: 1.5em;
   max-width: 450px;
 }
 
