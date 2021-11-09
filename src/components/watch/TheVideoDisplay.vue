@@ -17,6 +17,7 @@ section.the-video-display
     VideoPlayer(
       :url="videoStore.getCurrentVideoUrl"
       :poster="videoStore.currentVideo?.thumb"
+      :autoplay="true"
     )
     .video-col__inner
       TheVideoMetadataDisplay

@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { computed, ref } from 'vue';
 
-const props = withDefaults(defineProps<{ url: string, poster?: string, ratio?: number }>(), { ratio: 9 / 16 });
+const props = withDefaults(defineProps<{ url: string, poster?: string, ratio?: number, autoplay: boolean }>(), { ratio: 9 / 16, autoplay: false });
 const getRatio = computed(() => `${props.ratio * 100}%`);
 const intrinsicRatio = ref<null | string>(null);
 
@@ -21,7 +21,7 @@ function onPlay(event: Event) {
 
 <template lang='pug'>
 .video-player(:style="{ paddingTop: intrinsicRatio ?? getRatio }")
-  video(controls :poster="props.poster" @play="onPlay")
+  video(controls :poster="props.poster" @play="onPlay" :autoplay="props.autoplay")
     source(:src="props.url")
 </template>
 
