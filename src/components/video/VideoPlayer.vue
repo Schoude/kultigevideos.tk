@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { computed, ref } from 'vue';
 
-const props = withDefaults(defineProps<{ url: string, poster?: string, ratio?: number, autoplay: boolean }>(), { ratio: 9 / 16, autoplay: false });
+const props = withDefaults(defineProps<{ url: string, poster?: string, ratio?: number, autoplay?: boolean }>(), { ratio: 9 / 16, autoplay: false });
 const getRatio = computed(() => `${props.ratio * 100}%`);
 const intrinsicRatio = ref<null | string>(null);
 

@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { ref } from 'vue';
+import { onBeforeUnmount, ref } from 'vue';
 import { useNewVideoStore } from '../../stores/new-video';
 import VideoPlayer from '../video/VideoPlayer.vue';
 import ThumbnailPicker from './ThumbnailPicker.vue';
@@ -22,6 +22,10 @@ function onVideoRemove() {
   previewUrl.value = '';
   (videoInputEl.value as HTMLInputElement).value = '';
 }
+
+onBeforeUnmount(() => {
+  onVideoRemove();
+})
 </script>
 
 <template lang='pug'>
