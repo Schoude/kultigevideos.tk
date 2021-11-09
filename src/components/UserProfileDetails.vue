@@ -33,6 +33,7 @@ const inputPasswordConfirm = ref<HTMLInputElement | null>(null);
 const v$ = useVuelidate(rules, passwordChange, { $rewardEarly: true });
 
 async function onPasswordChange() {
+  await v$.value.$validate();
   if (isLoading.value || v$.value.$invalid) return;
   isLoading.value = true;
   emits('loading:start')
@@ -212,6 +213,14 @@ hr {
 
   @include mq("p-l") {
     width: max-content;
+  }
+}
+
+.svg-icon:deep() {
+  @media (prefers-color-scheme: light) {
+    path {
+      fill: black;
+    }
   }
 }
 </style>
