@@ -44,7 +44,7 @@ section.video-file-picker
     section.video-meta-data
       .video-preview
         VideoPlayer(:url="previewUrl")
-        button.btn.btn_secondary(
+        button.btn.btn_cancel.btn_video-remove(
           type="button"
           @click="onVideoRemove"
         ) Video entfernen
@@ -65,5 +65,9 @@ section.video-file-picker
     width: 500px;
     margin: 0 auto;
   }
+}
+
+.btn_video-remove {
+  margin-top: 1em;
 }
 </style>
