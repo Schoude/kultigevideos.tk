@@ -4,12 +4,14 @@ import type { Ref } from 'vue';
 import { useImageHelpers } from '../../composables/image-helpers';
 import { useNewVideoStore } from '../../stores/new-video';
 import LoaderIndeterminate from '../gfx/loaders/LoaderIndeterminate.vue';
+import { convertToJpegImage } from '../../utils';
 
 const thumbEl1 = ref<HTMLImageElement | null>(null);
 const thumbEl2 = ref<HTMLImageElement | null>(null);
 const thumbEl3 = ref<HTMLImageElement | null>(null);
 
 const generatingThumbnails = ref(true);
+const selectedThumbnailSrc = ref('');
 
 const newVideoStore = useNewVideoStore();
 const { generateThumbNailsFromFile } = useImageHelpers();
@@ -25,6 +27,8 @@ watch(() => newVideoStore.newVideoFile, (file) => {
 
   watch(finished, (finishedValue) => {
     if (finishedValue) {
+      selectedThumbnailSrc.value = thumbEl1.value?.src as string;
+      newVideoStore.setVideoThumbnailFile(convertToJpegImage(selectedThumbnailSrc.value, 'default'))
       generatingThumbnails.value = false;
     }
   })
@@ -32,10 +36,16 @@ watch(() => newVideoStore.newVideoFile, (file) => {
   immediate: true
 });
 
+function onThumbnailSelect($event: MouseEvent) {
+  selectedThumbnailSrc.value = ($event.target as HTMLImageElement).src
+  newVideoStore.setVideoThumbnailFile(convertToJpegImage(selectedThumbnailSrc.value, 'default'))
+}
+
 onBeforeUnmount(() => {
   (thumbEl1.value as HTMLImageElement).src = '';
   (thumbEl2.value as HTMLImageElement).src = '';
   (thumbEl3.value as HTMLImageElement).src = '';
+  newVideoStore.setVideoThumbnailFile(null)
 });
 
 </script>
@@ -51,9 +61,29 @@ section.thumbnail-picker(
   section(v-show="!generatingThumbnails")
     h2.heading Wähle ein Vorschaubild
     .thumbnail-display
-      img.thumb-img.thumb-1(ref="thumbEl1")
-      img.thumb-img.thumb-2(ref="thumbEl2")
-      img.thumb-img.thumb-3(ref="thumbEl3")
+      button.btn_thumb-img(
+        type="button"
+        title="Klicken, um als Vorschaubild auszuwählen."
+        @click="onThumbnailSelect"
+        :class="{ selected: thumbEl1?.src === selectedThumbnailSrc }"
+      )
+        img.thumb-img.thumb-1(ref="thumbEl1")
+
+      button.btn_thumb-img(
+        type="button"
+        title="Klicken, um als Vorschaubild auszuwählen."
+        @click="onThumbnailSelect"
+        :class="{ selected: thumbEl2?.src === selectedThumbnailSrc }"
+      )
+        img.thumb-img.thumb-2(ref="thumbEl2")
+
+      button.btn_thumb-img(
+        type="button"
+        title="Klicken, um als Vorschaubild auszuwählen."
+        @click="onThumbnailSelect"
+        :class="{ selected: thumbEl3?.src === selectedThumbnailSrc }"
+      )
+        img.thumb-img.thumb-3(ref="thumbEl3")
 </template>
 
 <style lang='scss' scoped>
@@ -107,6 +137,18 @@ section.thumbnail-picker(
 
   @include mq("t-p") {
     width: 200px;
+  }
+}
+
+.btn_thumb-img {
+  padding: 0;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+  filter: grayscale(70%);
+
+  &.selected {
+    opacity: 1;
+    filter: none;
   }
 }
 </style>
