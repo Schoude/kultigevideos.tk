@@ -59,6 +59,7 @@ function clearFormValues() {
 }
 
 async function onSubmit() {
+  await v$.value.$validate()
   if (isLoading.value || v$.value.$invalid) return;
 
   isLoading.value = true;
@@ -74,7 +75,7 @@ async function onSubmit() {
 onMounted(() => {
   inputUsername.value?.focus();
 })
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      </script>
+</script>
 
 <template lang='pug'>
 .form-user-add

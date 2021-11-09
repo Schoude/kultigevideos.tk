@@ -92,16 +92,15 @@ describe('UserProfileDetails', () => {
       statusCode: 200,
     }).as('changePassword');
 
-    cy.get('[data-cy="new-password"]').type('testpw').blur();
-    cy.get('[data-cy="new-password-confirm"]').type('testpw').blur();
-    cy.get('[data-cy="btn-password-change"]').click().should('be.disabled');
+    cy.get('[data-cy="new-password"]').type('testpw');
+    cy.get('[data-cy="new-password-confirm"]').type('testpw');
+    cy.get('[data-cy="btn-password-change"]').as('btnPwChange').click();
 
     cy.wait('@changePassword').then(interception => {
       const { userId, newPassword } = JSON.parse(interception.request.body);
       expect(userId).to.equal(mockUser._id);
       expect(newPassword).to.equal('testpw');
+      cy.get('@btnPwChange').should('not.be.disabled');
     });
-
-    cy.get('[data-cy="btn-password-change"]').should('not.be.disabled');
   });
 });
