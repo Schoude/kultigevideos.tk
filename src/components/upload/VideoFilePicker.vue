@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useNewVideoStore } from '../../stores/new-video';
 import VideoPlayer from '../video/VideoPlayer.vue';
+import ThumbnailPicker from './ThumbnailPicker.vue';
 
 const newVideoStore = useNewVideoStore();
 
@@ -48,7 +49,7 @@ section.video-file-picker
           type="button"
           @click="onVideoRemove"
         ) Video entfernen
-      .thumbnails thumbnails
+      ThumbnailPicker
 </template>
 
 <style lang='scss' scoped>
