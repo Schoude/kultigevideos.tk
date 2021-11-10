@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 import { onBeforeUnmount, ref } from 'vue';
 import { useNewVideoStore } from '../../stores/new-video';
+import { randomString } from '../../utils';
 import VideoPlayer from '../video/VideoPlayer.vue';
 import ThumbnailPicker from './ThumbnailPicker.vue';
 
@@ -15,12 +16,14 @@ function onFileChange() {
   const file = videoInputEl.value?.files?.item(0);
   newVideoStore.setVideoFile(file as File);
   previewUrl.value = URL.createObjectURL(file);
+  newVideoStore.setNewVideoHash(randomString(11))
 }
 
 function onVideoRemove() {
   newVideoStore.setVideoFile(null);
   previewUrl.value = '';
   (videoInputEl.value as HTMLInputElement).value = '';
+  newVideoStore.setNewVideoHash(null);
 }
 
 onBeforeUnmount(() => {

@@ -4,6 +4,7 @@ interface NewVideoState {
   newVideoFile: File | null;
   newVideoTitle: string;
   newVideoThumbnailFile: File | null;
+  newVideoHash: string | null;
 }
 
 export const useNewVideoStore = defineStore('new-video', {
@@ -11,6 +12,7 @@ export const useNewVideoStore = defineStore('new-video', {
     newVideoFile: null,
     newVideoTitle: '',
     newVideoThumbnailFile: null,
+    newVideoHash: '',
   }),
   actions: {
     setVideoFile(file: File | null) {
@@ -24,6 +26,9 @@ export const useNewVideoStore = defineStore('new-video', {
     },
     setVideoThumbnailFile(file: File | null) {
       this.newVideoThumbnailFile = file;
+    },
+    setNewVideoHash(hash: string | null) {
+      this.newVideoHash = hash;
     },
   },
   getters: {

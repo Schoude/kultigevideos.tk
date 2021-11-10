@@ -20,3 +20,20 @@ export function convertToJpegImage(dataUrl: string, filename: string): File {
     type: 'image/jpeg',
   });
 }
+
+/**
+ * Generates a random string for the given length.
+ */
+export function randomString(length: number) {
+  const charset =
+    'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123465790';
+  const parts = [];
+
+  for (let index = 0; index < length; index++) {
+    let substr = Math.floor(Math.random() * (charset.length - 1));
+    const char = charset.substr(substr, 1);
+    parts.push(char);
+  }
+
+  return parts.join('');
+}
