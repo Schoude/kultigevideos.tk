@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 interface NewVideoState {
   newVideoFile: File | null;
   newVideoTitle: string;
+  newVideoDescription: string;
   newVideoThumbnailFile: File | null;
   newVideoHash: string | null;
 }
@@ -11,6 +12,7 @@ export const useNewVideoStore = defineStore('new-video', {
   state: (): NewVideoState => ({
     newVideoFile: null,
     newVideoTitle: '',
+    newVideoDescription: '',
     newVideoThumbnailFile: null,
     newVideoHash: '',
   }),

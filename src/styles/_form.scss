@@ -10,6 +10,22 @@ form {
 }
 
 .form-field {
+  --color-accent-full: white;
+  --color-accent-med: rgba(255, 255, 255, 0.7);
+  --color-accent-low: rgba(255, 255, 255, 0.5);
+
+  @media (prefers-color-scheme: dark) {
+    --color-accent-full: white;
+    --color-accent-med: rgba(255, 255, 255, 0.7);
+    --color-accent-low: rgba(255, 255, 255, 0.5);
+  }
+
+  @media (prefers-color-scheme: light) {
+    --color-accent-full: rgb(35, 35, 35);
+    --color-accent-med: rgba(35, 35, 35, 0.7);
+    --color-accent-low: rgba(35, 35, 35, 0.5);
+  }
+
   &__inner {
     display: flex;
   }
@@ -19,22 +35,6 @@ form {
   }
 
   input {
-    --color-accent-full: white;
-    --color-accent-med: rgba(255, 255, 255, 0.7);
-    --color-accent-low: rgba(255, 255, 255, 0.5);
-
-    @media (prefers-color-scheme: dark) {
-      --color-accent-full: white;
-      --color-accent-med: rgba(255, 255, 255, 0.7);
-      --color-accent-low: rgba(255, 255, 255, 0.5);
-    }
-
-    @media (prefers-color-scheme: light) {
-      --color-accent-full: rgb(35, 35, 35);
-      --color-accent-med: rgba(35, 35, 35, 0.7);
-      --color-accent-low: rgba(35, 35, 35, 0.5);
-    }
-
     width: 100%;
     padding: 0.25em 0;
     background-color: transparent;
@@ -49,6 +49,25 @@ form {
 
     &:focus {
       border-bottom: 1px solid var(--color-accent-full);
+    }
+  }
+
+  textarea {
+    padding: 0.5em;
+    background-color: transparent;
+    resize: vertical;
+    min-height: 150px;
+    max-height: 400px;
+    outline: none;
+    border: 1px solid var(--color-accent-low);
+    transition: border-bottom 0.3s ease;
+
+    &:hover {
+      border: 1px solid var(--color-accent-med);
+    }
+
+    &:focus {
+      border: 1px solid var(--color-accent-full);
     }
   }
 }
