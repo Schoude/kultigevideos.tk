@@ -26,7 +26,7 @@ function onTriggerShowMore() {
     .description-text(
       :class="{ 'open': showMore }"
       data-cy="description-text"
-    ) {{ videoStore.currentVideo?.description }}
+    ) {{ videoStore.currentVideo?.description === '' ? "Keine Beschreibung vorhanden" : videoStore.currentVideo?.description }}
     button.more-button(
       @click="onTriggerShowMore"
       data-cy="more-button"
