@@ -50,6 +50,7 @@ article.video-feed-entry
   inset: 0;
   aspect-ratio: 16/9;
   cursor: pointer;
+  width: 100%;
 }
 
 .metadata {
