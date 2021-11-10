@@ -61,7 +61,7 @@ async function onVideoSubmit() {
 
 <template lang='pug'>
 main.upload
-  LoaderIndeterminate(:class="{ visible: isLoading }")
+  LoaderIndeterminate.loader-upload(:class="{ visible: isLoading }")
   section.upload__inner
     VideoFilePicker
     template(v-if="newVideoStore.videoFileLoaded")
@@ -119,12 +119,12 @@ main.upload
   padding-bottom: 6em;
   padding: 0;
   padding-bottom: 6em;
-}
 
-.loader {
-  position: sticky;
-  top: var(--header-height);
-  z-index: 1;
+  .loader-upload {
+    position: sticky;
+    top: var(--header-height);
+    z-index: 1;
+  }
 }
 
 .upload__inner {
