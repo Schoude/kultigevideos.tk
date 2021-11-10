@@ -55,17 +55,27 @@ export function useImageHelpers() {
     const imageDataUrls = ref<string[]>([]);
     const timecodes = ref<number[]>([]);
     const finished = ref(false);
+    const aspectRatio = 16 / 9;
 
     video.src = URL.createObjectURL(file);
 
     video.addEventListener('loadedmetadata', () => {
+      let inputAspectRatio = video.videoWidth / video.videoHeight;
+
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
+
+      // set the canvas height to match 16/9 if input aspect ratio is smaller (i.e. 4/3)
+      if (inputAspectRatio < aspectRatio) {
+        canvas.height = video.videoWidth / aspectRatio;
+      }
+
       const timeStep = Math.floor(video.duration / thumbnailImages.length);
 
       timecodes.value.push(timeStep + 1);
       timecodes.value.push(timeStep * 2);
-      timecodes.value.push(timeStep * 3 - 1);
+      timecodes.value.push(timeStep * 3);
+      timecodes.value.push(timeStep * 4 - 1);
 
       timecodes.value.forEach((timecode, index) => {
         setTimeout(() => {
@@ -76,16 +86,12 @@ export function useImageHelpers() {
 
     video.addEventListener('timeupdate', () => {
       const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-      // console.log(Math.floor(video.videoWidth) / Math.floor(video.videoHeight));
-      // w / h
-      // 1.777777 = 16/9
-      // 1.6 = 16/10
-      // 1.333333 = 4/3
 
-      // TODO: check if aspect ratio is not 16/9, then size the canvas to 16/9 give it a black background.
-      // The image data from the video should be placed in the center
-      // OR crop the 4/3 image to have a 16/9 ratio
-      ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+      // Centers the image data from the video.
+      const outputX = (canvas.width - video.videoWidth) * 0.5;
+      const outputY = (canvas.height - video.videoHeight) * 0.5;
+
+      ctx.drawImage(video, outputX, outputY);
 
       imageDataUrls.value.push(canvas.toDataURL());
     });
