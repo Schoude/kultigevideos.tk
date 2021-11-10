@@ -25,3 +25,5 @@ export interface Video {
   likes: string[];
   dislikes: string[];
 }
+
+export type NewVideoData = Omit<Video, '_id'>;

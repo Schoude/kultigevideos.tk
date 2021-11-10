@@ -30,7 +30,7 @@ watch(() => newVideoStore.newVideoFile, (file) => {
   watch(finished, (finishedValue) => {
     if (finishedValue) {
       selectedThumbnailSrc.value = thumbEl1.value?.src as string;
-      newVideoStore.setVideoThumbnailFile(convertToJpegImage(selectedThumbnailSrc.value, 'default'))
+      newVideoStore.setVideoThumbnailFile(convertToJpegImage(selectedThumbnailSrc.value, 'default.jpeg'))
       generatingThumbnails.value = false;
     }
   })
@@ -45,7 +45,7 @@ function onThumbnailSelect($event: Event) {
     selectedThumbnailSrc.value =
       (($event.target as HTMLButtonElement).firstChild as HTMLImageElement).src
   }
-  newVideoStore.setVideoThumbnailFile(convertToJpegImage(selectedThumbnailSrc.value, 'default'))
+  newVideoStore.setVideoThumbnailFile(convertToJpegImage(selectedThumbnailSrc.value, 'default.jpeg'))
 }
 
 onBeforeUnmount(() => {

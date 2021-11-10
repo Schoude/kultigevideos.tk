@@ -62,6 +62,10 @@ section.video-file-picker
 <style lang='scss' scoped>
 @use '../../styles/mixins' as *;
 
+.video-file-picker {
+  padding-top: 1em;
+}
+
 #new-video {
   display: none;
 }

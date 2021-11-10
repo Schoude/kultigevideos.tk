@@ -4,6 +4,7 @@ import { maxLength, required } from '@vuelidate/validators';
 import { computed, reactive, ref, watchEffect } from 'vue';
 import VideoFilePicker from '../../components/upload/VideoFilePicker.vue';
 import { useNewVideoStore } from '../../stores/new-video';
+import LoaderIndeterminate from '../../components/gfx/loaders/LoaderIndeterminate.vue';
 
 const newVideoStore = useNewVideoStore();
 
@@ -36,18 +37,29 @@ watchEffect(() => {
 async function onVideoSubmit() {
   await v$.value.$validate();
   if (!newVideoStore.videoFileLoaded || v$.value.$invalid || isLoading.value) return;
+  isLoading.value = true;
 
   newVideoStore.newVideoTitle = newVideoTextdata.title;
   newVideoStore.newVideoDescription = newVideoTextdata.description;
+  try {
+    await newVideoStore.uploadNewVideoData();
+    await newVideoStore.saveVideoDataToDB();
+  } catch (error) {
+    console.log((error as Error).message);
+  } finally {
+    isLoading.value = false;
+  }
 }
 </script>
 
 <template lang='pug'>
 main.upload
+  LoaderIndeterminate(:class="{ visible: isLoading }")
   section.upload__inner
     VideoFilePicker
     template(v-if="newVideoStore.videoFileLoaded")
       form.video-text-data(
+        id="video-form"
         name="video-form"
         @submit.prevent="onVideoSubmit"
       )
@@ -81,19 +93,30 @@ main.upload
 
       .actions
         button.btn.btn_primary(
+          type="submit"
           form="video-form"
           :disabled="!newVideoStore.videoFileLoaded || v$.$invalid || isLoading"
         ) Video hochladen
+        span {{ newVideoStore.getProgressVideoUpload }}%
 </template>
 
 <style lang='scss' scoped>
 @use '../../styles/mixins' as *;
 
 .upload {
+  position: relative;
   padding-bottom: 6em;
+  padding: 0;
+}
+
+.loader {
+  position: sticky;
+  top: var(--header-height);
+  z-index: 1;
 }
 
 .upload__inner {
+  padding: 0 1em;
   @include mq("t-l") {
     margin: 0 25%;
   }
@@ -115,5 +138,9 @@ main.upload
 
 .description {
   width: 100%;
+}
+
+.actions {
+  position: relative;
 }
 </style>
