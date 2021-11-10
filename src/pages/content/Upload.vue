@@ -5,6 +5,7 @@ import { computed, reactive, ref, watchEffect } from 'vue';
 import VideoFilePicker from '../../components/upload/VideoFilePicker.vue';
 import { useNewVideoStore } from '../../stores/new-video';
 import LoaderIndeterminate from '../../components/gfx/loaders/LoaderIndeterminate.vue';
+import ProgressBar from '../../components/gfx/loaders/ProgressBar.vue';
 
 const newVideoStore = useNewVideoStore();
 
@@ -97,7 +98,11 @@ main.upload
           form="video-form"
           :disabled="!newVideoStore.videoFileLoaded || v$.$invalid || isLoading"
         ) Video hochladen
-        span {{ newVideoStore.getProgressVideoUpload }}%
+        Transition(name="fade")
+          ProgressBar(
+            v-if='isLoading'
+            :loaded="newVideoStore.getProgressVideoUpload"
+          )
 </template>
 
 <style lang='scss' scoped>
@@ -107,6 +112,7 @@ main.upload
   position: relative;
   padding-bottom: 6em;
   padding: 0;
+  padding-bottom: 6em;
 }
 
 .loader {
@@ -142,5 +148,9 @@ main.upload
 
 .actions {
   position: relative;
+}
+
+.progress-bar {
+  margin-top: 1em;
 }
 </style>
