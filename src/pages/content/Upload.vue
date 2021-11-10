@@ -6,7 +6,10 @@ import VideoFilePicker from '../../components/upload/VideoFilePicker.vue';
 import { useNewVideoStore } from '../../stores/new-video';
 import LoaderIndeterminate from '../../components/gfx/loaders/LoaderIndeterminate.vue';
 import ProgressBar from '../../components/gfx/loaders/ProgressBar.vue';
+import { ROUTE_NAMES } from '../../router/routing-info';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const newVideoStore = useNewVideoStore();
 
 const isLoading = ref(false);
@@ -44,7 +47,10 @@ async function onVideoSubmit() {
   newVideoStore.newVideoDescription = newVideoTextdata.description;
   try {
     await newVideoStore.uploadNewVideoData();
-    await newVideoStore.saveVideoDataToDB();
+    const res = await newVideoStore.saveVideoDataToDB();
+    if (res?.status === 201) {
+      router.push({ name: ROUTE_NAMES.FEED });
+    }
   } catch (error) {
     console.log((error as Error).message);
   } finally {

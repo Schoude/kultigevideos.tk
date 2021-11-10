@@ -26,4 +26,4 @@ export interface Video {
   dislikes: string[];
 }
 
-export type NewVideoData = Omit<Video, '_id'>;
+export type NewVideoData = Omit<Video, '_id' | 'uploadedAt'>;

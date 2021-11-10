@@ -1,7 +1,10 @@
+import { useAuthStore } from './auth';
 import { resolve } from 'cypress/types/bluebird';
 import { defineStore } from 'pinia';
 import { watch } from 'vue';
+import { apiClient } from '../api';
 import { useStorage } from '../firebase/use-storage';
+import { NewVideoData } from '../types/models/video';
 
 interface NewVideoState {
   newVideoFile: File | null;
@@ -41,35 +44,64 @@ export const useNewVideoStore = defineStore('new-video', {
     setNewVideoHash(hash: string | null) {
       this.newVideoHash = hash;
     },
-    async uploadNewVideoData() {
-      const storage = useStorage();
-      const { newDownloadURL: thumbnailUrl } = storage.uploadFileNewVideo(
-        this.newVideoThumbnailFile as File,
-        this.newVideoHash as string,
-        'image/jpeg'
-      );
+    async uploadNewVideoData(): Promise<void> {
+      return new Promise(resolve => {
+        const storage = useStorage();
+        const { newDownloadURL: thumbnailUrl } = storage.uploadFileNewVideo(
+          this.newVideoThumbnailFile as File,
+          this.newVideoHash as string,
+          'image/jpeg'
+        );
 
-      watch(thumbnailUrl, async url => {
-        this.newVideoThumbnailUrl = url;
-      });
+        watch(thumbnailUrl, async url => {
+          this.newVideoThumbnailUrl = url;
+        });
 
-      const { newDownloadURL: videoUrl, progress } = storage.uploadFileNewVideo(
-        this.newVideoFile as File,
-        this.newVideoHash as string,
-        'video/mp4'
-      );
+        const { newDownloadURL: videoUrl, progress } =
+          storage.uploadFileNewVideo(
+            this.newVideoFile as File,
+            this.newVideoHash as string,
+            'video/mp4'
+          );
 
-      watch(videoUrl, async url => {
-        this.newVideoThumbnailUrl = url;
-      });
+        watch(videoUrl, async url => {
+          this.newVideoUrl = url;
+          resolve();
+        });
 
-      watch(progress, newVal => {
-        this.progressVideoUpload = Math.floor(newVal);
+        watch(progress, newVal => {
+          this.progressVideoUpload = Math.floor(newVal);
+        });
       });
     },
-    saveVideoDataToDB() {
-      console.log('save to DB');
-      return new Promise(resolve => setTimeout(resolve, 4000));
+    async saveVideoDataToDB() {
+      const authStore = useAuthStore();
+      const newVideo: NewVideoData = {
+        hash: this.newVideoHash as string,
+        title: this.newVideoTitle,
+        description: this.newVideoDescription,
+        url: this.newVideoUrl as string,
+        thumb: this.newVideoThumbnailUrl as string,
+        listed: true,
+        approved: true,
+        uploaderId: authStore.getUserId,
+        likes: [],
+        dislikes: [],
+        viewCount: 0,
+      };
+
+      try {
+        const res = await apiClient.post<{ message: string }>({
+          url: '/api/v1/video',
+          body: JSON.stringify(newVideo),
+          mode: 'cors',
+        });
+
+        return res;
+      } catch (error) {
+        console.log((error as Error).message);
+      }
+
       // {
       //   "hash": "M09QPjkbpaq",
       //   "url": "https://firebasestorage.googleapis.com/v0/b/kultige-videos.appspot.com/o/M09QPjkbpaq%2FRudi%20V%C3%B6ller%20Ausraster%20%20nach%20%20dem%20Islandspiel.mp4?alt=media&token=be78a2e9-d939-492a-8870-f112187bf6b7",
