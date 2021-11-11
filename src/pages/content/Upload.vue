@@ -78,6 +78,7 @@ main.upload
           h2.heading(data-cy="heading-video-title") Videotitel
           .form-field
             input(
+              data-cy="video-title"
               type="text"
               maxlength="150"
               v-model.trim='v$.title.$model'
@@ -93,6 +94,7 @@ main.upload
           h2.heading(data-cy="heading-video-description") Videobeschreibung
           .form-field
             textarea.description(
+              data-cy="video-description"
               v-model.trim='newVideoTextdata.description'
               maxlength="1000"
               @blur="v$.description.$validate()"

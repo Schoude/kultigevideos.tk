@@ -1,6 +1,8 @@
 /// <reference types="cypress" />
 /// <reference types="cypress-file-upload" />
 
+import { randomString } from '../../src/utils';
+
 describe('Upload page', () => {
   /**
    * Loads the preview image from fixtures and attaches
@@ -65,5 +67,45 @@ describe('Upload page', () => {
     cy.get('.btn_video-remove').click();
     cy.get('.video-player').should('not.exist');
     cy.get('[data-cy="btn-pick-video"]').should('exist');
+  });
+
+  it('the user can select a thumbnail', () => {
+    loadFile();
+    cy.wait(750);
+
+    cy.get('.btn_thumb-img').first().should('have.class', 'selected');
+
+    cy.get('.btn_thumb-img').last().click();
+    cy.get('.btn_thumb-img').last().should('have.class', 'selected');
+    cy.get('.btn_thumb-img').first().should('not.have.class', 'selected');
+
+    cy.get('.btn_thumb-img').first().click({ force: true });
+    cy.get('.btn_thumb-img').first().should('have.class', 'selected');
+    cy.get('.btn_thumb-img').last().should('not.have.class', 'selected');
+  });
+
+  it('has validations for video title and description', () => {
+    loadFile();
+    cy.wait(750);
+
+    cy.get('[data-cy="video-title"]')
+      .as('title')
+      .invoke('val', '')
+      .type(' ')
+      .blur();
+    cy.get('[data-cy="error-title-required"]').should('be.visible');
+    cy.get('@title')
+      .invoke('removeAttr', 'maxlength')
+      .type(randomString(151))
+      .blur();
+    cy.get('[data-cy="error-title-maxlength"]').should('be.visible');
+
+    cy.get('[data-cy="video-description"]')
+      .invoke('removeAttr', 'maxlength')
+      .type(randomString(1001))
+      .blur();
+    cy.get('[data-cy="error-description-maxlength"]').should('be.visible');
+
+    cy.get('[data-cy="btn-upload"]').should('be.disabled');
   });
 });
