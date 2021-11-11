@@ -43,7 +43,7 @@ section.video-file-picker
   input#new-video(
     ref="videoInputEl"
     type="file"
-    accept="video/mp4"
+    accept="video/mp4,video/*"
     name="new-video"
     data-cy="input-new-video"
     @change="onFileChange"
