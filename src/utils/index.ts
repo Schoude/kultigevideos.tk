@@ -30,7 +30,7 @@ export function randomString(length: number) {
   const parts = [];
 
   for (let index = 0; index < length; index++) {
-    let substr = Math.floor(Math.random() * (charset.length - 1));
+    let substr = Math.floor(Math.random() * charset.length);
     const char = charset.substr(substr, 1);
     parts.push(char);
   }
