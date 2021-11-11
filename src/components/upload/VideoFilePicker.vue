@@ -36,7 +36,7 @@ section.video-file-picker
   button.btn.btn_primary(
     type="button"
     v-if="!newVideoStore.videoFileLoaded"
-    data-cy="new-avatar-label"
+    data-cy="btn-pick-video"
     @click="() => newVideoLabel?.click()"
   ) Video auswählen
   label(for="new-video" ref="newVideoLabel")

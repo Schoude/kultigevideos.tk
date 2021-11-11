@@ -75,7 +75,7 @@ main.upload
         @submit.prevent="onVideoSubmit"
       )
         .field_container
-          h2.heading Videotitel
+          h2.heading(data-cy="heading-video-title") Videotitel
           .form-field
             input(
               type="text"
@@ -90,7 +90,7 @@ main.upload
                 p.form-validation_error-message(data-cy="error-title-maxlength" v-else-if="v$.title.maxLength.$invalid") Der Titel darf max. {{ titleMaxLength }} Zeichen lang sein.
 
         .field_container
-          h2.heading Videobeschreibung
+          h2.heading(data-cy="heading-video-description") Videobeschreibung
           .form-field
             textarea.description(
               v-model.trim='newVideoTextdata.description'
@@ -104,6 +104,7 @@ main.upload
 
       .actions
         button.btn.btn_primary(
+          data-cy="btn-upload"
           type="submit"
           form="video-form"
           :disabled="!newVideoStore.videoFileLoaded || v$.$invalid || isLoading"

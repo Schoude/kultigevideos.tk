@@ -62,11 +62,11 @@ section.thumbnail-picker(
   :class="{ generating: generatingThumbnails }"
 )
   section.generation-container(v-show="generatingThumbnails")
-    LoaderIndeterminate.visible
+    LoaderIndeterminate.visible(data-cy="loader-thumbs")
     p.generation-message Vorschaubildergenerierung im Gange...
 
   section(v-show="!generatingThumbnails")
-    h2.heading Wähle ein Vorschaubild
+    h2.heading(data-cy="heading-preview-img") Wähle ein Vorschaubild
     .thumbnail-display
       button.btn_thumb-img(
         type="button"
