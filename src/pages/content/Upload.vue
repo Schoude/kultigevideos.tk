@@ -8,9 +8,11 @@ import LoaderIndeterminate from '../../components/gfx/loaders/LoaderIndeterminat
 import ProgressBar from '../../components/gfx/loaders/ProgressBar.vue';
 import { ROUTE_NAMES } from '../../router/routing-info';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '../../stores/auth';
 
 const router = useRouter();
 const newVideoStore = useNewVideoStore();
+const authStore = useAuthStore();
 
 const isLoading = ref(false);
 
@@ -38,9 +40,11 @@ watchEffect(() => {
   newVideoTextdata.title = newVideoStore.newVideoTitle;
 });
 
+const preventUpload = computed(() => !newVideoStore.videoFileLoaded || v$.value.$invalid || isLoading.value || authStore.userIsUser);
+
 async function onVideoSubmit() {
   await v$.value.$validate();
-  if (!newVideoStore.videoFileLoaded || v$.value.$invalid || isLoading.value) return;
+  if (preventUpload.value) return;
   isLoading.value = true;
 
   newVideoStore.newVideoTitle = newVideoTextdata.title;
