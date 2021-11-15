@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { apiClient } from '../../api';
 import type { VideoOverViewData } from '../../types/admin-panel';
 import type { Video } from '../../types/models/video';
+import OverviewVideoInteraction from './OverviewVideoInteraction.vue';
 
 const notApprovedNotListed = ref<Video[]>([]);
 const approvedNotListed = ref<Video[]>([]);
@@ -27,21 +28,27 @@ await fetchVideoData();
 section.videos-overview-display
   .container.not-approved-not-listed
     h2.heading Videos zur Überprüfung ({{ notApprovedNotListed.length }})
-    a(:href="video.url" target="_blank" rel="noopener" v-for="video in notApprovedNotListed")
-      img.thumb(:src="video.thumb")
-      span.title {{ video.title }}
+    OverviewVideoInteraction(
+      v-for="video in notApprovedNotListed"
+      :video="video"
+      type="approve"
+    )
 
   .container.approved-not-listed
     h2.heading Nicht gelistete Videos ({{ approvedNotListed.length }})
-    a(:href="video.url" target="_blank" rel="noopener" v-for="video in approvedNotListed")
-      img.thumb(:src="video.thumb")
-      span.title {{ video.title }}
+    OverviewVideoInteraction(
+      v-for="video in approvedNotListed"
+      :video="video"
+      type="not-listed"
+    )
 
   .container.approved-and-listed
     h2.heading Gelistete Videos ({{ approvedAndListed.length }})
-    a(:href="video.url" target="_blank" rel="noopener" v-for="video in approvedAndListed")
-      img.thumb(:src="video.thumb")
-      span.title {{ video.title }}
+    OverviewVideoInteraction(
+      v-for="video in approvedAndListed"
+      :video="video"
+      type="listed"
+    )
 </template>
 
 <style lang='scss' scoped>
@@ -54,20 +61,9 @@ section.videos-overview-display
   }
 }
 
-a {
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-  text-decoration: none;
-  color: inherit;
-
+.overview-video-interaction {
   & + & {
     margin-top: 1em;
   }
-}
-
-.thumb {
-  width: 100px;
-  aspect-ratio: 16 / 9;
 }
 </style>
