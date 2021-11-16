@@ -14,7 +14,7 @@ await videoStore.getByHash(router.currentRoute.value.params.hash as string)
 <template lang='pug'>
 section.the-video-display
   .video-col
-    VideoPlayer(
+    VideoPlayer.video-player(
       :url="videoStore.getCurrentVideoUrl"
       :poster="videoStore.currentVideo?.thumb"
       :autoplay="true"
@@ -60,6 +60,29 @@ section.the-video-display
 
   @include mq("laptop") {
     margin: revert;
+  }
+}
+
+.video-player {
+  width: 100%;
+
+  @include mq("t-l") {
+    height: 500px;
+    margin: 0 auto;
+  }
+
+  @include mq("laptop") {
+    height: 450px;
+    width: revert;
+    margin: revert;
+  }
+
+  @include mq("laptop-large") {
+    height: 500px;
+  }
+
+  @include mq("desktop") {
+    height: 670px;
   }
 }
 </style>
