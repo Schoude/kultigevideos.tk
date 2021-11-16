@@ -86,6 +86,25 @@ export const useVideoStore = defineStore('video-store', {
         console.log((error as Error).message);
       }
     },
+    async listVideo({
+      videoId,
+      listVideo,
+    }: {
+      videoId: string;
+      listVideo: boolean;
+    }) {
+      try {
+        await apiClient.put<Video>({
+          url: '/api/v1/video/listed',
+          body: JSON.stringify({
+            videoId,
+            listVideo,
+          }),
+        });
+      } catch (error) {
+        console.log((error as Error).message);
+      }
+    },
   },
   getters: {
     getCurrentVideoUrl(): string {

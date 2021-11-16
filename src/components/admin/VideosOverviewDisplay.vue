@@ -28,34 +28,41 @@ await fetchVideoData();
 section.videos-overview-display
   .container.not-approved-not-listed
     h2.heading Videos zur Überprüfung ({{ notApprovedNotListed.length }})
-    OverviewVideoInteraction(
-      v-for="video in notApprovedNotListed"
-      :key="video._id"
-      :video="video"
-      type="approve"
-      @reload:overiew="fetchVideoData"
-    )
+    .container__inner
+      OverviewVideoInteraction(
+        v-for="video in notApprovedNotListed"
+        :key="video._id"
+        :video="video"
+        type="approve"
+        @reload:overiew="fetchVideoData"
+      )
 
   .container.approved-not-listed
     h2.heading Nicht gelistete Videos ({{ approvedNotListed.length }})
-    OverviewVideoInteraction(
-      v-for="video in approvedNotListed"
-      :key="video._id"
-      :video="video"
-      type="not-listed"
-    )
+    .container__inner
+      OverviewVideoInteraction(
+        v-for="video in approvedNotListed"
+        :key="video._id"
+        :video="video"
+        type="not-listed"
+        @reload:overiew="fetchVideoData"
+      )
 
   .container.approved-and-listed
     h2.heading Gelistete Videos ({{ approvedAndListed.length }})
-    OverviewVideoInteraction(
-      v-for="video in approvedAndListed"
-      :key="video._id"
-      :video="video"
-      type="listed"
-    )
+    .container__inner
+      OverviewVideoInteraction(
+        v-for="video in approvedAndListed"
+        :key="video._id"
+        :video="video"
+        type="listed"
+        @reload:overiew="fetchVideoData"
+      )
 </template>
 
 <style lang='scss' scoped>
+@use '../../styles/scrollbar' as *;
+
 .videos-overview-display {
   display: grid;
   grid-template-columns: repeat(3, minmax(300px, 1fr));
@@ -64,6 +71,13 @@ section.videos-overview-display
   .heading {
     margin-bottom: 1em;
   }
+}
+
+.container__inner {
+  max-height: 80vh;
+  overflow: auto;
+
+  @include scrollbar(thin);
 }
 
 .overview-video-interaction {
