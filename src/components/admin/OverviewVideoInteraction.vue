@@ -1,10 +1,20 @@
 <script setup lang='ts'>
 import { ref } from 'vue';
+import { useVideoStore } from '../../stores/video';
 import type { Video } from '../../types/models/video';
 import KvCheckbox from '../forms/elements/KvCheckbox.vue';
+
+const videoStore = useVideoStore();
+
 defineProps<{ video: Video, type: 'approve' | 'not-listed' | 'listed' }>();
+const emits = defineEmits(['reload:overiew'])
 
 const listVideo = ref(true);
+
+async function onApproveClick(videoId: string) {
+  await videoStore.approveVideo({ videoId, listVideo: listVideo.value });
+  emits('reload:overiew')
+}
 </script>
 
 <template lang='pug'>
@@ -19,8 +29,20 @@ article.overview-video-interaction
       .negavive
         button.btn.btn_cancel(type="button") Video löschen
       .positive
-        KvCheckbox(:name="video.hash" v-model:checked="listVideo") Video listen?
-        button.btn.btn_primary(type="button") Video freigeben
+        KvCheckbox(:name="video.hash" v-model:checked="listVideo") nach Freigabe listen?
+        button.btn.btn_primary(type="button" @click="onApproveClick(video._id)") Video freigeben
+
+    .actions(v-if="type === 'not-listed'")
+      .negavive
+        button.btn.btn_cancel(type="button") Video löschen
+      .positive
+        button.btn.btn_primary(type="button") Video listen
+
+    .actions(v-if="type === 'listed'")
+      .negavive
+        button.btn.btn_cancel(type="button") Video löschen
+      .positive
+        button.btn.btn_primary(type="button") Video nicht mehr listen
 </template>
 
 <style lang='scss' scoped>
@@ -51,6 +73,8 @@ article.overview-video-interaction
 
 .description {
   margin-top: 1em;
+  max-height: 120px;
+  overflow: auto;
 }
 
 .actions {
@@ -63,7 +87,7 @@ article.overview-video-interaction
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    gap: 0.5em;
+    gap: 1em;
   }
 }
 

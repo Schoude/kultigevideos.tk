@@ -30,14 +30,17 @@ section.videos-overview-display
     h2.heading Videos zur Überprüfung ({{ notApprovedNotListed.length }})
     OverviewVideoInteraction(
       v-for="video in notApprovedNotListed"
+      :key="video._id"
       :video="video"
       type="approve"
+      @reload:overiew="fetchVideoData"
     )
 
   .container.approved-not-listed
     h2.heading Nicht gelistete Videos ({{ approvedNotListed.length }})
     OverviewVideoInteraction(
       v-for="video in approvedNotListed"
+      :key="video._id"
       :video="video"
       type="not-listed"
     )
@@ -46,6 +49,7 @@ section.videos-overview-display
     h2.heading Gelistete Videos ({{ approvedAndListed.length }})
     OverviewVideoInteraction(
       v-for="video in approvedAndListed"
+      :key="video._id"
       :video="video"
       type="listed"
     )
@@ -55,6 +59,7 @@ section.videos-overview-display
 .videos-overview-display {
   display: grid;
   grid-template-columns: repeat(3, minmax(300px, 1fr));
+  column-gap: 2em;
 
   .heading {
     margin-bottom: 1em;
