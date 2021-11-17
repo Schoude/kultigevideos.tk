@@ -52,6 +52,10 @@ async function onVideoSubmit() {
   try {
     await newVideoStore.uploadNewVideoData();
     const res = await newVideoStore.saveVideoDataToDB();
+
+    newVideoStore.resetNewVideoTextData();
+    newVideoStore.resetUploadProgress();
+
     if (res?.status === 201) {
       router.push({ name: ROUTE_NAMES.FEED });
     }

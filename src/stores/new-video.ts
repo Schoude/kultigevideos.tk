@@ -101,20 +101,15 @@ export const useNewVideoStore = defineStore('new-video', {
       } catch (error) {
         console.log((error as Error).message);
       }
-
-      // {
-      //   "hash": "M09QPjkbpaq",
-      //   "url": "https://firebasestorage.googleapis.com/v0/b/kultige-videos.appspot.com/o/M09QPjkbpaq%2FRudi%20V%C3%B6ller%20Ausraster%20%20nach%20%20dem%20Islandspiel.mp4?alt=media&token=be78a2e9-d939-492a-8870-f112187bf6b7",
-      //   "thumb": "https://firebasestorage.googleapis.com/v0/b/kultige-videos.appspot.com/o/M09QPjkbpaq%2Fhqdefault.webp?alt=media&token=1e7c7ac6-7163-48cf-a318-0d6ffb892f89",
-      //   "title": "Rudi Völler Ausraster nach Spiel gegen Island 03.09.2003",
-      //   "description": "Nach einem enttäuschenden 0:0 der deutschen Nationalelf in einem EM-Qualifikationsspiel auf Island gegen die 'Brasilianer des Nordatlantik' äußerte er in einem Live-Interview mit ARD-Moderator Waldemar Hartmann seinen Unmut, nachdem er zur schlechten Leistung seiner Mannschaft befragt wurde.",
-      //   "viewCount": 0,
-      //   "listed": false,
-      //   "approved": false,
-      //   "uploaderId": "6177176029676e6d4369bff7",
-      //   "likes": [],
-      //   "dislikes": [],
-      // }
+    },
+    resetNewVideoTextData() {
+      this.newVideoTitle = '';
+      this.newVideoDescription = '';
+      this.newVideoThumbnailUrl = null;
+      this.newVideoUrl = null;
+    },
+    resetUploadProgress() {
+      this.progressVideoUpload = 0;
     },
   },
   getters: {
