@@ -28,7 +28,7 @@ export interface Video {
   uploadedAt: string;
   likes: string[];
   dislikes: string[];
-  meta?: VideoMetaData;
+  meta: VideoMetaData;
 }
 
 export type NewVideoData = Omit<Video, '_id' | 'uploadedAt'>;

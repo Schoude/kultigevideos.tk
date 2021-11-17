@@ -46,7 +46,7 @@ article.overview-video-interaction
   section.meta-data
     h3.title
       a.thumbnail-link(:href="video.url" target="_blank" rel="noopener")
-        span.duration-display(v-if="video.meta") {{ createFormattedDurationStringFromSeconds(video.meta.duration) }}
+        span.duration-display {{ createFormattedDurationStringFromSeconds(video.meta.duration) }}
         img.thumb(:src="video.thumb")
       a(:href="video.url" target="_blank" rel="noopener") {{ video.title }}
     p.description {{ video.description }}

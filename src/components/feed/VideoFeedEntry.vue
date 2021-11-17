@@ -18,7 +18,7 @@ function onCardClick() {
 <template lang='pug'>
 article.video-feed-entry
   RouterLink.btn-thumbnail(:to="`/watch/${video.hash}`")
-    span.duration-display(v-if="video.meta") {{ createFormattedDurationStringFromSeconds(video.meta.duration) }}
+    span.duration-display {{ createFormattedDurationStringFromSeconds(video.meta.duration) }}
     img.thumbnail(data-cy="thumbnail" :src="video.thumb" :alt="`video thumbnail for video ${video.title}`")
 
   .metadata
