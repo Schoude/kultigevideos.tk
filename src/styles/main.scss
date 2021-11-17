@@ -47,3 +47,13 @@ svg {
   border-radius: 50%;
   object-fit: cover;
 }
+
+.duration-display {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.85);
+  padding: 0 6px;
+  font-size: 14px;
+  bottom: 0;
+  right: 0;
+  margin: 5px;
+}

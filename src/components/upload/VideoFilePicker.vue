@@ -24,6 +24,7 @@ function onVideoRemove() {
   previewUrl.value = '';
   (videoInputEl.value as HTMLInputElement).value = '';
   newVideoStore.setNewVideoHash(null);
+  newVideoStore.resetNewVideoDuration();
 }
 
 onBeforeUnmount(() => {

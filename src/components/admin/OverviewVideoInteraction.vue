@@ -9,7 +9,7 @@ import LoaderIndeterminate from '../gfx/loaders/LoaderIndeterminate.vue';
 
 const videoStore = useVideoStore();
 const authStore = useAuthStore();
-const { getLocaleDateString } = usePageHelpers();
+const { getLocaleDateString, createFormattedDurationStringFromSeconds } = usePageHelpers();
 
 defineProps<{ video: Video, type: 'approve' | 'not-listed' | 'listed' }>();
 const emits = defineEmits(['reload:overiew'])
@@ -45,7 +45,8 @@ article.overview-video-interaction
   LoaderIndeterminate(:class="{ visible: isLoading }")
   section.meta-data
     h3.title
-      a(:href="video.url" target="_blank" rel="noopener")
+      a.thumbnail-link(:href="video.url" target="_blank" rel="noopener")
+        span.duration-display(v-if="video.meta") {{ createFormattedDurationStringFromSeconds(video.meta.duration) }}
         img.thumb(:src="video.thumb")
       a(:href="video.url" target="_blank" rel="noopener") {{ video.title }}
     p.description {{ video.description }}
@@ -120,6 +121,10 @@ article.overview-video-interaction
     text-decoration: none;
     color: inherit;
   }
+}
+
+.thumbnail-link {
+  position: relative;
 }
 
 .thumb {

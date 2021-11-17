@@ -2,6 +2,10 @@ import type { User, UserMetaData } from './user.d';
 
 type Uploader = Pick<User, '_id' | 'username' | 'meta'>;
 
+interface VideoMetaData {
+  duration: number;
+}
+
 export interface Video {
   _id: string;
   hash: string;
@@ -24,6 +28,7 @@ export interface Video {
   uploadedAt: string;
   likes: string[];
   dislikes: string[];
+  meta?: VideoMetaData;
 }
 
 export type NewVideoData = Omit<Video, '_id' | 'uploadedAt'>;

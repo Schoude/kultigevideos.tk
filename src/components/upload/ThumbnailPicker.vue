@@ -20,20 +20,24 @@ const { generateThumbNailsFromFile } = useImageHelpers();
 watch(() => newVideoStore.newVideoFile, (file) => {
   if (file == null) return;
 
-  const { finished } = generateThumbNailsFromFile(newVideoStore.newVideoFile as File,
+  const { finished, duration } = generateThumbNailsFromFile(newVideoStore.newVideoFile as File,
     [(thumbEl1 as Ref<HTMLImageElement>),
     (thumbEl2 as Ref<HTMLImageElement>),
     (thumbEl3 as Ref<HTMLImageElement>),
     (thumbEl4 as Ref<HTMLImageElement>)]
   );
 
-  watch(finished, (finishedValue) => {
+  watch(finished, finishedValue => {
     if (finishedValue) {
       selectedThumbnailSrc.value = thumbEl1.value?.src as string;
       newVideoStore.setVideoThumbnailFile(convertToJpegImage(selectedThumbnailSrc.value, 'default.jpeg'))
       generatingThumbnails.value = false;
     }
   })
+
+  watch(duration, durationValue => {
+    newVideoStore.setNewVideoDuration(durationValue);
+  });
 }, {
   immediate: true
 });

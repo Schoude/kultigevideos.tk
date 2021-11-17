@@ -5,7 +5,7 @@ import { ROUTE_NAMES } from '../../router/routing-info';
 import type { Video } from '../../types/models/video';
 
 const router = useRouter();
-const { getLocaleDateString } = usePageHelpers();
+const { getLocaleDateString, createFormattedDurationStringFromSeconds } = usePageHelpers();
 
 const props = defineProps<{ video: Video }>()
 
@@ -17,7 +17,8 @@ function onCardClick() {
 
 <template lang='pug'>
 article.video-feed-entry
-  button.btn-thumbnail(@click="onCardClick")
+  RouterLink.btn-thumbnail(:to="`/watch/${video.hash}`")
+    span.duration-display(v-if="video.meta") {{ createFormattedDurationStringFromSeconds(video.meta.duration) }}
     img.thumbnail(data-cy="thumbnail" :src="video.thumb" :alt="`video thumbnail for video ${video.title}`")
 
   .metadata
@@ -40,17 +41,19 @@ article.video-feed-entry
 @use '../../styles/mixins.scss' as *;
 
 .btn-thumbnail {
+  display: inline-block;
   position: relative;
   width: 100%;
-  padding-top: 56.25%;
+  aspect-ratio: 16/9;
 }
 
 .thumbnail {
-  position: absolute;
-  inset: 0;
-  aspect-ratio: 16/9;
   cursor: pointer;
   width: 100%;
+}
+
+.duration-display {
+  margin: 8px;
 }
 
 .metadata {

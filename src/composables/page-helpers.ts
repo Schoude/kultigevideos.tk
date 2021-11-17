@@ -17,11 +17,70 @@ export const usePageHelpers = () => {
   function getLocaleDateString(dateString: undefined | string) {
     return new Date(dateString as string).toLocaleDateString();
   }
+
+  /**
+   * Takes the duration in seconds and returns a formatted duration string with hours, minutes and seconds.
+   */
+  function createFormattedDurationStringFromSeconds(duration: number) {
+    const hourValue = 3600;
+    const minuteValue = 60;
+
+    let h = 0;
+    let m = 0;
+    let s = 0;
+
+    let durationStringHours = '0:';
+    let durationStringMinutes = '0:';
+    let durationStringSeconds = '00';
+
+    while (duration >= hourValue) {
+      h++;
+      duration = duration - hourValue;
+      durationStringHours = `${h}:`;
+    }
+
+    while (duration >= minuteValue) {
+      m++;
+      duration = duration - minuteValue;
+
+      if (m === minuteValue) {
+        h++;
+        m = 0;
+      }
+
+      durationStringMinutes = `${m}:`;
+    }
+
+    while (duration > 0) {
+      s = Math.floor(duration);
+      duration = 0;
+
+      durationStringSeconds = `${s}`;
+
+      if (s === 60) {
+        m++;
+        s = 0;
+        durationStringSeconds = `00`;
+      }
+
+      if (s < 10) {
+        durationStringSeconds = `0${s}`;
+      }
+    }
+
+    if (h > 0) {
+      return `${durationStringHours}${durationStringMinutes}${durationStringSeconds}`;
+    } else {
+      return `${durationStringMinutes}${durationStringSeconds}`;
+    }
+  }
+
   return {
     isDarkMode,
     getLogoPath,
     getLogoPathSmall,
     getLocaleDateString,
+    createFormattedDurationStringFromSeconds,
   };
 };
 

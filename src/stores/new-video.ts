@@ -15,6 +15,7 @@ interface NewVideoState {
   newVideoThumbnailUrl: string | null;
   newVideoHash: string | null;
   progressVideoUpload: number;
+  newVideoDuration: number | null;
 }
 
 export const useNewVideoStore = defineStore('new-video', {
@@ -27,6 +28,7 @@ export const useNewVideoStore = defineStore('new-video', {
     newVideoThumbnailUrl: null,
     newVideoHash: '',
     progressVideoUpload: 0,
+    newVideoDuration: null,
   }),
   actions: {
     setVideoFile(file: File | null) {
@@ -43,6 +45,9 @@ export const useNewVideoStore = defineStore('new-video', {
     },
     setNewVideoHash(hash: string | null) {
       this.newVideoHash = hash;
+    },
+    setNewVideoDuration(duration: number | null) {
+      this.newVideoDuration = duration;
     },
     async uploadNewVideoData(): Promise<void> {
       return new Promise(resolve => {
@@ -88,6 +93,9 @@ export const useNewVideoStore = defineStore('new-video', {
         likes: [],
         dislikes: [],
         viewCount: 0,
+        meta: {
+          duration: this.newVideoDuration as number,
+        },
       };
 
       try {
@@ -110,6 +118,9 @@ export const useNewVideoStore = defineStore('new-video', {
     },
     resetUploadProgress() {
       this.progressVideoUpload = 0;
+    },
+    resetNewVideoDuration() {
+      this.newVideoDuration = null;
     },
   },
   getters: {

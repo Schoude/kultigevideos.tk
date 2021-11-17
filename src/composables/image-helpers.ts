@@ -56,10 +56,13 @@ export function useImageHelpers() {
     const timecodes = ref<number[]>([]);
     const finished = ref(false);
     const aspectRatio = 16 / 9;
+    const duration = ref(0);
 
     video.src = URL.createObjectURL(file);
 
     video.addEventListener('loadedmetadata', () => {
+      duration.value = Math.floor(video.duration);
+
       let inputAspectRatio = video.videoWidth / video.videoHeight;
 
       canvas.width = video.videoWidth;
@@ -113,6 +116,7 @@ export function useImageHelpers() {
 
     return {
       finished,
+      duration,
     };
   }
 

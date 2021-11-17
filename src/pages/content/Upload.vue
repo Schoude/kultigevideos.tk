@@ -55,6 +55,7 @@ async function onVideoSubmit() {
 
     newVideoStore.resetNewVideoTextData();
     newVideoStore.resetUploadProgress();
+    newVideoStore.resetNewVideoDuration();
 
     if (res?.status === 201) {
       router.push({ name: ROUTE_NAMES.FEED });
