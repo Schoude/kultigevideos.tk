@@ -17,6 +17,11 @@ main.watch
 .watch {
   padding: 1em 0 0 0;
 
+  @include mq("t-l") {
+    display: flex;
+    justify-content: center;
+  }
+
   @include mq("laptop") {
     padding: 1em 75px;
   }

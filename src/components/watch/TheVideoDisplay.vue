@@ -35,9 +35,18 @@ section.the-video-display
   display: flex;
   gap: 1.25em;
   flex-direction: column;
+  max-width: 1700px;
 
   @include mq("laptop") {
     flex-direction: row;
+  }
+
+  @include mq("wqhd") {
+    max-width: 2000px;
+  }
+
+  @include mq("4k") {
+    max-width: 2700px;
   }
 }
 
@@ -65,16 +74,14 @@ section.the-video-display
 
 .video-player {
   width: 100%;
+  margin: 0 auto;
 
   @include mq("t-l") {
     height: 500px;
-    margin: 0 auto;
   }
 
   @include mq("laptop") {
     height: 450px;
-    width: revert;
-    margin: revert;
   }
 
   @include mq("laptop-large") {
@@ -82,7 +89,15 @@ section.the-video-display
   }
 
   @include mq("desktop") {
-    height: 670px;
+    height: 720px;
+  }
+
+  @include mq("wqhd") {
+    height: 1000px;
+  }
+
+  @include mq("4k") {
+    height: 1350px;
   }
 }
 </style>

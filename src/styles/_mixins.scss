@@ -65,7 +65,8 @@ $breakpoints: (
   laptop: 1280px,
   laptop-large: 1366px,
   desktop: 1920px,
-  4k: 3840px,
+  wqhd: 2560px,
+  '4k': 3840px,
 );
 
 @mixin mq($point) {
