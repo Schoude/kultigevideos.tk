@@ -29,6 +29,7 @@ describe('TheVideoMetadataDisplay', () => {
     dislikes: [],
     approvedById: '6177176029676e6d4369bff7',
     uploaderId: '6177176029676e6d4369bff7',
+    meta: { duration: 462 },
   };
 
   const mockVideoLiked: Video = {
@@ -54,6 +55,7 @@ describe('TheVideoMetadataDisplay', () => {
     dislikes: [],
     approvedById: '6177176029676e6d4369bff7',
     uploaderId: '6177176029676e6d4369bff7',
+    meta: { duration: 462 },
   };
 
   const mockVideoDisliked: Video = {
@@ -79,6 +81,7 @@ describe('TheVideoMetadataDisplay', () => {
     dislikes: ['617af9b8e45059e41a89d5a2'],
     approvedById: '6177176029676e6d4369bff7',
     uploaderId: '6177176029676e6d4369bff7',
+    meta: { duration: 462 },
   };
 
   setActivePinia(createPinia());

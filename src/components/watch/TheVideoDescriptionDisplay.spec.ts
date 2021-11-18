@@ -29,6 +29,7 @@ describe('TheVideoDescriptionDisplay', () => {
     dislikes: [],
     approvedById: '6177176029676e6d4369bff7',
     uploaderId: '6177176029676e6d4369bff7',
+    meta: { duration: 462 },
   };
 
   setActivePinia(createPinia());

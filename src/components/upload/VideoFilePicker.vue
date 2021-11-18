@@ -15,7 +15,7 @@ const previewUrl = ref('');
 function onFileChange() {
   const file = videoInputEl.value?.files?.item(0);
   newVideoStore.setVideoFile(file as File);
-  previewUrl.value = URL.createObjectURL(file);
+  previewUrl.value = URL.createObjectURL(file as unknown as Blob);
   newVideoStore.setNewVideoHash(randomString(11))
 }
 
