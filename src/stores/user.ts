@@ -1,8 +1,15 @@
-import type { NewUserData } from './../types/models/user.d';
+import type { NewUserData, ProfileUser } from './../types/models/user.d';
 import { defineStore } from 'pinia';
 import { apiClient } from '../api';
 
+interface UserState {
+  userProfileData: null | ProfileUser;
+}
+
 export const useUserStore = defineStore('user', {
+  state: (): UserState => ({
+    userProfileData: null,
+  }),
   actions: {
     async createUser(newUser: NewUserData) {
       try {
@@ -16,6 +23,26 @@ export const useUserStore = defineStore('user', {
       } catch (error) {
         console.log((error as Error).message);
       }
+    },
+    async fetchUserProfileData(userId: string) {
+      try {
+        const res = await apiClient.get<ProfileUser>({
+          url: `/api/v1/user/${userId}`,
+          mode: 'cors',
+        });
+
+        this.setUserProfileData(res.data);
+      } catch (error) {
+        console.log((error as Error).message);
+      }
+    },
+    setUserProfileData(profileData: ProfileUser | null) {
+      this.userProfileData = profileData;
+    },
+  },
+  getters: {
+    getUserProfileData(): ProfileUser | null {
+      return this.userProfileData;
     },
   },
 });
