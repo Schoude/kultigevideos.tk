@@ -108,7 +108,7 @@ export const useVideoStore = defineStore('video-store', {
     },
     async deleteVideo(id: string, hash: string) {
       const storage = useStorage();
-      await storage.deleteVideoFromStorage(hash);
+      await storage.deleteVideoDataFromStorage(hash);
 
       try {
         await apiClient.delete<Video>({

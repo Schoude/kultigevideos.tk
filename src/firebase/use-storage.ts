@@ -127,7 +127,7 @@ export function useStorage() {
     };
   }
 
-  async function deleteVideoFromStorage(hash: string) {
+  async function deleteVideoDataFromStorage(hash: string) {
     const videoFilesRef = firebaseRef(storage, `${hash}`);
     try {
       const res = await listAll(videoFilesRef);
@@ -140,6 +140,6 @@ export function useStorage() {
   return {
     uploadUserAvatar,
     uploadFileNewVideo,
-    deleteVideoFromStorage,
+    deleteVideoDataFromStorage,
   };
 }
