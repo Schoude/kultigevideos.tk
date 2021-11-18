@@ -11,10 +11,8 @@ const getTotalDurationString = computed(() => {
 
   return userStore.getUserProfileData?.totalVideoDuration as number > 3600
     ? `${time} Stunden`
-    : userStore.getUserProfileData?.totalVideoDuration as number > 60
-      ? `${time} Minuten` : `${time} Sekunden`
-}
-);
+    : `${time} Minuten`;
+});
 </script>
 
 <template lang='pug'>
@@ -27,10 +25,10 @@ section.user-details
     h1.headline {{ userStore.getUserProfileData?.username }}
 
   article.user-performance
-    h2.headline Performance-Daten
+    h2.headline Performance
     section.performance-data
       p.total-views Anzahl Aufrufe: <br> {{ userStore.getUserProfileData?.totalViewcount }}
-      p.total-duration Gesamtlaufzeit der Videos: <br> {{ getTotalDurationString }}
+      p.total-duration Laufzeit der hochgeladenen Videos: <br> {{ getTotalDurationString }}
       p.total-likes Anzahl Likes: <br> {{ userStore.getUserProfileData?.totalLikes }}
       p.total-dislikes Anzahl Dislikes: <br> {{ userStore.getUserProfileData?.totalDislikes }}
 
