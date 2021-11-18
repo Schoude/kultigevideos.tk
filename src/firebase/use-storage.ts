@@ -2,6 +2,8 @@ import {
   ref as firebaseRef,
   uploadBytesResumable,
   getDownloadURL,
+  listAll,
+  deleteObject,
 } from 'firebase/storage';
 import type { UploadMetadata } from 'firebase/storage';
 import { ref } from 'vue';
@@ -125,8 +127,19 @@ export function useStorage() {
     };
   }
 
+  async function deleteVideoFromStorage(hash: string) {
+    const videoFilesRef = firebaseRef(storage, `${hash}`);
+    try {
+      const res = await listAll(videoFilesRef);
+      res.items.forEach(itemRef => deleteObject(itemRef));
+    } catch (error) {
+      console.log((error as Error).message);
+    }
+  }
+
   return {
     uploadUserAvatar,
     uploadFileNewVideo,
+    deleteVideoFromStorage,
   };
 }

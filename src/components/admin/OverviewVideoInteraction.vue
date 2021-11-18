@@ -23,7 +23,6 @@ async function onApproveClick(videoId: string) {
   isLoading.value = true
   await videoStore.approveVideo({ videoId, listVideo: listVideo.value });
   emits('reload:overiew')
-  isLoading.value = false;
 }
 
 async function listVideoToggle(videoId: string, listVideo: boolean) {
@@ -32,7 +31,14 @@ async function listVideoToggle(videoId: string, listVideo: boolean) {
   isLoading.value = true
   await videoStore.listVideo({ videoId, listVideo });
   emits('reload:overiew');
-  isLoading.value = false;
+}
+
+async function onDeleteVideoClick(id: string, hash: string) {
+  if (isLoading.value) return;
+
+  isLoading.value = true
+  await videoStore.deleteVideo(id, hash);
+  emits('reload:overiew');
 }
 
 function getUsername(uploader: Uploader | undefined) {
@@ -67,6 +73,7 @@ article.overview-video-interaction
         button.btn.btn_cancel(
           type="button"
           :disabled="isLoading"
+          @click="onDeleteVideoClick(video._id, video.hash)"
         ) Video löschen
       .positive
         KvCheckbox(:name="video.hash" v-model:checked="listVideo") nach Freigabe listen?

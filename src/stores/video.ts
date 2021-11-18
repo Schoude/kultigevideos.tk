@@ -2,6 +2,7 @@ import { useAuthStore } from './auth';
 import { defineStore } from 'pinia';
 import { apiClient } from '../api';
 import { Video } from '../types/models/video';
+import { useStorage } from '../firebase/use-storage';
 
 interface VideoState {
   videos: Video[];
@@ -100,6 +101,18 @@ export const useVideoStore = defineStore('video-store', {
             videoId,
             listVideo,
           }),
+        });
+      } catch (error) {
+        console.log((error as Error).message);
+      }
+    },
+    async deleteVideo(id: string, hash: string) {
+      const storage = useStorage();
+      await storage.deleteVideoFromStorage(hash);
+
+      try {
+        await apiClient.delete<Video>({
+          url: `/api/v1/video/${id}`,
         });
       } catch (error) {
         console.log((error as Error).message);
