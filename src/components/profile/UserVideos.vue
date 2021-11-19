@@ -4,19 +4,15 @@ import { usePageHelpers } from '../../composables/page-helpers';
 import { useAuthStore } from '../../stores/auth';
 import { useUserStore } from '../../stores/user';
 
-const authStore = useAuthStore();
 const userStore = useUserStore();
 const { createFormattedDurationStringFromSeconds, getLocaleDateString } = usePageHelpers();
-
-const userHasVideos = computed(() => userStore.getUserProfileData?.videos.length as number > 0);
-const userIsAuthUser = computed(() => authStore.getUserId === userStore.getUserProfileData?._id);
 </script>
 
 <template lang='pug'>
 section.user-videos
   h1.headline Videos ({{ userStore.getUserProfileData?.videos.length }})
 
-  .videos-container(v-if="userHasVideos")
+  .videos-container(v-if="userStore.userHasVideos")
     article.video(v-for="video of userStore.getUserProfileData?.videos" :key="video._id")
       RouterLink.btn-thumbnail(:to="`/watch/${video.hash}`")
         span.duration-display {{ createFormattedDurationStringFromSeconds(video.meta.duration) }}
@@ -31,7 +27,7 @@ section.user-videos
           span.video-meta-block.viewcount(data-cy="viewcount") {{ video.viewCount }} Aufrufe
           span.video-meta-block.upload-date(data-cy="upload-date") am {{ getLocaleDateString(video.uploadedAt) }}
 
-      .actions(v-if="userIsAuthUser")
+      .actions(v-if="userStore.userIsAuthUser")
         button.btn.btn_cancel(type="button") Video löschen
         button.btn.btn_secondary(type="button") Video editieren
 

@@ -17,7 +17,7 @@ const getTotalDurationString = computed(() => {
 
 <template lang='pug'>
 section.user-details
-  article.user
+  article.user(v-if="!userStore.userIsAuthUser")
     img.avatar(
       :alt="`Avatar pictur of ${userStore.getUserProfileData?.username}`"
       :src="userStore.getUserProfileData?.meta.avatarUrl"

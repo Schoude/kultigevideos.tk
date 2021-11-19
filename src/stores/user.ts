@@ -1,3 +1,4 @@
+import { useAuthStore } from './auth';
 import type { NewUserData, ProfileUser } from './../types/models/user.d';
 import { defineStore } from 'pinia';
 import { apiClient } from '../api';
@@ -43,6 +44,13 @@ export const useUserStore = defineStore('user', {
   getters: {
     getUserProfileData(): ProfileUser | null {
       return this.userProfileData;
+    },
+    userIsAuthUser(): boolean {
+      const authStore = useAuthStore();
+      return this.getUserProfileData?._id === authStore.getUserId;
+    },
+    userHasVideos(): boolean {
+      return (this.getUserProfileData as ProfileUser).videos.length > 0;
     },
   },
 });
