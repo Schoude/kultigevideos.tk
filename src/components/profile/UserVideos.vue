@@ -70,6 +70,10 @@ section.user-videos
   width: 100%;
 }
 
+.thumb-img {
+  width: 100%;
+}
+
 .title {
   font-weight: 500;
 }
