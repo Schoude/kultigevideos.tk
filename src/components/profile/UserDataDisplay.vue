@@ -1,4 +1,5 @@
 <script setup lang='ts'>
+import { onUnmounted } from '@vue/runtime-core';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '../../stores/user';
 import UserDetails from './UserDetails.vue';
@@ -8,6 +9,8 @@ const router = useRouter();
 const userStore = useUserStore();
 
 await userStore.fetchUserProfileData(router.currentRoute.value.params.id as string);
+
+onUnmounted(() => userStore.setUserProfileData(null))
 </script>
 
 <template lang='pug'>

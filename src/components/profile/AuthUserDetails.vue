@@ -3,13 +3,14 @@ import { useUserStore } from '../../stores/user';
 import { useAuthStore } from '../../stores/auth';
 import UserDetails from './UserDetails.vue';
 import UserVideos from './UserVideos.vue';
+import { onUnmounted } from '@vue/runtime-core';
 
 const authStore = useAuthStore();
 const userStore = useUserStore();
 
-if (userStore.getUserProfileData == null) {
-  await userStore.fetchUserProfileData(authStore.getUserId);
-}
+await userStore.fetchUserProfileData(authStore.getUserId);
+
+onUnmounted(() => userStore.setUserProfileData(null));
 </script>
 
 <template lang='pug'>

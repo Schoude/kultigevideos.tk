@@ -1,15 +1,17 @@
 import { useAuthStore } from './auth';
-import type { NewUserData, ProfileUser } from './../types/models/user.d';
+import type { NewUserData, ProfileUser, User } from './../types/models/user.d';
 import { defineStore } from 'pinia';
 import { apiClient } from '../api';
 
 interface UserState {
   userProfileData: null | ProfileUser;
+  usersOverview: User[];
 }
 
 export const useUserStore = defineStore('user', {
   state: (): UserState => ({
     userProfileData: null,
+    usersOverview: [],
   }),
   actions: {
     async createUser(newUser: NewUserData) {
@@ -40,6 +42,21 @@ export const useUserStore = defineStore('user', {
     setUserProfileData(profileData: ProfileUser | null) {
       this.userProfileData = profileData;
     },
+    async fetchUsersOverview() {
+      try {
+        const res = await apiClient.get<User[]>({
+          url: `/api/v1/users/overview`,
+          mode: 'cors',
+        });
+
+        this.setUsersOverviewData(res.data);
+      } catch (error) {
+        console.log((error as Error).message);
+      }
+    },
+    setUsersOverviewData(users: User[]) {
+      this.usersOverview = users;
+    },
   },
   getters: {
     getUserProfileData(): ProfileUser | null {
@@ -50,7 +67,9 @@ export const useUserStore = defineStore('user', {
       return this.getUserProfileData?._id === authStore.getUserId;
     },
     userHasVideos(): boolean {
-      return (this.getUserProfileData as ProfileUser).videos.length > 0;
+      return this.getUserProfileData
+        ? this.getUserProfileData.videos.length > 0
+        : false;
     },
   },
 });
