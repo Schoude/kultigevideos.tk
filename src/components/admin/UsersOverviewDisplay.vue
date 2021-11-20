@@ -14,7 +14,12 @@ onUnmounted(() => userStore.setUsersOverviewData([]))
 section.users-overview-display
   h1 Benutzerübersicht
   .users-container
-    UserCard(v-for="user of userStore.getUsersOverview" :key="user._id" :user="user")
+    UserCard(
+      v-for="user of userStore.getUsersOverview"
+      :key="user._id"
+      :user="user"
+      @updated:user-role="userStore.fetchUsersOverview"
+    )
 </template>
 
 <style lang='scss' scoped>

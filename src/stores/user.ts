@@ -1,5 +1,10 @@
 import { useAuthStore } from './auth';
-import type { NewUserData, ProfileUser, User } from './../types/models/user.d';
+import type {
+  NewUserData,
+  ProfileUser,
+  User,
+  UserRole,
+} from './../types/models/user.d';
 import { defineStore } from 'pinia';
 import { apiClient } from '../api';
 
@@ -56,6 +61,17 @@ export const useUserStore = defineStore('user', {
     },
     setUsersOverviewData(users: User[]) {
       this.usersOverview = users;
+    },
+    async updateUserRole(userId: string, role: UserRole) {
+      try {
+        await apiClient.put({
+          url: '/api/v1/user/role',
+          mode: 'cors',
+          body: JSON.stringify({ userId, role }),
+        });
+      } catch (error) {
+        console.log((error as Error).message);
+      }
     },
   },
   getters: {

@@ -1,16 +1,28 @@
 <script setup lang='ts'>
 import { ref } from 'vue';
+import { useUserStore } from '../../stores/user';
 import type { User, UserRole } from '../../types/models/user';
 import KvRadioButton from '../forms/elements/KvRadioButton.vue';
+import LoaderIndeterminate from '../gfx/loaders/LoaderIndeterminate.vue';
 
 const props = defineProps<{ user: User }>();
+const emit = defineEmits(['updated:userRole']);
 
+const userStore = useUserStore();
 const updatedRole = ref<UserRole>(props.user.role);
 const isLoading = ref(false);
+
+async function onUpdateUserRoleClick() {
+  isLoading.value = true;
+  await userStore.updateUserRole(props.user._id, updatedRole.value);
+  emit('updated:userRole');
+  isLoading.value = false;
+}
 </script>
 
 <template lang='pug'>
 article.user-card
+  LoaderIndeterminate(:class="{ visible: isLoading }")
   section.user-meta
     RouterLink.user-meta(:to='`/profile/${props.user._id}`')
       img.avatar(:alt="`Avatar von ${props.user.username}`" :src="props.user.meta.avatarUrl")
@@ -27,11 +39,13 @@ article.user-card
     button.btn.btn_secondary(
       type="submit"
       :disabled="isLoading"
+      @click="onUpdateUserRoleClick"
       ) Benutzer editieren
 </template>
 
 <style lang='scss' scoped>
 .user-card {
+  position: relative;
   background-color: var(--color-ui);
   padding: 1em;
   min-width: 320px;
