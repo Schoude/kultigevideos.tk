@@ -3,7 +3,7 @@ import { useUserStore } from '../../stores/user';
 import { useAuthStore } from '../../stores/auth';
 import UserDetails from './UserDetails.vue';
 import UserVideos from './UserVideos.vue';
-import { onUnmounted } from '@vue/runtime-core';
+import { onUnmounted } from 'vue';
 
 const authStore = useAuthStore();
 const userStore = useUserStore();

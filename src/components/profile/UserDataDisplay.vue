@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { onUnmounted } from '@vue/runtime-core';
+import { onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '../../stores/user';
 import UserDetails from './UserDetails.vue';

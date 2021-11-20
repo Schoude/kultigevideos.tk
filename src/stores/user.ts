@@ -45,7 +45,7 @@ export const useUserStore = defineStore('user', {
     async fetchUsersOverview() {
       try {
         const res = await apiClient.get<User[]>({
-          url: `/api/v1/users/overview`,
+          url: '/api/v1/users/overview',
           mode: 'cors',
         });
 
@@ -70,6 +70,9 @@ export const useUserStore = defineStore('user', {
       return this.getUserProfileData
         ? this.getUserProfileData.videos.length > 0
         : false;
+    },
+    getUsersOverview(): User[] {
+      return this.usersOverview;
     },
   },
 });

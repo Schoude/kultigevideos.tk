@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { defineComponent, useAttrs } from '@vue/runtime-core';
+import { defineComponent, useAttrs } from 'vue';
 import SvgIcon from '../../gfx/icons/SvgIcon.vue';
 
 defineComponent({ inheritAttrs: false })
