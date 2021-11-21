@@ -4,7 +4,11 @@ import TheVideoFeed from '../../components/feed/TheVideoFeed.vue';
 
 <template lang='pug'>
 main.feed
-  TheVideoFeed
+  Suspense
+    template(#default)
+      TheVideoFeed
+    template(#fallback)
+      h1 Lade Daten
 </template>
 
 <style lang='scss' scoped>

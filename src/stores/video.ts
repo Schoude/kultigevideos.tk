@@ -6,19 +6,36 @@ import { useStorage } from '../firebase/use-storage';
 
 interface VideoState {
   videos: Video[];
+  videosRecommended: Video[];
   currentVideo: null | Video;
 }
 
 export const useVideoStore = defineStore('video-store', {
-  state: (): VideoState => ({ videos: [], currentVideo: null }),
+  state: (): VideoState => ({
+    videos: [],
+    videosRecommended: [],
+    currentVideo: null,
+  }),
   actions: {
-    async getFeed() {
+    async fetchFeed() {
       try {
         const res = await apiClient.get<Video[]>({
           url: '/api/v1/videos/feed',
           mode: 'cors',
         });
         this.videos = res.data;
+      } catch (error) {
+        console.log((error as Error).message);
+      }
+    },
+    async getRecommended(excludeHash: string) {
+      try {
+        const res = await apiClient.get<Video[]>({
+          url: `/api/v1/videos/recommended/${excludeHash}`,
+          mode: 'cors',
+        });
+
+        this.setVideosRecommended(res.data);
       } catch (error) {
         console.log((error as Error).message);
       }
@@ -118,10 +135,22 @@ export const useVideoStore = defineStore('video-store', {
         console.log((error as Error).message);
       }
     },
+    setVideosFeed(videos: Video[]) {
+      this.videos = videos;
+    },
+    setVideosRecommended(videos: Video[]) {
+      this.videosRecommended = videos;
+    },
   },
   getters: {
     getCurrentVideoUrl(): string {
       return this.currentVideo?.url as string;
+    },
+    getVideosFeed(): Video[] {
+      return this.videos;
+    },
+    getVideosRecommended(): Video[] {
+      return this.videosRecommended;
     },
   },
 });

@@ -1,16 +1,17 @@
 <script setup lang='ts'>
-import { onMounted } from 'vue';
+import { onUnmounted } from 'vue';
 import { useVideoStore } from '../../stores/video';
 import VideoFeedEntry from './VideoFeedEntry.vue';
 
 const videoStore = useVideoStore();
 
-onMounted(async () => await videoStore.getFeed())
+await videoStore.fetchFeed()
+onUnmounted(() => videoStore.setVideosFeed([]))
 </script>
 
 <template lang='pug'>
 section.the-video-feed
-  template(v-for="video of videoStore.videos" :key="video.hash")
+  template(v-for="video of videoStore.getVideosFeed" :key="video.hash")
     VideoFeedEntry(:video='video')
 </template>
 
