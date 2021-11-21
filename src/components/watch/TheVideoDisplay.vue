@@ -4,11 +4,14 @@ import { useVideoStore } from '../../stores/video';
 import VideoPlayer from '../../components/video/VideoPlayer.vue';
 import TheVideoMetadataDisplay from './TheVideoMetadataDisplay.vue';
 import TheVideoDescriptionDisplay from './TheVideoDescriptionDisplay.vue';
+import { onUnmounted } from 'vue';
 
 const router = useRouter();
 const videoStore = useVideoStore();
 
 await videoStore.getByHash(router.currentRoute.value.params.hash as string)
+
+onUnmounted(() => videoStore.setCurrentVideo(null));
 </script>
 
 <template lang='pug'>

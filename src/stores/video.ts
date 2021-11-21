@@ -135,6 +135,9 @@ export const useVideoStore = defineStore('video-store', {
         console.log((error as Error).message);
       }
     },
+    setCurrentVideo(video: Video | null) {
+      this.currentVideo = video;
+    },
     setVideosFeed(videos: Video[]) {
       this.videos = videos;
     },
