@@ -1,17 +1,10 @@
 <script setup lang='ts'>
-import { useRouter } from 'vue-router';
 import { usePageHelpers } from '../../composables/page-helpers';
-import { ROUTE_NAMES } from '../../router/routing-info';
 import type { Video } from '../../types/models/video';
 
-const router = useRouter();
 const { getLocaleDateString, createFormattedDurationStringFromSeconds } = usePageHelpers();
 
-const props = defineProps<{ video: Video }>()
-
-function onCardClick() {
-  router.push({ name: ROUTE_NAMES.WATCH, params: { hash: props.video.hash } })
-}
+defineProps<{ video: Video }>()
 
 </script>
 
