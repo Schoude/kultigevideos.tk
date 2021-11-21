@@ -28,7 +28,7 @@ export const useVideoStore = defineStore('video-store', {
         console.log((error as Error).message);
       }
     },
-    async getRecommended(excludeHash: string) {
+    async fetchRecommended(excludeHash: string) {
       try {
         const res = await apiClient.get<Video[]>({
           url: `/api/v1/videos/recommended/${excludeHash}`,

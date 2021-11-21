@@ -1,10 +1,24 @@
 <script setup lang='ts'>
+import { ref, watch } from 'vue';
+
 const props = withDefaults(defineProps<{ url: string, poster?: string, autoplay?: boolean }>(), { autoplay: false });
+
+const videoEl = ref<HTMLVideoElement | null>(null);
+
+watch(() => props.url, (newVal) => {
+  (videoEl.value as HTMLVideoElement).src = newVal;
+});
+
 </script>
 
 <template lang='pug'>
 .video-player
-  video(controls :poster="props.poster" :autoplay="props.autoplay")
+  video(
+    ref="videoEl"
+    controls
+    :poster="props.poster"
+    :autoplay="props.autoplay"
+  )
     source(:src="props.url")
 </template>
 

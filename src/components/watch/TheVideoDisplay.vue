@@ -1,10 +1,11 @@
 <script setup lang='ts'>
-import { useRouter } from 'vue-router';
+import { onBeforeRouteUpdate, useRouter } from 'vue-router';
 import { useVideoStore } from '../../stores/video';
 import VideoPlayer from '../../components/video/VideoPlayer.vue';
 import TheVideoMetadataDisplay from './TheVideoMetadataDisplay.vue';
 import TheVideoDescriptionDisplay from './TheVideoDescriptionDisplay.vue';
 import { onUnmounted } from 'vue';
+import TheRecommendedDisplay from './TheRecommendedDisplay.vue';
 
 const router = useRouter();
 const videoStore = useVideoStore();
@@ -12,6 +13,10 @@ const videoStore = useVideoStore();
 await videoStore.getByHash(router.currentRoute.value.params.hash as string)
 
 onUnmounted(() => videoStore.setCurrentVideo(null));
+
+onBeforeRouteUpdate(async to => {
+  await videoStore.getByHash(to.params.hash as string);
+})
 </script>
 
 <template lang='pug'>
@@ -26,9 +31,7 @@ section.the-video-display
       TheVideoMetadataDisplay
       TheVideoDescriptionDisplay
       .comments COMMENTS GO HERE
-  .recommended-col
-    .recommended-col__inner
-      h1 Recommended go here
+  TheRecommendedDisplay.recommended-col
 </template>
 
 <style lang='scss' scoped>
