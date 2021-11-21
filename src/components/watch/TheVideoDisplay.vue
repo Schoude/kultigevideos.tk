@@ -48,11 +48,11 @@ section.the-video-display
   }
 
   @include mq("wqhd") {
-    max-width: 2000px;
+    max-width: 2200px;
   }
 
   @include mq("4k") {
-    max-width: 2700px;
+    max-width: 3000px;
   }
 }
 
@@ -62,7 +62,7 @@ section.the-video-display
 }
 
 .video-col {
-  flex-basis: 51.5%;
+  flex-basis: 33%;
 }
 
 .video-col__inner,

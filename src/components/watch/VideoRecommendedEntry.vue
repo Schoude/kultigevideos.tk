@@ -27,9 +27,17 @@ article.video-recommended-entry
 </template>
 
 <style lang='scss' scoped>
+@use '../../styles/mixins' as *;
+
 .video-recommended-entry {
   display: flex;
   gap: 0.5em;
+  flex-direction: column;
+  max-width: 550px;
+
+  @include mq("t-l") {
+    flex-direction: row;
+  }
 
   & + & {
     margin-top: 1em;

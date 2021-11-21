@@ -15,19 +15,11 @@ main.watch
 @use '../../styles/mixins' as *;
 
 .watch {
-  padding: 1em 0 0 0;
+  padding: 1em;
 
   @include mq("t-l") {
     display: flex;
     justify-content: center;
-  }
-
-  @include mq("laptop") {
-    padding: 1em 75px;
-  }
-
-  @include mq("desktop") {
-    padding: 1em 100px;
   }
 }
 </style>
