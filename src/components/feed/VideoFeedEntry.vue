@@ -65,10 +65,6 @@ article.video-feed-entry
 .avatar-box {
   flex-shrink: 0;
   flex-basis: 38px;
-
-  // @include mq("desktop") {
-  //   flex: revert;
-  // }
 }
 
 .avatar {

@@ -68,15 +68,9 @@ async function dislikeVideo() {
   font-size: 1.125em;
   font-weight: 500;
   margin: 0.75em 0 0.75em 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 
   @include mq("t-p") {
     margin: 1em 0 0.5em 0;
-    white-space: revert;
-    overflow: revert;
-    text-overflow: revert;
   }
 }
 
