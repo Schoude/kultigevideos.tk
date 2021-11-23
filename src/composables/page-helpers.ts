@@ -31,18 +31,29 @@ export const usePageHelpers = () => {
       : `${m}:${s.toString().padStart(2, '0')}`;
   }
 
+  function setMediaSession(title: string, uploader: string, thumb: string) {
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: title,
+        artist: uploader,
+        artwork: [{ src: thumb, type: 'image/jpg' }],
+      });
+    }
+  }
+
   return {
     isDarkMode,
     getLogoPath,
     getLogoPathSmall,
     getLocaleDateString,
     createFormattedDurationStringFromSeconds,
+    setMediaSession,
   };
 };
 
 window
   .matchMedia('(prefers-color-scheme: dark)')
-  .addEventListener('change', (event) => {
+  .addEventListener('change', event => {
     if (event.matches) {
       isDarkMode.value = true;
     } else {
