@@ -26,8 +26,13 @@ const routes: Array<RouteRecordRaw> = [
         // store video id for navigation after login
         if (to.name === ROUTE_NAMES.WATCH) {
           localStorage.setItem('videoId', to.params.hash as string);
+
+          if (to.query.t) {
+            localStorage.setItem('startTime', to.query.t as string);
+          }
         } else {
           localStorage.removeItem('videoId');
+          localStorage.removeItem('startTime');
         }
 
         next({ name: ROUTE_NAMES.LOGIN });

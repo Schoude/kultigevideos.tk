@@ -55,8 +55,21 @@ async function onFormSubmit() {
 
     // navigate to watch page with saved video id.
     if (localStorage.getItem('videoId') != null) {
-      await router.push({ name: ROUTE_NAMES.WATCH, params: { hash: localStorage.getItem('videoId') } });
+      const routingInfo: { name: string, params: Record<string, string | null>, query?: Record<string, string | null> } = {
+        name: ROUTE_NAMES.WATCH,
+        params: {
+          hash: localStorage.getItem('videoId'),
+        },
+      }
+
+      if (localStorage.getItem('startTime')) {
+        Object.assign(routingInfo, { query: { t: localStorage.getItem('startTime') } });
+      }
+
+      await router.push(routingInfo);
+
       localStorage.removeItem('videoId');
+      localStorage.removeItem('startTime');
     } else {
       await router.push({ name: ROUTE_NAMES.FEED });
     }
