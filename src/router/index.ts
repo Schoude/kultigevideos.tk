@@ -23,6 +23,13 @@ const routes: Array<RouteRecordRaw> = [
     beforeEnter: (to, from, next) => {
       const authStore = useAuthStore();
       if (!authStore.isLoggedIn) {
+        // store video id for navigation after login
+        if (to.name === ROUTE_NAMES.WATCH) {
+          localStorage.setItem('videoId', to.params.hash as string);
+        } else {
+          localStorage.removeItem('videoId');
+        }
+
         next({ name: ROUTE_NAMES.LOGIN });
         return;
       }
@@ -147,6 +154,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore();
+  console.log(from);
 
   if (!authStore.isLoggedIn) {
     try {

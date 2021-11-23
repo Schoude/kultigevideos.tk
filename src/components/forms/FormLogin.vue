@@ -52,7 +52,14 @@ async function onFormSubmit() {
   isLoading.value = true
   try {
     await authStore.login(loginData.email, loginData.password);
-    await router.push({ name: ROUTE_NAMES.FEED });
+
+    // navigate to watch page with saved video id.
+    if (localStorage.getItem('videoId') != null) {
+      await router.push({ name: ROUTE_NAMES.WATCH, params: { hash: localStorage.getItem('videoId') } });
+      localStorage.removeItem('videoId');
+    } else {
+      await router.push({ name: ROUTE_NAMES.FEED });
+    }
   } catch (error) {
     console.log((error as Error).message);
   } finally {
