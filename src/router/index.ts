@@ -154,7 +154,6 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore();
-  console.log(from);
 
   if (!authStore.isLoggedIn) {
     try {

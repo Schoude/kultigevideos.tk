@@ -1,5 +1,8 @@
 <script setup lang='ts'>
-import { ref, watch } from 'vue';
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const props = withDefaults(defineProps<{ url: string, poster?: string, autoplay?: boolean }>(), { autoplay: false });
 
@@ -9,6 +12,17 @@ watch(() => props.url, (newVal) => {
   (videoEl.value as HTMLVideoElement).src = newVal;
 });
 
+function setVideoCurrenTime() {
+  const time = router.currentRoute.value.query.t as unknown as number;
+  const maxDuration = Math.floor((videoEl.value as HTMLVideoElement).duration);
+
+  if (time && time <= maxDuration) {
+    (videoEl.value as HTMLVideoElement).currentTime = Number(router.currentRoute.value.query.t);
+  }
+}
+
+onMounted(() => (videoEl.value as HTMLVideoElement).addEventListener('loadedmetadata', setVideoCurrenTime));
+onBeforeUnmount(() => (videoEl.value as HTMLVideoElement).removeEventListener('loadedmetadata', setVideoCurrenTime));
 </script>
 
 <template lang='pug'>
