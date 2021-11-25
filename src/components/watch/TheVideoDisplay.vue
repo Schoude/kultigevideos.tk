@@ -4,13 +4,14 @@ import { useVideoStore } from '../../stores/video';
 import VideoPlayer from '../../components/video/VideoPlayer.vue';
 import TheVideoMetadataDisplay from './TheVideoMetadataDisplay.vue';
 import TheVideoDescriptionDisplay from './TheVideoDescriptionDisplay.vue';
-import { onUnmounted, watch } from 'vue';
+import {onUnmounted, ref, watch} from 'vue';
 import TheRecommendedDisplay from './TheRecommendedDisplay.vue';
 import { usePageHelpers } from '../../composables/page-helpers';
 
 const router = useRouter();
 const videoStore = useVideoStore();
 const { setMediaSession } = usePageHelpers();
+const letterbox = ref<boolean>(false);
 
 watch(() => videoStore.currentVideo, (currentVideo) => {
   if (currentVideo) {
@@ -24,16 +25,23 @@ onBeforeRouteUpdate(async to => {
   await videoStore.getByHash(to.params.hash as string);
 })
 
+function onAspectRatio (ratio: number) {
+  if (ratio < 1.4) {
+    letterbox.value = true;
+  }
+}
+
 await videoStore.getByHash(router.currentRoute.value.params.hash as string)
 </script>
 
 <template lang='pug'>
 section.the-video-display
-  .video-col
+  .video-col(:class="{'letterbox': letterbox}")
     VideoPlayer.video-player(
       :url="videoStore.getCurrentVideoUrl"
       :poster="videoStore.currentVideo?.thumb"
       :autoplay="true"
+      @aspect-ratio="onAspectRatio"
     )
     .video-col__inner
       TheVideoMetadataDisplay
@@ -64,13 +72,19 @@ section.the-video-display
   }
 }
 
-.video-col,
-.recommended-col {
+.video-col {
   flex: 1;
+  max-width: 1780px;
+
+  &.letterbox {
+    max-width: 1280px;
+  }
 }
 
-.video-col {
-  flex-basis: 33%;
+.recommended-col {
+  width: 100%;
+  max-width: 400px;
+  flex: none;
 }
 
 .video-col__inner,

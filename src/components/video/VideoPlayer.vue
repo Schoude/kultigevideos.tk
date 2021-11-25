@@ -6,6 +6,8 @@ const router = useRouter();
 
 const props = withDefaults(defineProps<{ url: string, poster?: string, autoplay?: boolean }>(), { autoplay: false });
 
+const emits = defineEmits<{ (e: 'aspect-ratio', value: number): void }>();
+
 const videoEl = ref<HTMLVideoElement | null>(null);
 
 watch(() => props.url, (newVal) => {
@@ -13,6 +15,8 @@ watch(() => props.url, (newVal) => {
 });
 
 function setVideoCurrenTime() {
+  const aspectRatio = videoEl.value!.videoWidth / videoEl.value!.videoHeight;
+  emits('aspect-ratio', aspectRatio);
   const time = router.currentRoute.value.query.t as unknown as number;
   const maxDuration = Math.floor((videoEl.value as HTMLVideoElement).duration);
 
