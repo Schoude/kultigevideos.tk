@@ -41,6 +41,16 @@ export const usePageHelpers = () => {
     }
   }
 
+  function setPageTitle(prefix?: string) {
+    const defaultTitle = 'Kultige Videos';
+
+    if (prefix) {
+      document.title = `${prefix} | ${defaultTitle}`;
+    } else {
+      document.title = defaultTitle;
+    }
+  }
+
   return {
     isDarkMode,
     getLogoPath,
@@ -48,6 +58,7 @@ export const usePageHelpers = () => {
     getLocaleDateString,
     createFormattedDurationStringFromSeconds,
     setMediaSession,
+    setPageTitle,
   };
 };
 

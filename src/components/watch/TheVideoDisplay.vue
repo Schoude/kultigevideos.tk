@@ -10,21 +10,26 @@ import { usePageHelpers } from '../../composables/page-helpers';
 
 const router = useRouter();
 const videoStore = useVideoStore();
-const { setMediaSession } = usePageHelpers();
+const { setMediaSession, setPageTitle } = usePageHelpers();
 
 watch(() => videoStore.currentVideo, (currentVideo) => {
-  if (currentVideo) {
+  if (currentVideo != null) {
+    setPageTitle(currentVideo.title);
     setMediaSession(currentVideo.title, currentVideo.uploader?.username as string, currentVideo.thumb);
   }
 });
 
-onUnmounted(() => videoStore.setCurrentVideo(null));
+onUnmounted(() => {
+  videoStore.setCurrentVideo(null);
+  setPageTitle();
+});
 
 onBeforeRouteUpdate(async to => {
   await videoStore.getByHash(to.params.hash as string);
 })
 
 await videoStore.getByHash(router.currentRoute.value.params.hash as string)
+setPageTitle(videoStore.currentVideo?.title);
 </script>
 
 <template lang='pug'>
