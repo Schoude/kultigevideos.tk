@@ -22,3 +22,5 @@ export type ProfileUser = Omit<User, 'email' | 'role'> & {
   totalVideoDuration: number;
   totalViewcount: number;
 };
+
+export type Author = Omit<User, 'email' | 'role'>;

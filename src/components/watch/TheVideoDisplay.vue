@@ -7,6 +7,7 @@ import TheVideoDescriptionDisplay from './TheVideoDescriptionDisplay.vue';
 import { onUnmounted, watch } from 'vue';
 import TheRecommendedDisplay from './TheRecommendedDisplay.vue';
 import { usePageHelpers } from '../../composables/page-helpers';
+import TheCommentsDisplay from '../comments/TheCommentsDisplay.vue';
 
 const router = useRouter();
 const videoStore = useVideoStore();
@@ -43,7 +44,7 @@ section.the-video-display
     .video-col__inner
       TheVideoMetadataDisplay
       TheVideoDescriptionDisplay
-      .comments COMMENTS GO HERE
+      TheCommentsDisplay.comments
   TheRecommendedDisplay.recommended-col
 </template>
 
