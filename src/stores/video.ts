@@ -149,6 +149,9 @@ export const useVideoStore = defineStore('video-store', {
     getCurrentVideoUrl(): string {
       return this.currentVideo?.url as string;
     },
+    getCurrentVideoId(): string {
+      return this.currentVideo?._id as string;
+    },
     getVideosFeed(): Video[] {
       return this.videos;
     },

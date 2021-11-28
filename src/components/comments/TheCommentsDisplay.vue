@@ -18,7 +18,7 @@ section.the-comment-display
   display: flex;
   align-items: center;
   gap: 2em;
-  margin-bottom: 2em;
+  margin-bottom: 1em;
 }
 
 .comments-count,
