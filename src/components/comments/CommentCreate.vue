@@ -43,6 +43,8 @@ function onCancelClick() {
 }
 
 async function onCreateCommentClick() {
+  await v$.value.newComment.$validate();
+
   if (v$.value.$invalid || isLoading.value) return;
   isLoading.value = true;
 
@@ -77,7 +79,6 @@ async function onCreateCommentClick() {
         placeholder="Öffentlich kommentieren"
         autocomplete="off"
         v-model="v$.newComment.$model"
-        @blur="v$.newComment.$validate"
         @focus="onFocus"
       )
       Transition(name="fade-fast" mode="out-in")
