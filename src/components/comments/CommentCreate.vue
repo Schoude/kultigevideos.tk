@@ -52,6 +52,7 @@ async function onCreateCommentClick() {
 
   if (res?.status === 201) {
     clearCommentInput();
+    await commentsStore.fetchCommentsOfVideo(videoStore.getCurrentVideoHash);
   }
 
   isLoading.value = false;
