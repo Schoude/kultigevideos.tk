@@ -20,11 +20,18 @@ section.the-comment-display
 </template>
 
 <style lang='scss' scoped>
+@use '../../styles/mixins' as *;
+
 .comments-meta-data {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 2em;
   margin-bottom: 1em;
+
+  @include mq("t-p") {
+    flex-direction: row;
+    align-items: center;
+  }
 }
 
 .comments-count,
