@@ -15,6 +15,7 @@ const newCommentData = reactive({ newComment: '' });
 const newCommentMinLength = 3;
 const newCommentMaxLength = 500;
 
+const wasFocused = ref(false);
 const isLoading = ref(false);
 
 const rules = computed(() => ({
@@ -27,9 +28,14 @@ const rules = computed(() => ({
 
 const v$ = useVuelidate(rules, newCommentData, { $rewardEarly: true });
 
+function onFocus() {
+  wasFocused.value = true;
+}
+
 function clearCommentInput() {
   newCommentData.newComment = '';
   v$.value.$reset();
+  wasFocused.value = false;
 }
 
 function onCancelClick() {
@@ -72,6 +78,7 @@ async function onCreateCommentClick() {
         autocomplete="off"
         v-model="v$.newComment.$model"
         @blur="v$.newComment.$validate"
+        @focus="onFocus"
       )
       Transition(name="fade-fast" mode="out-in")
         template(v-if="v$.newComment.$dirty && v$.newComment.$invalid")
@@ -81,7 +88,7 @@ async function onCreateCommentClick() {
             p.form-validation_error-message(data-cy="error-new-comment-mmax" v-else-if="v$.newComment.maxLength.$invalid") Das Passwort darf max. {{ newCommentMaxLength }} Zeichen lang sein.
 
   Transition(name="fade-fast")
-    .comment-create__actions(v-if="newCommentData.newComment !== ''")
+    .comment-create__actions(v-if="newCommentData.newComment !== '' || wasFocused")
       button.btn.btn_cancel(type="button" @click="onCancelClick") Abbrechen
       button.btn.btn_primary(
         type="submit"
