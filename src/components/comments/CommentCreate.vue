@@ -68,6 +68,7 @@ async function onCreateCommentClick() {
         type="text"
         name="new-comment"
         placeholder="Öffentlich kommentieren"
+        autocomplete="off"
         v-model="v$.newComment.$model"
         @blur="v$.newComment.$validate"
       )

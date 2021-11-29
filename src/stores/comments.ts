@@ -26,6 +26,32 @@ export const useComments = defineStore('comments-store', {
         console.log((error as Error).message);
       }
     },
+    async fetchCommentsOfVideo(hash: string) {
+      interface CommetsOfVideoData {
+        totalCount: {
+          value: number;
+        };
+        comments: Comment[];
+      }
+
+      try {
+        const res = await apiClient.get<CommetsOfVideoData>({
+          url: `/api/v1/comments/${hash}`,
+          mode: 'cors',
+        });
+
+        this.setVideoCount(res.data.totalCount.value);
+        this.setVideoComments(res.data.comments);
+      } catch (error) {
+        console.log((error as Error).message);
+      }
+    },
+    setVideoCount(count: number) {
+      this.count = count;
+    },
+    setVideoComments(comments: Comment[]) {
+      this.comments = comments;
+    },
   },
   getters: {
     getCommentsCount(): number {

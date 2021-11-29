@@ -2,9 +2,9 @@ import type { UserSlim } from './user';
 
 export interface Comment {
   _id?: string;
-  authorId: string;
+  authorId?: string;
   author?: UserSlim;
-  uploaderId: string;
+  uploaderId?: string;
   uploader?: UserSlim;
   text: string;
   videoHash: string;

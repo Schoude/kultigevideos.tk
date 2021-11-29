@@ -1,7 +1,12 @@
 <script setup lang='ts'>
+import { useRouter } from 'vue-router';
 import { useComments } from '../../stores/comments';
 import CommentCreate from './CommentCreate.vue';
 const commentsStore = useComments();
+
+const router = useRouter();
+
+await commentsStore.fetchCommentsOfVideo(router.currentRoute.value.params.hash as string);
 </script>
 
 <template lang='pug'>
