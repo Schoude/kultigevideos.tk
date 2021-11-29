@@ -63,7 +63,7 @@ async function onCreateCommentClick() {
 .comment-create
   LoaderIndeterminate(:class="{ visible: isLoading }")
   form#new-comment.comment-create__inner(@submit.prevent="onCreateCommentClick")
-    img.avatar(:src="authStore.getAvatarUrl" :alt="`Profilbild von ${authStore.getUserName}`")
+    img.avatar.avatar__comment(:src="authStore.getAvatarUrl" :alt="`Profilbild von ${authStore.getUserName}`")
     .form-field
       input#new-comment(
         type="text"
@@ -110,8 +110,7 @@ async function onCreateCommentClick() {
   }
 }
 
-.avatar {
-  height: 48px;
+.avatar__comment {
   align-self: flex-start;
 }
 

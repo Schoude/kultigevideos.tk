@@ -2,6 +2,7 @@
 import { useRouter } from 'vue-router';
 import { useComments } from '../../stores/comments';
 import CommentCreate from './CommentCreate.vue';
+import TheCommentsList from './TheCommentsList.vue';
 const commentsStore = useComments();
 
 const router = useRouter();
@@ -15,7 +16,7 @@ section.the-comment-display
     p.comments-count {{ commentsStore.getCommentsCount }} Kommentare
     .comments-sort Sortieren nach...
   CommentCreate
-  h2 List Comments go here
+  TheCommentsList
 </template>
 
 <style lang='scss' scoped>

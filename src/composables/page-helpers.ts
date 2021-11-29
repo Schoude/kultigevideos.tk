@@ -14,8 +14,14 @@ const getLogoPathSmall = computed(() =>
 );
 
 export const usePageHelpers = () => {
-  function getLocaleDateString(dateString: undefined | string) {
-    return new Date(dateString as string).toLocaleDateString();
+  function getLocaleDateString(
+    dateString: undefined | string,
+    withTime: boolean = false
+  ) {
+    const date = new Date(dateString as string);
+    return withTime
+      ? `am ${date.toLocaleDateString()} um ${date.getHours()}:${date.getMinutes()} Uhr`
+      : date.toLocaleDateString();
   }
 
   /**
