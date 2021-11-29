@@ -23,4 +23,4 @@ export type ProfileUser = Omit<User, 'email' | 'role'> & {
   totalViewcount: number;
 };
 
-export type Author = Omit<User, 'email' | 'role'>;
+export type UserSlim = Omit<User, 'email' | 'role'>;

@@ -1,15 +1,6 @@
 import { defineStore } from 'pinia';
 import { apiClient } from '../api';
-import { Author } from '../types/models/user';
-
-interface Comment {
-  _id?: string;
-  authorId: string;
-  author?: Author;
-  text: string;
-  videoId: string;
-  parentId?: string;
-}
+import type { Comment } from '../types/models/comment';
 
 interface CommentsState {
   count: number;
@@ -24,11 +15,13 @@ export const useComments = defineStore('comments-store', {
   actions: {
     async createComment(comment: Comment) {
       try {
-        await apiClient.post({
+        const res = await apiClient.post({
           url: '/api/v1/comment',
           mode: 'cors',
           body: JSON.stringify(comment),
         });
+
+        return res;
       } catch (error) {
         console.log((error as Error).message);
       }
