@@ -85,8 +85,8 @@ async function onCreateCommentClick() {
         template(v-if="v$.newComment.$dirty && v$.newComment.$invalid")
           Transition(name="fade-fast" mode="out-in")
             p.form-validation_error-message(data-cy="error-new-comment-required" v-if="v$.newComment.required.$invalid") Feld ist erforderlich.
-            p.form-validation_error-message(data-cy="error-new-comment-min" v-else-if="v$.newComment.minLength.$invalid") Das Passwort muss min. {{ newCommentMinLength }} Zeichen lang sein.
-            p.form-validation_error-message(data-cy="error-new-comment-mmax" v-else-if="v$.newComment.maxLength.$invalid") Das Passwort darf max. {{ newCommentMaxLength }} Zeichen lang sein.
+            p.form-validation_error-message(data-cy="error-new-comment-min" v-else-if="v$.newComment.minLength.$invalid") Der Kommentar muss min. {{ newCommentMinLength }} Zeichen lang sein.
+            p.form-validation_error-message(data-cy="error-new-comment-mmax" v-else-if="v$.newComment.maxLength.$invalid") Der Kommentar darf max. {{ newCommentMaxLength }} Zeichen lang sein.
 
   Transition(name="fade-fast")
     .comment-create__actions(v-if="newCommentData.newComment !== '' || wasFocused")

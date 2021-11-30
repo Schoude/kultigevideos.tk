@@ -57,6 +57,17 @@ export const usePageHelpers = () => {
     }
   }
 
+  function handleClickOutside(
+    event: Event | PointerEvent,
+    el: HTMLElement,
+    onClickedOutside: () => void
+  ) {
+    if (el.contains(event.target as Node)) {
+    } else {
+      onClickedOutside();
+    }
+  }
+
   return {
     isDarkMode,
     getLogoPath,
@@ -65,6 +76,7 @@ export const usePageHelpers = () => {
     createFormattedDurationStringFromSeconds,
     setMediaSession,
     setPageTitle,
+    handleClickOutside,
   };
 };
 

@@ -1,19 +1,23 @@
 <script setup lang='ts'>
-import { computed, ref } from 'vue';
+import { computed, provide, ref } from 'vue';
 import { usePageHelpers } from '../../composables/page-helpers';
 import { useAuthStore } from '../../stores/auth';
 import { useCommentStore } from '../../stores/comments';
 import type { Comment } from '../../types/models/comment'
 import { ICON_SIZE } from '../gfx/icons/icon-data';
 import SvgIcon from '../gfx/icons/SvgIcon.vue';
+import CommentMetaActions from './CommentMetaActions.vue';
 
 const props = defineProps<{ comment: Comment }>();
+
+provide('comment', props.comment);
 
 const authStore = useAuthStore();
 const commentsStore = useCommentStore();
 const { getLocaleDateString } = usePageHelpers();
 
 const authorIsUploader = computed(() => props.comment.author?._id === props.comment.uploader?._id);
+const userIsAuthorOrAdmin = computed(() => props.comment.author?._id === authStore.getUserId || authStore.userIsAdmin);
 
 const getIconLike = computed(() => props.comment.likes.includes(authStore.user?._id as string)
   ? 'thumbs-up-solid' : 'thumbs-up');
@@ -44,6 +48,7 @@ async function dislikeComment() {
 
 <template lang='pug'>
 article.comment-list-item
+  CommentMetaActions.meta-actions(v-if="userIsAuthorOrAdmin")
   .avatar-col
     RouterLink(:to="`/profile/${comment.author?._id}`")
       img.avatar.avatar__comment(:src="comment.author?.meta.avatarUrl" :alt="`Profilbild von ${comment.author?.username}`")
@@ -71,10 +76,17 @@ article.comment-list-item
 .comment-list-item {
   display: flex;
   gap: 1em;
+  position: relative;
 
   & + & {
     margin-top: 2em;
   }
+}
+
+.meta-actions {
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 .avatar-col {
