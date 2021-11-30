@@ -1,12 +1,12 @@
 <script setup lang='ts'>
 import { onUnmounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { useComments } from '../../stores/comments';
+import { useCommentStore } from '../../stores/comments';
 import { useVideoStore } from '../../stores/video';
 import CommentCreate from './CommentCreate.vue';
 import TheCommentsList from './TheCommentsList.vue';
 
-const commentsStore = useComments();
+const commentsStore = useCommentStore();
 const videoStore = useVideoStore();
 
 const router = useRouter();

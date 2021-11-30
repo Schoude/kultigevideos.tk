@@ -7,7 +7,7 @@ interface CommentsState {
   comments: Comment[];
 }
 
-export const useComments = defineStore('comments-store', {
+export const useCommentStore = defineStore('comments-store', {
   state: (): CommentsState => ({
     count: 0,
     comments: [],

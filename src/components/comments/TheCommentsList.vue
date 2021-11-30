@@ -1,8 +1,8 @@
 <script setup lang='ts'>
-import { useComments } from '../../stores/comments';
+import { useCommentStore } from '../../stores/comments';
 import CommentListItem from './CommentListItem.vue';
 
-const commentStore = useComments();
+const commentStore = useCommentStore();
 </script>
 
 <template lang='pug'>

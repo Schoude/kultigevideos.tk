@@ -3,12 +3,12 @@ import useVuelidate from '@vuelidate/core';
 import { maxLength, minLength, required } from '@vuelidate/validators';
 import { computed, reactive, ref } from 'vue';
 import { useAuthStore } from '../../stores/auth';
-import { useComments } from '../../stores/comments';
+import { useCommentStore } from '../../stores/comments';
 import { useVideoStore } from '../../stores/video';
 import LoaderIndeterminate from '../gfx/loaders/LoaderIndeterminate.vue';
 
 const authStore = useAuthStore();
-const commentsStore = useComments();
+const commentsStore = useCommentStore();
 const videoStore = useVideoStore();
 
 const newCommentData = reactive({ newComment: '' });
