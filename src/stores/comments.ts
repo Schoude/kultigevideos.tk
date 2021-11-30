@@ -34,6 +34,8 @@ export const useComments = defineStore('comments-store', {
         comments: Comment[];
       }
 
+      this.resetCommentData();
+
       try {
         const res = await apiClient.get<CommetsOfVideoData>({
           url: `/api/v1/comments/${hash}`,
@@ -51,6 +53,10 @@ export const useComments = defineStore('comments-store', {
     },
     setVideoComments(comments: Comment[]) {
       this.comments = comments;
+    },
+    resetCommentData() {
+      this.count = 0;
+      this.comments = [];
     },
   },
   getters: {
