@@ -18,6 +18,7 @@ const getCurrentIcon = computed(
 );
 
 const getSizeClass = computed(() => ({
+  'icon-xxs': props.size === ICON_SIZE.xxs,
   'icon-xs': props.size === ICON_SIZE.xs,
   'icon-s': props.size === ICON_SIZE.s,
   'icon-m': props.size === ICON_SIZE.m,
@@ -38,6 +39,10 @@ svg.svg-icon(
 </template>
 
 <style lang='scss' scoped>
+.icon-xxs {
+  height: 16px;
+}
+
 .icon-xs {
   height: 18px;
 }

@@ -1,13 +1,45 @@
 <script setup lang='ts'>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { usePageHelpers } from '../../composables/page-helpers';
+import { useAuthStore } from '../../stores/auth';
+import { useComments } from '../../stores/comments';
 import type { Comment } from '../../types/models/comment'
+import { ICON_SIZE } from '../gfx/icons/icon-data';
+import SvgIcon from '../gfx/icons/SvgIcon.vue';
 
 const props = defineProps<{ comment: Comment }>();
 
+const authStore = useAuthStore();
+const commentsStore = useComments();
 const { getLocaleDateString } = usePageHelpers();
 
 const authorIsUploader = computed(() => props.comment.author?._id === props.comment.uploader?._id);
+
+const getIconLike = computed(() => props.comment.likes.includes(authStore.user?._id as string)
+  ? 'thumbs-up-solid' : 'thumbs-up');
+
+const getIconDislike = computed(() => props.comment.dislikes.includes(authStore.user?._id as string)
+  ? 'thumbs-down-solid' : 'thumbs-down');
+
+const sentimentLoading = ref(false);
+
+async function likeComment() {
+  if (sentimentLoading.value) return
+  sentimentLoading.value = true;
+
+  await commentsStore.likeComment(props.comment._id as string, authStore.getUserId);
+
+  sentimentLoading.value = false;
+}
+
+async function dislikeComment() {
+  if (sentimentLoading.value) return
+  sentimentLoading.value = true;
+
+  await commentsStore.dislikeComment(props.comment._id as string, authStore.getUserId);
+
+  sentimentLoading.value = false;
+}
 </script>
 
 <template lang='pug'>
@@ -23,6 +55,14 @@ article.comment-list-item
         ) {{ comment.author?.username }}
       span.date {{ getLocaleDateString(comment.createdAt, true) }}
     .comment-text {{ comment.text }}
+    .comment-actions
+      .sentiment
+        button.count(data-cy="btn-like" title="Mag ich" @click="likeComment")
+          SvgIcon.icon.icon-like(:icon-name="getIconLike" :size="ICON_SIZE.xxs")
+          span.counter(data-cy="counter-likes") {{ comment.likes.length }}
+        button.count(data-cy="btn-dislike" title="Mag ich nicht" @click="dislikeComment")
+          SvgIcon.icon.icon-dislike(:icon-name="getIconDislike" :size="ICON_SIZE.xxs")
+          span.counter(data-cy="counter-dislikes") {{ comment.dislikes.length }}
 </template>
 
 <style lang='scss' scoped>
@@ -75,5 +115,16 @@ article.comment-list-item
 
 .comment-text {
   margin-top: 0.5em;
+}
+
+.sentiment {
+  display: flex;
+  gap: 0.5em;
+}
+
+.count {
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
 }
 </style>

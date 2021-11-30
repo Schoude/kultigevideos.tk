@@ -58,6 +58,64 @@ export const useComments = defineStore('comments-store', {
       this.count = 0;
       this.comments = [];
     },
+    async likeComment(commentId: string, userId: string) {
+      try {
+        const res = await apiClient.put({
+          url: '/api/v1/comment/like',
+          mode: 'cors',
+          body: JSON.stringify({ commentId, userId }),
+        });
+
+        this.likeCommentLocal(commentId, userId);
+
+        return res;
+      } catch (error) {
+        console.log((error as Error).message);
+      }
+    },
+    likeCommentLocal(commentId: string, userId: string) {
+      const modifiedComment = this.getCommentById(commentId);
+      if (modifiedComment?.likes.includes(userId)) {
+        const deleteFrom = modifiedComment.likes.indexOf(userId);
+        modifiedComment?.likes.splice(deleteFrom, 1);
+      } else {
+        modifiedComment?.likes.push(userId);
+      }
+
+      if (modifiedComment?.dislikes.includes(userId)) {
+        const deleteFrom = modifiedComment.dislikes.indexOf(userId);
+        modifiedComment?.dislikes.splice(deleteFrom, 1);
+      }
+    },
+    async dislikeComment(commentId: string, userId: string) {
+      try {
+        const res = await apiClient.put({
+          url: '/api/v1/comment/dislike',
+          mode: 'cors',
+          body: JSON.stringify({ commentId, userId }),
+        });
+
+        this.dislikeCommentLocal(commentId, userId);
+
+        return res;
+      } catch (error) {
+        console.log((error as Error).message);
+      }
+    },
+    dislikeCommentLocal(commentId: string, userId: string) {
+      const modifiedComment = this.getCommentById(commentId);
+      if (modifiedComment?.dislikes.includes(userId)) {
+        const deleteFrom = modifiedComment.dislikes.indexOf(userId);
+        modifiedComment?.dislikes.splice(deleteFrom, 1);
+      } else {
+        modifiedComment?.dislikes.push(userId);
+      }
+
+      if (modifiedComment?.likes.includes(userId)) {
+        const deleteFrom = modifiedComment.likes.indexOf(userId);
+        modifiedComment?.likes.splice(deleteFrom, 1);
+      }
+    },
   },
   getters: {
     getCommentsCount(): number {
@@ -65,6 +123,11 @@ export const useComments = defineStore('comments-store', {
     },
     getComments(): Comment[] {
       return this.comments;
+    },
+    getCommentById: state => {
+      return (id: string) => {
+        return state.comments.find(comment => comment._id === id);
+      };
     },
   },
 });
