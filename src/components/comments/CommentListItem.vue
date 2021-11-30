@@ -114,7 +114,7 @@ article.comment-list-item
 }
 
 .comment-text {
-  margin-top: 0.5em;
+  margin-block: 0.5em;
 }
 
 .sentiment {
@@ -126,5 +126,15 @@ article.comment-list-item
   display: flex;
   gap: 0.5em;
   align-items: center;
+
+  @media (prefers-color-scheme: light) {
+    svg {
+      fill: black;
+    }
+  }
+}
+
+.counter {
+  font-size: 14px;
 }
 </style>
