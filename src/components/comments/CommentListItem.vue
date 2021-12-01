@@ -45,7 +45,12 @@ async function likeComment() {
   if (sentimentLoading.value) return
   sentimentLoading.value = true;
 
-  await commentsStore.likeComment(props.comment._id as string, authStore.getUserId);
+  if (props.isReply) {
+    await commentsStore.likeComment(props.comment._id as string, authStore.getUserId, props.comment.parentId);
+  } else {
+    await commentsStore.likeComment(props.comment._id as string, authStore.getUserId);
+  }
+
 
   sentimentLoading.value = false;
 }
@@ -54,7 +59,11 @@ async function dislikeComment() {
   if (sentimentLoading.value) return
   sentimentLoading.value = true;
 
-  await commentsStore.dislikeComment(props.comment._id as string, authStore.getUserId);
+  if (props.isReply) {
+    await commentsStore.dislikeComment(props.comment._id as string, authStore.getUserId, props.comment.parentId);
+  } else {
+    await commentsStore.dislikeComment(props.comment._id as string, authStore.getUserId);
+  }
 
   sentimentLoading.value = false;
 }

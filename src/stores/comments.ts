@@ -58,7 +58,7 @@ export const useCommentStore = defineStore('comments-store', {
       this.count = 0;
       this.comments = [];
     },
-    async likeComment(commentId: string, userId: string) {
+    async likeComment(commentId: string, userId: string, parentId?: string) {
       try {
         const res = await apiClient.put({
           url: '/api/v1/comment/like',
@@ -66,28 +66,48 @@ export const useCommentStore = defineStore('comments-store', {
           body: JSON.stringify({ commentId, userId }),
         });
 
-        this.likeCommentLocal(commentId, userId);
+        if (parentId != null) {
+          this.likeCommentLocal(commentId, userId, parentId);
+        } else {
+          this.likeCommentLocal(commentId, userId);
+        }
 
         return res;
       } catch (error) {
         console.log((error as Error).message);
       }
     },
-    likeCommentLocal(commentId: string, userId: string) {
-      const modifiedComment = this.getCommentById(commentId);
-      if (modifiedComment?.likes.includes(userId)) {
-        const deleteFrom = modifiedComment.likes.indexOf(userId);
-        modifiedComment?.likes.splice(deleteFrom, 1);
-      } else {
-        modifiedComment?.likes.push(userId);
-      }
+    likeCommentLocal(commentId: string, userId: string, parentId?: string) {
+      if (parentId != null) {
+        const modifiedComment = this.getReplyByid(commentId, parentId);
 
-      if (modifiedComment?.dislikes.includes(userId)) {
-        const deleteFrom = modifiedComment.dislikes.indexOf(userId);
-        modifiedComment?.dislikes.splice(deleteFrom, 1);
+        if (modifiedComment?.likes.includes(userId)) {
+          const deleteFrom = modifiedComment.likes.indexOf(userId);
+          modifiedComment?.likes.splice(deleteFrom, 1);
+        } else {
+          modifiedComment?.likes.push(userId);
+        }
+
+        if (modifiedComment?.dislikes.includes(userId)) {
+          const deleteFrom = modifiedComment.dislikes.indexOf(userId);
+          modifiedComment?.dislikes.splice(deleteFrom, 1);
+        }
+      } else {
+        const modifiedComment = this.getCommentById(commentId);
+        if (modifiedComment?.likes.includes(userId)) {
+          const deleteFrom = modifiedComment.likes.indexOf(userId);
+          modifiedComment?.likes.splice(deleteFrom, 1);
+        } else {
+          modifiedComment?.likes.push(userId);
+        }
+
+        if (modifiedComment?.dislikes.includes(userId)) {
+          const deleteFrom = modifiedComment.dislikes.indexOf(userId);
+          modifiedComment?.dislikes.splice(deleteFrom, 1);
+        }
       }
     },
-    async dislikeComment(commentId: string, userId: string) {
+    async dislikeComment(commentId: string, userId: string, parentId?: string) {
       try {
         const res = await apiClient.put({
           url: '/api/v1/comment/dislike',
@@ -95,25 +115,44 @@ export const useCommentStore = defineStore('comments-store', {
           body: JSON.stringify({ commentId, userId }),
         });
 
-        this.dislikeCommentLocal(commentId, userId);
+        if (parentId != null) {
+          this.dislikeCommentLocal(commentId, userId, parentId);
+        } else {
+          this.dislikeCommentLocal(commentId, userId);
+        }
 
         return res;
       } catch (error) {
         console.log((error as Error).message);
       }
     },
-    dislikeCommentLocal(commentId: string, userId: string) {
-      const modifiedComment = this.getCommentById(commentId);
-      if (modifiedComment?.dislikes.includes(userId)) {
-        const deleteFrom = modifiedComment.dislikes.indexOf(userId);
-        modifiedComment?.dislikes.splice(deleteFrom, 1);
-      } else {
-        modifiedComment?.dislikes.push(userId);
-      }
+    dislikeCommentLocal(commentId: string, userId: string, parentId?: string) {
+      if (parentId != null) {
+        const modifiedComment = this.getReplyByid(commentId, parentId);
+        if (modifiedComment?.dislikes.includes(userId)) {
+          const deleteFrom = modifiedComment.dislikes.indexOf(userId);
+          modifiedComment?.dislikes.splice(deleteFrom, 1);
+        } else {
+          modifiedComment?.dislikes.push(userId);
+        }
 
-      if (modifiedComment?.likes.includes(userId)) {
-        const deleteFrom = modifiedComment.likes.indexOf(userId);
-        modifiedComment?.likes.splice(deleteFrom, 1);
+        if (modifiedComment?.likes.includes(userId)) {
+          const deleteFrom = modifiedComment.likes.indexOf(userId);
+          modifiedComment?.likes.splice(deleteFrom, 1);
+        }
+      } else {
+        const modifiedComment = this.getCommentById(commentId);
+        if (modifiedComment?.dislikes.includes(userId)) {
+          const deleteFrom = modifiedComment.dislikes.indexOf(userId);
+          modifiedComment?.dislikes.splice(deleteFrom, 1);
+        } else {
+          modifiedComment?.dislikes.push(userId);
+        }
+
+        if (modifiedComment?.likes.includes(userId)) {
+          const deleteFrom = modifiedComment.likes.indexOf(userId);
+          modifiedComment?.likes.splice(deleteFrom, 1);
+        }
       }
     },
   },
@@ -127,6 +166,13 @@ export const useCommentStore = defineStore('comments-store', {
     getCommentById: state => {
       return (id: string) => {
         return state.comments.find(comment => comment._id === id);
+      };
+    },
+    getReplyByid: state => {
+      return (id: string, parentId: string) => {
+        return state.comments
+          .find(comment => comment._id === parentId)
+          ?.replies?.find(reply => reply._id === id);
       };
     },
   },
