@@ -7,7 +7,7 @@ import { useCommentStore } from '../../stores/comments';
 import { useVideoStore } from '../../stores/video';
 import LoaderIndeterminate from '../gfx/loaders/LoaderIndeterminate.vue';
 
-const props = withDefaults(defineProps<{ isReply: boolean, commentId?: string }>(), { isReply: false });
+const props = withDefaults(defineProps<{ isReply?: boolean, commentId?: string }>(), { isReply: false });
 const emit = defineEmits(['close']);
 
 const newCommentId = ref(props.isReply && props.commentId ? `new-reply-${props.commentId}` : 'new-comment')

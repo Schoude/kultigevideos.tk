@@ -9,7 +9,7 @@ import SvgIcon from '../gfx/icons/SvgIcon.vue';
 import CommentMetaActions from './CommentMetaActions.vue';
 import CommentCreate from './CommentCreate.vue';
 
-const props = withDefaults(defineProps<{ comment: Comment, isReply: boolean }>(), { isReply: false });
+const props = withDefaults(defineProps<{ comment: Comment, isReply?: boolean }>(), { isReply: false });
 
 provide('comment', props.comment);
 
@@ -120,7 +120,8 @@ article.comment-list-item
       )
 
     .replies-container(v-if="showReplyToggle")
-      button.btn_reply--show.more-button(@click="onShowRepliesClick") {{ showReplies ? 'Antworten ausblenden' : 'Antworten anzeigen' }}
+      button.btn_reply--show.more-button(@click="onShowRepliesClick")
+        | {{ showReplies ? `${props.comment.replyCount} Antworten ausblenden` : `${props.comment.replyCount} Antworten anzeigen` }}
       .replies-list(:class="{ open: showReplies }")
         template(v-for="reply of comment.replies" :key="comment._id")
           CommentListItem(:comment="reply" is-reply)
@@ -249,6 +250,7 @@ article.comment-list-item
 
   &.open {
     height: auto;
+    overflow: revert;
   }
 }
 </style>
