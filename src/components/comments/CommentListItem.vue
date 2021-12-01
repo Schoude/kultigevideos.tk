@@ -9,7 +9,7 @@ import SvgIcon from '../gfx/icons/SvgIcon.vue';
 import CommentMetaActions from './CommentMetaActions.vue';
 import CommentCreate from './CommentCreate.vue';
 
-const props = defineProps<{ comment: Comment }>();
+const props = withDefaults(defineProps<{ comment: Comment, isReply: boolean }>(), { isReply: false });
 
 provide('comment', props.comment);
 
@@ -30,10 +30,12 @@ const sentimentLoading = ref(false);
 
 const commentText = ref<HTMLDivElement | null>(null);
 const commentTextInner = ref<HTMLParagraphElement | null>(null);
-
 const commentHasOverFlow = ref(false);
 const showMoreOpen = ref(false);
+
 const showReplyInput = ref(false);
+const showReplies = ref(false);
+const showReplyToggle = computed(() => props.comment.replyCount as number > 0)
 
 onMounted(() => {
   commentHasOverFlow.value = (commentTextInner.value as HTMLParagraphElement).scrollHeight > (commentText.value as HTMLDivElement).clientHeight;
@@ -64,6 +66,10 @@ function onToggleShowMore() {
 function onShowReplyInput() {
   showReplyInput.value = !showReplyInput.value;
 }
+
+function onShowRepliesClick() {
+  showReplies.value = !showReplies.value;
+}
 </script>
 
 <template lang='pug'>
@@ -93,7 +99,7 @@ article.comment-list-item
         button.count(data-cy="btn-dislike" title="Mag ich nicht" @click="dislikeComment")
           SvgIcon.icon.icon-dislike(:icon-name="getIconDislike" :size="ICON_SIZE.xxs")
           span.counter(data-cy="counter-dislikes") {{ comment.dislikes.length }}
-      .reply-toggle
+      .reply-toggle(v-if="isReply === false")
         button.btn__reply.more-button(@click="onShowReplyInput") Antworten
 
     Transition(name="fade-fast" mode="out-in")
@@ -103,6 +109,12 @@ article.comment-list-item
         :comment-id="comment._id"
         @close="onShowReplyInput"
       )
+
+    .replies-container(v-if="showReplyToggle")
+      button.btn_reply--show.more-button(@click="onShowRepliesClick") {{ showReplies ? 'Antworten ausblenden' : 'Antworten anzeigen' }}
+      .replies-list(:class="{ open: showReplies }")
+        template(v-for="reply of comment.replies" :key="comment._id")
+          CommentListItem(:comment="reply" is-reply)
 </template>
 
 <style lang='scss' scoped>
@@ -213,7 +225,21 @@ article.comment-list-item
   font-size: 14px;
 }
 
-.btn__reply {
+.btn__reply,
+.btn_reply--show {
   text-transform: uppercase;
+}
+
+.btn_reply--show {
+  margin-block: 1em;
+}
+
+.replies-list {
+  height: 0;
+  overflow: hidden;
+
+  &.open {
+    height: auto;
+  }
 }
 </style>

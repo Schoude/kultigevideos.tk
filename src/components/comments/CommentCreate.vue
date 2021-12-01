@@ -54,19 +54,37 @@ async function onCreateCommentClick() {
   if (v$.value.$invalid || isLoading.value) return;
   isLoading.value = true;
 
-  const res = await commentsStore.createComment({
-    authorId: authStore.getUserId,
-    uploaderId: videoStore.getCurrentVideoUploaderId,
-    text: newCommentData.newComment,
-    videoHash: videoStore.getCurrentVideoHash,
-    likes: [],
-    dislikes: [],
-    likedByUploader: false
-  })
+  if (props.isReply) {
+    const res = await commentsStore.createComment({
+      authorId: authStore.getUserId,
+      uploaderId: videoStore.getCurrentVideoUploaderId,
+      text: newCommentData.newComment,
+      videoHash: videoStore.getCurrentVideoHash,
+      likes: [],
+      dislikes: [],
+      likedByUploader: false,
+      parentId: props.commentId
+    })
 
-  if (res?.status === 201) {
-    clearCommentInput();
-    await commentsStore.fetchCommentsOfVideo(videoStore.getCurrentVideoHash);
+    if (res?.status === 201) {
+      clearCommentInput();
+      await commentsStore.fetchCommentsOfVideo(videoStore.getCurrentVideoHash);
+    }
+  } else {
+    const res = await commentsStore.createComment({
+      authorId: authStore.getUserId,
+      uploaderId: videoStore.getCurrentVideoUploaderId,
+      text: newCommentData.newComment,
+      videoHash: videoStore.getCurrentVideoHash,
+      likes: [],
+      dislikes: [],
+      likedByUploader: false
+    })
+
+    if (res?.status === 201) {
+      clearCommentInput();
+      await commentsStore.fetchCommentsOfVideo(videoStore.getCurrentVideoHash);
+    }
   }
 
   isLoading.value = false;

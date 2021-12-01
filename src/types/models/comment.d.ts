@@ -13,4 +13,6 @@ export interface Comment {
   dislikes: string[];
   likedByUploader?: boolean;
   createdAt?: string;
+  replies?: Comment[];
+  replyCount?: number;
 }

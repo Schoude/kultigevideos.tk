@@ -42,13 +42,13 @@ export const useCommentStore = defineStore('comments-store', {
           mode: 'cors',
         });
 
-        this.setVideoCount(res.data.totalCount.value);
+        this.setCommentCount(res.data.totalCount.value);
         this.setVideoComments(res.data.comments);
       } catch (error) {
         console.log((error as Error).message);
       }
     },
-    setVideoCount(count: number) {
+    setCommentCount(count: number) {
       this.count = count;
     },
     setVideoComments(comments: Comment[]) {
@@ -118,11 +118,11 @@ export const useCommentStore = defineStore('comments-store', {
     },
   },
   getters: {
-    getCommentsCount(): number {
-      return this.count;
+    getCommentsCount: state => {
+      return state.count;
     },
-    getComments(): Comment[] {
-      return this.comments;
+    getComments: state => {
+      return state.comments;
     },
     getCommentById: state => {
       return (id: string) => {
