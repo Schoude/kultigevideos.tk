@@ -7,6 +7,7 @@ import type { Comment } from '../../types/models/comment'
 import { ICON_SIZE } from '../gfx/icons/icon-data';
 import SvgIcon from '../gfx/icons/SvgIcon.vue';
 import CommentMetaActions from './CommentMetaActions.vue';
+import CommentCreate from './CommentCreate.vue';
 
 const props = defineProps<{ comment: Comment }>();
 
@@ -32,6 +33,7 @@ const commentTextInner = ref<HTMLParagraphElement | null>(null);
 
 const commentHasOverFlow = ref(false);
 const showMoreOpen = ref(false);
+const showReplyInput = ref(false);
 
 onMounted(() => {
   commentHasOverFlow.value = (commentTextInner.value as HTMLParagraphElement).scrollHeight > (commentText.value as HTMLDivElement).clientHeight;
@@ -57,6 +59,10 @@ async function dislikeComment() {
 
 function onToggleShowMore() {
   showMoreOpen.value = !showMoreOpen.value;
+}
+
+function onShowReplyInput() {
+  showReplyInput.value = !showReplyInput.value;
 }
 </script>
 
@@ -87,6 +93,16 @@ article.comment-list-item
         button.count(data-cy="btn-dislike" title="Mag ich nicht" @click="dislikeComment")
           SvgIcon.icon.icon-dislike(:icon-name="getIconDislike" :size="ICON_SIZE.xxs")
           span.counter(data-cy="counter-dislikes") {{ comment.dislikes.length }}
+      .reply-toggle
+        button.btn__reply.more-button(@click="onShowReplyInput") Antworten
+
+    Transition(name="fade-fast" mode="out-in")
+      CommentCreate(
+        v-if="showReplyInput"
+        is-reply
+        :comment-id="comment._id"
+        @close="onShowReplyInput"
+      )
 </template>
 
 <style lang='scss' scoped>
@@ -144,6 +160,10 @@ article.comment-list-item
   opacity: 0.7;
 }
 
+.content-col {
+  flex-grow: 1;
+}
+
 .comment-text {
   margin-block: 0.5em;
   max-height: 4.25em;
@@ -160,10 +180,16 @@ article.comment-list-item
 
 .comment-text__actions {
   margin-bottom: 0.5em;
+}
 
-  .more-button {
-    margin: 0;
-  }
+.more-button {
+  margin: 0;
+}
+
+.comment-actions {
+  display: flex;
+  align-items: center;
+  gap: 1em;
 }
 
 .sentiment {
@@ -185,5 +211,9 @@ article.comment-list-item
 
 .counter {
   font-size: 14px;
+}
+
+.btn__reply {
+  text-transform: uppercase;
 }
 </style>

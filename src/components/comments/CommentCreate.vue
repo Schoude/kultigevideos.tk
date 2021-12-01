@@ -7,6 +7,11 @@ import { useCommentStore } from '../../stores/comments';
 import { useVideoStore } from '../../stores/video';
 import LoaderIndeterminate from '../gfx/loaders/LoaderIndeterminate.vue';
 
+const props = withDefaults(defineProps<{ isReply: boolean, commentId?: string }>(), { isReply: false });
+const emit = defineEmits(['close']);
+
+const newCommentId = ref(props.isReply && props.commentId ? `new-reply-${props.commentId}` : 'new-comment')
+
 const authStore = useAuthStore();
 const commentsStore = useCommentStore();
 const videoStore = useVideoStore();
@@ -40,6 +45,7 @@ function clearCommentInput() {
 
 function onCancelClick() {
   clearCommentInput();
+  emit('close');
 }
 
 async function onCreateCommentClick() {
@@ -70,10 +76,17 @@ async function onCreateCommentClick() {
 <template lang='pug'>
 .comment-create
   LoaderIndeterminate(:class="{ visible: isLoading }")
-  form#new-comment.comment-create__inner(@submit.prevent="onCreateCommentClick")
-    img.avatar.avatar__comment(:src="authStore.getAvatarUrl" :alt="`Profilbild von ${authStore.getUserName}`")
+  form.comment-create__inner(
+    :id="newCommentId"
+    @submit.prevent="onCreateCommentClick"
+  )
+    img.avatar.avatar__comment(
+      :src="authStore.getAvatarUrl"
+      :alt="`Profilbild von ${authStore.getUserName}`"
+      :class="{ 'is-reply': isReply }"
+    )
     .form-field
-      textarea#new-comment(
+      textarea(
         name="new-comment"
         placeholder="Öffentlich kommentieren"
         autocomplete="off"
@@ -93,7 +106,7 @@ async function onCreateCommentClick() {
         button.btn.btn_cancel(type="button" @click="onCancelClick") Abbrechen
         button.btn.btn_primary(
           type="submit"
-          form="new-comment"
+          :form="newCommentId"
           :disabled="v$.$invalid || isLoading"
         ) Kommentieren
 </template>
@@ -137,6 +150,11 @@ async function onCreateCommentClick() {
 
 .avatar__comment {
   align-self: flex-start;
+
+  &.is-reply {
+    width: 24px;
+    height: 24px;
+  }
 }
 
 .comment-create__actions {
