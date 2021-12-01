@@ -87,14 +87,15 @@ async function onCreateCommentClick() {
             p.form-validation_error-message(data-cy="error-new-comment-min" v-else-if="v$.newComment.minLength.$invalid") Der Kommentar muss min. {{ newCommentMinLength }} Zeichen lang sein.
             p.form-validation_error-message(data-cy="error-new-comment-mmax" v-else-if="v$.newComment.maxLength.$invalid") Der Kommentar darf max. {{ newCommentMaxLength }} Zeichen lang sein.
 
-  Transition(name="fade-fast")
-    .comment-create__actions(v-if="newCommentData.newComment !== '' || wasFocused")
-      button.btn.btn_cancel(type="button" @click="onCancelClick") Abbrechen
-      button.btn.btn_primary(
-        type="submit"
-        form="new-comment"
-        :disabled="v$.$invalid || isLoading"
-      ) Kommentieren
+  .comment-create__actions
+    Transition(name="fade-fast")
+      .comment-create__actions--inner(v-if="newCommentData.newComment !== '' || wasFocused")
+        button.btn.btn_cancel(type="button" @click="onCancelClick") Abbrechen
+        button.btn.btn_primary(
+          type="submit"
+          form="new-comment"
+          :disabled="v$.$invalid || isLoading"
+        ) Kommentieren
 </template>
 
 <style lang='scss' scoped>
@@ -142,6 +143,11 @@ async function onCreateCommentClick() {
   margin-block: 1em;
   display: flex;
   justify-content: flex-end;
+  height: 36px;
+}
+
+.comment-create__actions--inner {
+  display: flex;
   gap: 1em;
 }
 </style>
