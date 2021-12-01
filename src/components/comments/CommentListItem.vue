@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { computed, provide, ref } from 'vue';
+import { computed, onMounted, provide, ref } from 'vue';
 import { usePageHelpers } from '../../composables/page-helpers';
 import { useAuthStore } from '../../stores/auth';
 import { useCommentStore } from '../../stores/comments';
@@ -27,6 +27,16 @@ const getIconDislike = computed(() => props.comment.dislikes.includes(authStore.
 
 const sentimentLoading = ref(false);
 
+const commentText = ref<HTMLDivElement | null>(null);
+const commentTextInner = ref<HTMLParagraphElement | null>(null);
+
+const commentHasOverFlow = ref(false);
+const showMoreOpen = ref(false);
+
+onMounted(() => {
+  commentHasOverFlow.value = (commentTextInner.value as HTMLParagraphElement).scrollHeight > (commentText.value as HTMLDivElement).clientHeight;
+});
+
 async function likeComment() {
   if (sentimentLoading.value) return
   sentimentLoading.value = true;
@@ -44,6 +54,10 @@ async function dislikeComment() {
 
   sentimentLoading.value = false;
 }
+
+function onToggleShowMore() {
+  showMoreOpen.value = !showMoreOpen.value;
+}
 </script>
 
 <template lang='pug'>
@@ -59,7 +73,12 @@ article.comment-list-item
           :class="{ 'is-uploader': authorIsUploader }"
         ) {{ comment.author?.username }}
       span.date {{ getLocaleDateString(comment.createdAt, true) }}
-    .comment-text {{ comment.text }}
+
+    .comment-text(ref="commentText" :class="{ open: showMoreOpen }")
+      p.comment-text__inner(ref='commentTextInner') {{ comment.text }}
+    .comment-text__actions(v-if="commentHasOverFlow")
+      button.more-button(@click="onToggleShowMore") {{ showMoreOpen ? 'WENIGER ANZEIGEN' : 'MEHR ANZEIGEN' }}
+
     .comment-actions
       .sentiment
         button.count(data-cy="btn-like" title="Mag ich" @click="likeComment")
@@ -127,6 +146,24 @@ article.comment-list-item
 
 .comment-text {
   margin-block: 0.5em;
+  max-height: 4.25em;
+  overflow: hidden;
+
+  &.open {
+    max-height: revert;
+  }
+}
+
+.comment-text__inner {
+  white-space: pre-line;
+}
+
+.comment-text__actions {
+  margin-bottom: 0.5em;
+
+  .more-button {
+    margin: 0;
+  }
 }
 
 .sentiment {

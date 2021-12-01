@@ -87,17 +87,4 @@ a {
     overflow: visible;
   }
 }
-
-.more-button {
-  --color: #aaaaaa;
-
-  margin-top: 0.5em;
-  padding: 0;
-  font-size: 0.9em;
-  color: var(--color);
-
-  @media (prefers-color-scheme: light) {
-    --color: #232323;
-  }
-}
 </style>

@@ -73,12 +73,11 @@ async function onCreateCommentClick() {
   form#new-comment.comment-create__inner(@submit.prevent="onCreateCommentClick")
     img.avatar.avatar__comment(:src="authStore.getAvatarUrl" :alt="`Profilbild von ${authStore.getUserName}`")
     .form-field
-      input#new-comment(
-        type="text"
+      textarea#new-comment(
         name="new-comment"
         placeholder="Öffentlich kommentieren"
         autocomplete="off"
-        v-model="v$.newComment.$model"
+        v-model.trim="newCommentData.newComment"
         @focus="onFocus"
       )
       Transition(name="fade-fast" mode="out-in")
@@ -103,6 +102,23 @@ async function onCreateCommentClick() {
   width: 100%;
   position: relative;
   padding-top: 1.5em;
+
+  textarea {
+    resize: none;
+    min-height: 50px;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--color-accent-low);
+    transition: border-bottom 0.3s ease;
+
+    &:hover {
+      border-bottom: 1px solid var(--color-accent-med);
+    }
+
+    &:focus {
+      border-bottom: 1px solid var(--color-accent-full);
+    }
+  }
 }
 
 .comment-create__inner {
