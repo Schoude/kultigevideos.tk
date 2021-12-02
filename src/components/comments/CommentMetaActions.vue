@@ -44,13 +44,11 @@ watch(actionsVisible, (newVal) => {
     Transition(name="fade-fast")
       .meta-actions-container(v-if="actionsVisible")
         button.meta-action(
-          tabindex="0"
           v-if="userIsAuthor"
           type="button"
         ) Kommentar editieren
         button.meta-action(
           type="button"
-          tabindex="0"
         ) Kommentar löschen
 </template>
 
@@ -106,6 +104,7 @@ watch(actionsVisible, (newVal) => {
 .meta-action {
   padding-block: 0.25em;
   transition: background-color 0.2s ease;
+  outline: none;
 
   &:hover,
   &:focus {

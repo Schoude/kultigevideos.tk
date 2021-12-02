@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import useVuelidate from '@vuelidate/core';
 import { maxLength, minLength, required } from '@vuelidate/validators';
-import { computed, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { useAuthStore } from '../../stores/auth';
 import { useCommentStore } from '../../stores/comments';
 import { useVideoStore } from '../../stores/video';
@@ -9,6 +9,8 @@ import LoaderIndeterminate from '../gfx/loaders/LoaderIndeterminate.vue';
 
 const props = withDefaults(defineProps<{ isReply?: boolean, commentId?: string }>(), { isReply: false });
 const emit = defineEmits(['close']);
+
+const textareaEl = ref<HTMLTextAreaElement | null>(null);
 
 const newCommentId = ref(props.isReply && props.commentId ? `new-reply-${props.commentId}` : 'new-comment')
 
@@ -32,6 +34,12 @@ const rules = computed(() => ({
 }))
 
 const v$ = useVuelidate(rules, newCommentData, { $rewardEarly: true });
+
+onMounted(() => {
+  if (props.isReply) {
+    textareaEl.value?.focus();
+  }
+})
 
 function onFocus() {
   wasFocused.value = true;
@@ -105,6 +113,7 @@ async function onCreateCommentClick() {
     )
     .form-field
       textarea(
+        ref="textareaEl"
         name="new-comment"
         placeholder="Öffentlich kommentieren"
         autocomplete="off"

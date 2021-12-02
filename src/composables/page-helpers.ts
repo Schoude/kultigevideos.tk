@@ -20,7 +20,13 @@ export const usePageHelpers = () => {
   ) {
     const date = new Date(dateString as string);
     return withTime
-      ? `am ${date.toLocaleDateString()} um ${date.getHours()}:${date.getMinutes()} Uhr`
+      ? `am ${date.toLocaleDateString()} um ${date
+          .getHours()
+          .toString()
+          .padStart(2, '0')}:${date
+          .getMinutes()
+          .toString()
+          .padStart(2, '0')} Uhr`
       : date.toLocaleDateString();
   }
 
