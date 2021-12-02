@@ -1,16 +1,18 @@
 <script setup lang='ts'>
-import { inject, computed, ref, watch } from 'vue';
+import { computed, ref, watch, onBeforeUnmount } from 'vue';
 import { usePageHelpers } from '../../composables/page-helpers';
 import { useAuthStore } from '../../stores/auth';
+import { useCommentStore } from '../../stores/comments';
 import type { Comment } from '../../types/models/comment';
 import { ICON_SIZE } from '../gfx/icons/icon-data';
 import SvgIcon from '../gfx/icons/SvgIcon.vue';
 
 const authStore = useAuthStore();
+const commentStore = useCommentStore();
 const { handleClickOutside } = usePageHelpers();
-const comment = inject<Comment>('comment') as Comment;
+const props = defineProps<{ comment: Comment }>();
 
-const userIsAuthor = computed(() => comment.author?._id === authStore.getUserId);
+const userIsAuthor = computed(() => props.comment.author?._id === authStore.getUserId);
 const metaActions = ref<HTMLElement | null>(null);
 const actionsVisible = ref(false);
 
@@ -33,6 +35,16 @@ watch(actionsVisible, (newVal) => {
     document.body.removeEventListener('click', onHandleClickedOutside);
   }
 })
+
+async function onCommentDeleteClick() {
+  if (props.comment.parentId != null) {
+    await commentStore.deleteComment(props.comment._id as string, authStore.getUserId, props.comment.parentId)
+  } else {
+    commentStore.deleteComment(props.comment._id as string, authStore.getUserId)
+  }
+
+  toggleActionsVisible();
+}
 </script>
 
 <template lang='pug'>
@@ -49,6 +61,7 @@ watch(actionsVisible, (newVal) => {
         ) Kommentar editieren
         button.meta-action(
           type="button"
+          @click="onCommentDeleteClick"
         ) Kommentar löschen
 </template>
 

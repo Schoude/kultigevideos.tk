@@ -155,6 +155,46 @@ export const useCommentStore = defineStore('comments-store', {
         }
       }
     },
+    async deleteComment(commentId: string, userId: string, parentId?: string) {
+      try {
+        const res = await apiClient.delete({
+          url: `/api/v1/comment/?commentId=${commentId}&userId=${userId}`,
+        });
+
+        if (res.status === 202) {
+          if (parentId != null) {
+            this.deleteCommentLocal(commentId, parentId);
+          } else {
+            this.deleteCommentLocal(commentId);
+          }
+        }
+
+        return res;
+      } catch (error) {
+        console.log((error as Error).message);
+      }
+    },
+    deleteCommentLocal(commentId: string, parentId?: string) {
+      if (parentId == null) {
+        const deleteFromIndex = this.comments.findIndex(
+          comment => comment._id === commentId
+        );
+
+        this.comments.splice(deleteFromIndex, 1);
+        this.count = this.count - 1;
+      } else {
+        const foundParent = this.comments.find(
+          comment => comment._id === parentId
+        ) as Comment;
+
+        const deleteFromIndex = foundParent.replies?.findIndex(
+          reply => reply._id === commentId
+        );
+
+        foundParent.replies?.splice(deleteFromIndex as number, 1);
+        foundParent.replyCount = (foundParent.replyCount as number) - 1;
+      }
+    },
   },
   getters: {
     getCommentsCount: state => {

@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { computed, onMounted, provide, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { usePageHelpers } from '../../composables/page-helpers';
 import { useAuthStore } from '../../stores/auth';
 import { useCommentStore } from '../../stores/comments';
@@ -10,8 +10,6 @@ import CommentMetaActions from './CommentMetaActions.vue';
 import CommentCreate from './CommentCreate.vue';
 
 const props = withDefaults(defineProps<{ comment: Comment, isReply?: boolean }>(), { isReply: false });
-
-provide('comment', props.comment);
 
 const authStore = useAuthStore();
 const commentsStore = useCommentStore();
@@ -83,7 +81,11 @@ function onShowRepliesClick() {
 
 <template lang='pug'>
 article.comment-list-item
-  CommentMetaActions.meta-actions(v-if="userIsAuthorOrAdmin")
+  CommentMetaActions.meta-actions(
+    v-if="userIsAuthorOrAdmin"
+    :comment="comment"
+    @loading:delete-start=""
+  )
   .avatar-col
     RouterLink(:to="`/profile/${comment.author?._id}`")
       img.avatar.avatar__comment(:src="comment.author?.meta.avatarUrl" :alt="`Profilbild von ${comment.author?.username}`")
