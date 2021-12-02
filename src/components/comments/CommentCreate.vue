@@ -18,7 +18,7 @@ const videoStore = useVideoStore();
 
 const newCommentData = reactive({ newComment: '' });
 const newCommentMinLength = 3;
-const newCommentMaxLength = 500;
+const newCommentMaxLength = 1000;
 
 const wasFocused = ref(false);
 const isLoading = ref(false);
@@ -108,7 +108,7 @@ async function onCreateCommentClick() {
         name="new-comment"
         placeholder="Öffentlich kommentieren"
         autocomplete="off"
-        v-model.trim="newCommentData.newComment"
+        v-model="newCommentData.newComment"
         @focus="onFocus"
       )
       Transition(name="fade-fast" mode="out-in")

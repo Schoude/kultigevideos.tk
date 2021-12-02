@@ -197,7 +197,7 @@ article.comment-list-item
 }
 
 .comment-text__inner {
-  white-space: pre-line;
+  white-space: pre;
 }
 
 .comment-text__actions {
