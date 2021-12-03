@@ -101,7 +101,7 @@ async function onCommentDeleteClick() {
   transition: opacity 0.2s ease;
 
   &:hover,
-  &:focus {
+  &:focus-visible {
     opacity: 1;
   }
 }
@@ -129,7 +129,7 @@ async function onCommentDeleteClick() {
   outline: none;
 
   &:hover,
-  &:focus {
+  &:focus-visible {
     background-color: var(--color-ui);
   }
 }
