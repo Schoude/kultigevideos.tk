@@ -43,7 +43,7 @@ section.user-videos
   .headline {
     font-size: 24px;
     margin-bottom: 0.25em;
-    margin-left: 0.5em;
+    margin-left: 8px;
 
     @include mq("t-l") {
       margin-left: 0;
@@ -64,8 +64,12 @@ section.user-videos
 }
 
 .video {
-  width: 320px;
+  width: 100%;
   margin-bottom: 0.5em;
+
+  @include mq("t-p") {
+    width: 320px;
+  }
 }
 
 .btn-thumbnail {
