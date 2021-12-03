@@ -37,6 +37,14 @@ section.user-details
 <style lang='scss' scoped>
 @use '../../styles/mixins' as *;
 
+.user-details {
+  padding-inline: 0.5em;
+
+  @include mq("t-l") {
+    padding-inline: 0;
+  }
+}
+
 article {
   border-bottom: 1px solid var(--border-color-container);
   padding-bottom: 2em;

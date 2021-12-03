@@ -43,6 +43,11 @@ section.user-videos
   .headline {
     font-size: 24px;
     margin-bottom: 0.25em;
+    margin-left: 0.5em;
+
+    @include mq("t-l") {
+      margin-left: 0;
+    }
   }
 }
 
@@ -72,6 +77,14 @@ section.user-videos
 
 .thumb-img {
   width: 100%;
+}
+
+.info {
+  padding-inline: 0.5em;
+
+  @include mq("t-l") {
+    padding-inline: 0;
+  }
 }
 
 .title {
@@ -113,6 +126,11 @@ a {
   margin-top: 0.25em;
   display: flex;
   justify-content: space-between;
+  padding-inline: 0.5em;
+
+  @include mq("t-l") {
+    padding-inline: 0;
+  }
 }
 
 .no-videos-fallback {

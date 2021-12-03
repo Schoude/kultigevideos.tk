@@ -174,9 +174,11 @@ section.user-profile-details
 .user-profile-details {
   position: relative;
 
-  // @include mq("t-l") {
-  //   margin: 0 25%;
-  // }
+  padding-inline: 0.5em;
+
+  @include mq("t-l") {
+    padding-inline: 0;
+  }
 }
 
 .detail-infos {
