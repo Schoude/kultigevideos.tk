@@ -36,6 +36,10 @@ watch(actionsVisible, (newVal) => {
   }
 })
 
+onBeforeUnmount(() => {
+  document.body.removeEventListener('click', onHandleClickedOutside);
+});
+
 async function onCommentDeleteClick() {
   if (props.comment.parentId != null) {
     await commentStore.deleteComment(props.comment._id as string, authStore.getUserId, props.comment.parentId)
@@ -43,7 +47,7 @@ async function onCommentDeleteClick() {
     commentStore.deleteComment(props.comment._id as string, authStore.getUserId)
   }
 
-  toggleActionsVisible();
+  actionsVisible.value = !actionsVisible.value;
 }
 </script>
 

@@ -1,3 +1,5 @@
+import { useVideoStore } from './video';
+import { useAuthStore } from './auth';
 import { defineStore } from 'pinia';
 import { apiClient } from '../api';
 import type { Comment } from '../types/models/comment';
@@ -15,7 +17,11 @@ export const useCommentStore = defineStore('comments-store', {
   actions: {
     async createComment(comment: Comment) {
       try {
-        const res = await apiClient.post({
+        const res = await apiClient.post<{
+          message: string;
+          commentId: string;
+          createdAt: string;
+        }>({
           url: '/api/v1/comment',
           mode: 'cors',
           body: JSON.stringify(comment),
@@ -25,6 +31,46 @@ export const useCommentStore = defineStore('comments-store', {
       } catch (error) {
         console.log((error as Error).message);
       }
+    },
+    createCommentLocal(newComment: Comment) {
+      if (newComment.parentId) {
+        const parentComment = this.comments.find(
+          comment => comment._id === newComment.parentId
+        ) as Comment;
+
+        if (parentComment.replies?.length === 0) {
+          parentComment.replies?.push(newComment);
+        } else {
+          parentComment.replies?.unshift(newComment);
+        }
+
+        parentComment.replyCount = (parentComment.replyCount as number) + 1;
+      } else {
+        this.comments.unshift(newComment);
+        this.count = this.count + 1;
+      }
+    },
+    fillNewCommentData(
+      comment: Comment,
+      newCommentId: string,
+      createdAt: string
+    ) {
+      const authStore = useAuthStore();
+      const videoStore = useVideoStore();
+      delete comment.authorId;
+      delete comment.uploaderId;
+
+      comment._id = newCommentId;
+      comment.createdAt = createdAt;
+      comment.author = {
+        _id: authStore.getUserId,
+        username: authStore.getUserName,
+        meta: authStore.getUserMetaData,
+      };
+      comment.uploader = videoStore.currentVideo?.uploader;
+      comment.replyCount = 0;
+
+      return comment;
     },
     async fetchCommentsOfVideo(hash: string) {
       interface CommetsOfVideoData {

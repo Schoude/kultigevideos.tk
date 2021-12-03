@@ -1,5 +1,5 @@
 import { apiClient } from './../api/index';
-import { User } from '../types/models/user.d';
+import { User, UserMetaData } from '../types/models/user.d';
 import { defineStore } from 'pinia';
 
 interface AuthState {
@@ -121,6 +121,9 @@ export const useAuthStore = defineStore('auth', {
     },
     getAvatarUrl(): string {
       return this.user?.meta.avatarUrl as string;
+    },
+    getUserMetaData: state => {
+      return state.user?.meta as UserMetaData;
     },
     getUserRoleText(): string {
       let role = '';

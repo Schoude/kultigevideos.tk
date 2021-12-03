@@ -6,6 +6,7 @@ import { useAuthStore } from '../../stores/auth';
 import { useCommentStore } from '../../stores/comments';
 import { useVideoStore } from '../../stores/video';
 import LoaderIndeterminate from '../gfx/loaders/LoaderIndeterminate.vue';
+import type { Comment } from '../../types/models/comment'
 
 const props = withDefaults(defineProps<{ isReply?: boolean, commentId?: string }>(), { isReply: false });
 const emit = defineEmits(['close']);
@@ -62,37 +63,31 @@ async function onCreateCommentClick() {
   if (v$.value.$invalid || isLoading.value) return;
   isLoading.value = true;
 
+  const newComment: Comment = {
+    authorId: authStore.getUserId,
+    uploaderId: videoStore.getCurrentVideoUploaderId,
+    text: newCommentData.newComment,
+    videoHash: videoStore.getCurrentVideoHash,
+    likes: [],
+    dislikes: [],
+    replies: [],
+    likedByUploader: false
+  };
+
+  let res;
+
   if (props.isReply) {
-    const res = await commentsStore.createComment({
-      authorId: authStore.getUserId,
-      uploaderId: videoStore.getCurrentVideoUploaderId,
-      text: newCommentData.newComment,
-      videoHash: videoStore.getCurrentVideoHash,
-      likes: [],
-      dislikes: [],
-      likedByUploader: false,
-      parentId: props.commentId
-    })
-
-    if (res?.status === 201) {
-      clearCommentInput();
-      await commentsStore.fetchCommentsOfVideo(videoStore.getCurrentVideoHash);
-    }
+    newComment.parentId = props.commentId
+    res = await commentsStore.createComment(newComment)
   } else {
-    const res = await commentsStore.createComment({
-      authorId: authStore.getUserId,
-      uploaderId: videoStore.getCurrentVideoUploaderId,
-      text: newCommentData.newComment,
-      videoHash: videoStore.getCurrentVideoHash,
-      likes: [],
-      dislikes: [],
-      likedByUploader: false
-    })
+    res = await commentsStore.createComment(newComment)
+  }
 
-    if (res?.status === 201) {
-      clearCommentInput();
-      await commentsStore.fetchCommentsOfVideo(videoStore.getCurrentVideoHash);
-    }
+  if (res?.status === 201) {
+    onCancelClick();
+
+    const filledComment = commentsStore.fillNewCommentData(newComment, res.data.commentId, res.data.createdAt);
+    commentsStore.createCommentLocal(filledComment);
   }
 
   isLoading.value = false;
