@@ -16,6 +16,8 @@ const userIsAuthor = computed(() => props.comment.author?._id === authStore.getU
 const metaActions = ref<HTMLElement | null>(null);
 const actionsVisible = ref(false);
 
+const isLoading = ref(false);
+
 function onHandleClickedOutside(event: Event | PointerEvent) {
   handleClickOutside(event, metaActions.value as HTMLElement, () => {
     actionsVisible.value = false;
@@ -41,6 +43,9 @@ onBeforeUnmount(() => {
 });
 
 async function onCommentDeleteClick() {
+  if (isLoading.value) return;
+
+  isLoading.value = true;
   if (props.comment.parentId != null) {
     await commentStore.deleteComment(props.comment._id as string, authStore.getUserId, props.comment.parentId)
   } else {
