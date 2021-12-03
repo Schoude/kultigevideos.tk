@@ -12,5 +12,6 @@ main.login
   display: grid;
   place-items: center;
   height: 100%;
+  padding: 1em;
 }
 </style>
