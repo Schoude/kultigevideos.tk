@@ -20,7 +20,7 @@ article.video-feed-entry
         img.avatar(:src="video.uploader?.meta.avatarUrl" :alt="`avatar picture of user ${video.uploader?.username}`")
 
     .info
-      h3.title(data-cy="title")
+      h3.title(data-cy="title" :title="video.title")
         RouterLink(:to="`/watch/${video.hash}`") {{ video.title }}
       .metadata-line.uploader(data-cy="uploader-name")
         RouterLink.uploader-link(:to="`/profile/${video.uploader?._id}`") {{ video.uploader?.username }}
@@ -71,6 +71,8 @@ article.video-feed-entry
 
 .title {
   font-weight: 500;
+
+  @include line-clamp();
 }
 
 .viewcount {

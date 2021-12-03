@@ -16,7 +16,10 @@ article.video-recommended-entry
       :src="video.thumb"
     )
   .meta-data
-    RouterLink.video-title(:to="`/watch/${video.hash}`") {{ video.title }}
+    RouterLink.video-title(
+      :to="`/watch/${video.hash}`"
+      :title="video.title"
+    ) {{ video.title }}
 
     .metadata-line
       RouterLink.video-uploader(:to="`/profile/${video.uploader?._id}`") {{ video.uploader?.username }}
@@ -65,6 +68,8 @@ article.video-recommended-entry
 
   .video-title {
     font-weight: 500;
+
+    @include line-clamp();
   }
 }
 

@@ -79,3 +79,11 @@ $breakpoints: (
     @content;
   }
 }
+
+@mixin line-clamp($maxLines: 2, $boxOrientation: vertical) {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: $maxLines;
+  -webkit-box-orient: $boxOrientation;
+  -moz-box-orient: $boxOrientation;
+}
