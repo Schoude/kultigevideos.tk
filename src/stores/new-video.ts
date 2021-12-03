@@ -37,7 +37,7 @@ export const useNewVideoStore = defineStore('new-video', {
       if (file == null) {
         this.newVideoTitle = '';
       } else {
-        this.newVideoTitle = file?.name.split('.')[0] as string;
+        this.newVideoTitle = file?.name.split(/.mp4/g)[0] as string;
       }
     },
     setVideoThumbnailFile(file: File | null) {
