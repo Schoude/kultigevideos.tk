@@ -1,18 +1,14 @@
 name: 'Build and deployment to Droplet'
 
 on:
-  workflow_run:
-    workflows: ['Component and End-to-end tests']
+  push:
     branches: [master]
-    types:
-      - completed
 
 env:
   NODE_VERSION: '16.x'
 
 jobs:
   build:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.3.4

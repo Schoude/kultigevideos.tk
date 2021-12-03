@@ -1,36 +1,36 @@
-name: Component and End-to-end tests
+# name: Component and End-to-end tests
 
-on: [push]
+# on: [push]
 
-env:
-  NODE_VERSION: '16.x'
+# env:
+#   NODE_VERSION: '16.x'
 
-jobs:
-  cypress-run:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+# jobs:
+#   cypress-run:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v2
 
-      - name: Setup Node.js environment ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ env.NODE_VERSION }}
+#       - name: Setup Node.js environment ${{ env.NODE_VERSION }}
+#         uses: actions/setup-node@v1
+#         with:
+#           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Run Component tests 🧪
-        uses: cypress-io/github-action@v2
-        with:
-          command: npm run cy:run-ct
+#       - name: Run Component tests 🧪
+#         uses: cypress-io/github-action@v2
+#         with:
+#           command: npm run cy:run-ct
 
-      - name: Cypress E2E tests 🧪
-        uses: cypress-io/github-action@v2
-        timeout-minutes: 3
-        env:
-          VITE_API_HOST_PROD: ${{secrets.VITE_API_HOST_PROD}}
-          VITE_FIREBASE_CONFIG: ${{secrets.VITE_FIREBASE_CONFIG}}
-        with:
-          install: false
-          config: screenshotOnRunFailure=false,video=false
-          build: npm run build
-          start: npm run serve
-          wait-on: 'http://localhost:5000'
+#       - name: Cypress E2E tests 🧪
+#         uses: cypress-io/github-action@v2
+#         timeout-minutes: 3
+#         env:
+#           VITE_API_HOST_PROD: ${{secrets.VITE_API_HOST_PROD}}
+#           VITE_FIREBASE_CONFIG: ${{secrets.VITE_FIREBASE_CONFIG}}
+#         with:
+#           install: false
+#           config: screenshotOnRunFailure=false,video=false
+#           build: npm run build
+#           start: npm run serve
+#           wait-on: 'http://localhost:5000'
