@@ -146,23 +146,23 @@ export const useVideoStore = defineStore('video-store', {
     },
   },
   getters: {
-    getCurrentVideoUrl(): string {
-      return this.currentVideo?.url as string;
+    getCurrentVideoUrl: state => {
+      return state.currentVideo?.url as string;
     },
-    getCurrentVideoId(): string {
-      return this.currentVideo?._id as string;
+    getCurrentVideoId: state => {
+      return state.currentVideo?._id as string;
     },
-    getCurrentVideoHash(): string {
-      return this.currentVideo?.hash as string;
+    getCurrentVideoHash: state => {
+      return state.currentVideo?.hash as string;
     },
-    getCurrentVideoUploaderId(): string {
-      return this.currentVideo?.uploader?._id as string;
+    getCurrentVideoUploaderId: state => {
+      return state.currentVideo?.uploader?._id as string;
     },
-    getVideosFeed(): Video[] {
-      return this.videos;
+    getVideosFeed: state => {
+      return state.videos;
     },
-    getVideosRecommended(): Video[] {
-      return this.videosRecommended;
+    getVideosRecommended: state => {
+      return state.videosRecommended;
     },
   },
 });

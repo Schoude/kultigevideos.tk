@@ -113,21 +113,21 @@ export const useAuthStore = defineStore('auth', {
     },
   },
   getters: {
-    getUserId(): string {
-      return this.user?._id as string;
+    getUserId: state => {
+      return state.user?._id as string;
     },
-    getUserName(): string {
-      return this.user?.username as string;
+    getUserName: state => {
+      return state.user?.username as string;
     },
-    getAvatarUrl(): string {
-      return this.user?.meta.avatarUrl as string;
+    getAvatarUrl: state => {
+      return state.user?.meta.avatarUrl as string;
     },
     getUserMetaData: state => {
       return state.user?.meta as UserMetaData;
     },
-    getUserRoleText(): string {
+    getUserRoleText: state => {
       let role = '';
-      switch (this.user?.role) {
+      switch (state.user?.role) {
         case 'admin':
           role = 'Admin';
           break;
@@ -140,11 +140,11 @@ export const useAuthStore = defineStore('auth', {
       }
       return role;
     },
-    userIsAdmin(): boolean {
-      return this.user?.role === 'admin';
+    userIsAdmin: state => {
+      return state.user?.role === 'admin';
     },
-    userIsUser(): boolean {
-      return this.user?.role === 'user';
+    userIsUser: state => {
+      return state.user?.role === 'user';
     },
   },
 });

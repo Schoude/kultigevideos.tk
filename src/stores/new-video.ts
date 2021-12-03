@@ -124,11 +124,11 @@ export const useNewVideoStore = defineStore('new-video', {
     },
   },
   getters: {
-    videoFileLoaded(): boolean {
-      return this.newVideoFile != null;
+    videoFileLoaded: state => {
+      return state.newVideoFile != null;
     },
-    getProgressVideoUpload(): number {
-      return this.progressVideoUpload;
+    getProgressVideoUpload: state => {
+      return state.progressVideoUpload;
     },
   },
 });

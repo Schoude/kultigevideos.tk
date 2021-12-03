@@ -75,8 +75,8 @@ export const useUserStore = defineStore('user', {
     },
   },
   getters: {
-    getUserProfileData(): ProfileUser | null {
-      return this.userProfileData;
+    getUserProfileData: state => {
+      return state.userProfileData;
     },
     userIsAuthUser(): boolean {
       const authStore = useAuthStore();
@@ -87,8 +87,8 @@ export const useUserStore = defineStore('user', {
         ? this.getUserProfileData.videos.length > 0
         : false;
     },
-    getUsersOverview(): User[] {
-      return this.usersOverview;
+    getUsersOverview: state => {
+      return state.usersOverview;
     },
   },
 });

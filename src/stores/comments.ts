@@ -88,8 +88,10 @@ export const useCommentStore = defineStore('comments-store', {
           mode: 'cors',
         });
 
-        this.setCommentCount(res.data.totalCount.value);
-        this.setVideoComments(res.data.comments);
+        if (res.status === 200) {
+          this.setCommentCount(res.data.totalCount.value);
+          this.setVideoComments(res.data.comments);
+        }
       } catch (error) {
         console.log((error as Error).message);
       }
