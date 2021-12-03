@@ -60,6 +60,11 @@ article.video-recommended-entry
 .meta-data {
   display: flex;
   flex-direction: column;
+  margin: 0 0.5em 0 0.5em;
+
+  @include mq("t-p") {
+    margin: 0;
+  }
 
   a {
     color: var(--color-text);

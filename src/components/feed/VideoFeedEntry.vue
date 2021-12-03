@@ -51,8 +51,12 @@ article.video-feed-entry
 
 .metadata {
   display: flex;
-  margin-top: 0.5em;
+  margin: 0.5em 0.5em 0 0.5em;
   gap: 0.5em;
+
+  @include mq("t-p") {
+    margin: 0.5em 0 0 0;
+  }
 }
 
 .avatar-box {
