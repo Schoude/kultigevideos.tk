@@ -20,7 +20,7 @@ function onTriggerShowMore() {
           :alt="`avatar picture of user ${videoStore.currentVideo?.uploader?.username}`"
           data-cy="avatar"
         )
-    h3.title
+    h2.title
       RouterLink(:to="`/profile/${videoStore.currentVideo?.uploader?._id}`") {{ videoStore.currentVideo?.uploader?.username }}
   .description-container
     .description-text(
@@ -55,6 +55,7 @@ function onTriggerShowMore() {
 }
 
 .title {
+  font-size: 1.125em;
   margin-bottom: 0.5em;
   margin-top: 0.25em;
 }

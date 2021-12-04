@@ -59,7 +59,7 @@ async function onCommentDeleteClick() {
 <template lang='pug'>
 .comment-meta-actions(ref="metaActions")
   .comment-meta-actions__inner
-    button.icon(type="button" @click="toggleActionsVisible")
+    button.icon(type="button" @click="toggleActionsVisible" aria-label="Kommentaraktionen öffnen")
       SvgIcon(icon-name="ellipsis-v" :size="ICON_SIZE.xs")
 
     Transition(name="fade-fast")

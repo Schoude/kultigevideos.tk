@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { usePageHelpers } from '../../composables/page-helpers';
 import { useAuthStore } from '../../stores/auth';
 import { useCommentStore } from '../../stores/comments';
@@ -8,6 +8,8 @@ import { ICON_SIZE } from '../gfx/icons/icon-data';
 import SvgIcon from '../gfx/icons/SvgIcon.vue';
 import CommentMetaActions from './CommentMetaActions.vue';
 import CommentCreate from './CommentCreate.vue';
+import type { UserSlim } from '../../types/models/user';
+import { useMediaMatcher } from '../../composables/media-matcher';
 
 const props = withDefaults(defineProps<{ comment: Comment, isReply?: boolean }>(), { isReply: false });
 
@@ -35,9 +37,29 @@ const showReplyInput = ref(false);
 const showReplies = ref(false);
 const showReplyToggle = computed(() => props.comment.replyCount as number > 0)
 
+const uploaderWroteReply = computed(() => {
+  return props.comment.replies?.some(reply => reply.author?._id === props.comment.uploader?._id);
+});
+
+const getUploaderData = computed(() => props.comment.uploader);
+
+const getReplyToggleText = computed(() => {
+  if (useMediaMatcher().matchScreen('t-p').value && uploaderWroteReply.value) {
+    return showReplies.value
+      ? `${props.comment.replyCount} Antworten von ${(getUploaderData.value as UserSlim).username} und anderen ausblenden`
+      : `${props.comment.replyCount} Antworten von ${(getUploaderData.value as UserSlim).username} und anderen  anzeigen`;
+  } else {
+    return showReplies.value
+      ? `${props.comment.replyCount} Antworten ausblenden`
+      : `${props.comment.replyCount} Antworten anzeigen`;
+  }
+});
+
 onMounted(() => {
   commentHasOverFlow.value = (commentTextInner.value as HTMLParagraphElement).scrollHeight > (commentText.value as HTMLDivElement).clientHeight;
 });
+
+onBeforeUnmount(() => useMediaMatcher().destroy());
 
 async function likeComment() {
   if (sentimentLoading.value) return
@@ -123,7 +145,13 @@ article.comment-list-item
 
     .replies-container(v-if="showReplyToggle")
       button.btn_reply--show.more-button(@click="onShowRepliesClick")
-        | {{ showReplies ? `${props.comment.replyCount} Antworten ausblenden` : `${props.comment.replyCount} Antworten anzeigen` }}
+        img.avatar(
+          v-if="uploaderWroteReply"
+          :src="getUploaderData?.meta.avatarUrl"
+          :alt="`Avatarbild von ${getUploaderData?.username}`"
+        )
+        span.text {{ getReplyToggleText }}
+
       .replies-list(:class="{ open: showReplies }")
         template(v-for="reply of comment.replies" :key="comment._id")
           CommentListItem(:comment="reply" is-reply)
@@ -172,7 +200,7 @@ article.comment-list-item
   font-weight: 500;
 
   &.is-uploader {
-    background-color: grey;
+    background-color: rgb(83, 83, 83);
     padding: 0.125em 0.5em;
     border-radius: 50px;
     color: white;
@@ -240,6 +268,17 @@ article.comment-list-item
 .btn__reply,
 .btn_reply--show {
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+
+  .avatar {
+    width: 25px;
+
+    @include mq("t-p") {
+      display: none;
+    }
+  }
 }
 
 .btn_reply--show {
