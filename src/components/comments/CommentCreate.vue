@@ -1,17 +1,16 @@
 <script setup lang='ts'>
 import useVuelidate from '@vuelidate/core';
 import { maxLength, minLength, required } from '@vuelidate/validators';
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { useAuthStore } from '../../stores/auth';
 import { useCommentStore } from '../../stores/comments';
 import { useVideoStore } from '../../stores/video';
 import LoaderIndeterminate from '../gfx/loaders/LoaderIndeterminate.vue';
 import type { Comment } from '../../types/models/comment'
+import KvTextarea from '../forms/elements/KvTextarea.vue';
 
 const props = withDefaults(defineProps<{ isReply?: boolean, commentId?: string }>(), { isReply: false });
 const emit = defineEmits(['close']);
-
-const textareaEl = ref<HTMLTextAreaElement | null>(null);
 
 const newCommentId = ref(props.isReply && props.commentId ? `new-reply-${props.commentId}` : 'new-comment')
 
@@ -35,12 +34,6 @@ const rules = computed(() => ({
 }))
 
 const v$ = useVuelidate(rules, newCommentData, { $rewardEarly: true });
-
-onMounted(() => {
-  if (props.isReply) {
-    textareaEl.value?.focus();
-  }
-})
 
 function onFocus() {
   wasFocused.value = true;
@@ -107,13 +100,11 @@ async function onCreateCommentClick() {
       :class="{ 'is-reply': isReply }"
     )
     .form-field
-      textarea(
-        ref="textareaEl"
-        name="new-comment"
-        placeholder="Öffentlich kommentieren"
-        autocomplete="off"
+      KvTextarea(
         v-model="newCommentData.newComment"
-        @focus="onFocus"
+        @on:focus="onFocus"
+        :autofocus="props.isReply"
+        placeholder-text="Öffentlich kommentieren"
       )
       Transition(name="fade-fast" mode="out-in")
         template(v-if="v$.newComment.$dirty && v$.newComment.$invalid")
@@ -139,21 +130,8 @@ async function onCreateCommentClick() {
   position: relative;
   padding-top: 1.5em;
 
-  textarea {
-    resize: none;
-    min-height: 50px;
+  .kv-textarea {
     width: 100%;
-    border: none;
-    border-bottom: 1px solid var(--color-accent-low);
-    transition: border-bottom 0.3s ease;
-
-    &:hover {
-      border-bottom: 1px solid var(--color-accent-med);
-    }
-
-    &:focus {
-      border-bottom: 1px solid var(--color-accent-full);
-    }
   }
 }
 
@@ -166,7 +144,7 @@ async function onCreateCommentClick() {
   .form-field {
     margin-top: 0;
     align-self: flex-start;
-    flex: 1 0 auto;
+    flex: 1 1 auto;
   }
 }
 

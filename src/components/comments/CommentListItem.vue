@@ -218,7 +218,7 @@ article.comment-list-item
 
 .comment-text {
   margin-block: 0.5em;
-  max-height: 4.25em;
+  max-height: 4.5rem;
   overflow: hidden;
 
   &.open {
@@ -227,7 +227,7 @@ article.comment-list-item
 }
 
 .comment-text__inner {
-  white-space: pre;
+  white-space: pre-wrap;
 }
 
 .comment-text__actions {
