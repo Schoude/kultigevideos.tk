@@ -37,6 +37,10 @@ const showReplyInput = ref(false);
 const showReplies = ref(false);
 const showReplyToggle = computed(() => props.comment.replyCount as number > 0)
 
+const uploaderWroteEveryReply = computed(() => {
+  return props.comment.replies?.every(reply => reply.author?._id === props.comment.uploader?._id);
+});
+
 const uploaderWroteReply = computed(() => {
   return props.comment.replies?.some(reply => reply.author?._id === props.comment.uploader?._id);
 });
@@ -44,14 +48,27 @@ const uploaderWroteReply = computed(() => {
 const getUploaderData = computed(() => props.comment.uploader);
 
 const getReplyToggleText = computed(() => {
-  if (useMediaMatcher().matchScreen('t-p').value && uploaderWroteReply.value) {
+  const answerString = (props.comment.replyCount as number) > 1 ? 'Antworten' : 'Antwort';
+
+  if (
+    useMediaMatcher().matchScreen('t-p').value
+    && uploaderWroteEveryReply.value
+  ) {
     return showReplies.value
-      ? `${props.comment.replyCount} Antworten von ${(getUploaderData.value as UserSlim).username} und anderen ausblenden`
-      : `${props.comment.replyCount} Antworten von ${(getUploaderData.value as UserSlim).username} und anderen  anzeigen`;
+      ? `${props.comment.replyCount} ${answerString} von ${(getUploaderData.value as UserSlim).username} ausblenden`
+      : `${props.comment.replyCount} ${answerString} von ${(getUploaderData.value as UserSlim).username} anzeigen`;
+  } else if (
+    useMediaMatcher().matchScreen('t-p').value
+    && uploaderWroteReply.value
+    && (props.comment.replyCount as number) > 1
+  ) {
+    return showReplies.value
+      ? `${props.comment.replyCount} ${answerString} von ${(getUploaderData.value as UserSlim).username} und anderen ausblenden`
+      : `${props.comment.replyCount} ${answerString} von ${(getUploaderData.value as UserSlim).username} und anderen anzeigen`;
   } else {
     return showReplies.value
-      ? `${props.comment.replyCount} Antworten ausblenden`
-      : `${props.comment.replyCount} Antworten anzeigen`;
+      ? `${props.comment.replyCount} ${answerString} ausblenden`
+      : `${props.comment.replyCount} ${answerString} anzeigen`;
   }
 });
 
