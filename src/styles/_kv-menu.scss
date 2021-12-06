@@ -1,0 +1,58 @@
+.kv-menu {
+  z-index: 1;
+
+  .icon {
+    --border-color: white;
+  
+    @media (prefers-color-scheme: light) {
+      --border-color: black;
+    }
+  
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+  
+    &:hover,
+    &:focus-visible {
+      opacity: 1;
+    }
+  }
+  
+  @media (prefers-color-scheme: light) {
+    svg {
+      fill: black;
+    }
+  }
+}
+
+.kv-menu__inner {
+  position: relative;
+}
+
+.kv-menu__buttons {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-header);
+  position: absolute;
+  right: 0;
+  transform: translateY(5px);
+  width: max-content;
+  padding-block: 0.5em;
+}
+
+.kv-menu-button {
+  padding-block: 0.5em;
+  transition: background-color 0.2s ease;
+  outline: none;
+
+  &:hover,
+  &:focus-visible {
+    background-color: var(--color-ui);
+  }
+}
