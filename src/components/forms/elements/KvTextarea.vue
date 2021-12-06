@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
+import { usePageHelpers } from '../../../composables/page-helpers';
 
 const props = withDefaults(defineProps<{
   modelValue: string,
@@ -15,13 +16,20 @@ const emits = defineEmits<{
   (e: 'on:blur'): void
 }>();
 
+const { placeCursorAtPosition } = usePageHelpers();
+
 const textbox = ref<HTMLDivElement | null>(null);
 const isFocussed = ref(false);
 const hasContent = computed(() => props.modelValue !== '');
 
 onMounted(() => {
+  if (props.modelValue) {
+    (textbox.value as HTMLDivElement).innerText = props.modelValue;
+  }
+
   if (props.autofocus) {
     textbox.value?.focus();
+    placeCursorAtPosition(textbox.value as Node, 'end');
   }
 })
 

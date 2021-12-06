@@ -9,11 +9,18 @@ import KvMenuButton from '../forms/elements/KvMenuButton';
 const authStore = useAuthStore();
 const commentStore = useCommentStore();
 const props = defineProps<{ comment: Comment }>();
+const emit = defineEmits(['toggle:edit-mode']);
 
 const userIsAuthor = computed(() => props.comment.author?._id === authStore.getUserId);
-const foceClose = ref(false);
+const forceClose = ref(false);
 
 const isLoading = ref(false);
+
+function onToggleEditMode() {
+  emit('toggle:edit-mode');
+
+  forceClose.value = true;
+}
 
 async function onCommentDeleteClick() {
   if (isLoading.value) return;
@@ -25,16 +32,17 @@ async function onCommentDeleteClick() {
     commentStore.deleteComment(props.comment._id as string, authStore.getUserId)
   }
 
-  foceClose.value = true;
+  forceClose.value = true;
 }
 </script>
 
 <template lang='pug'>
 KvMenu.comment-meta-actions(
-  :force-close="foceClose"
+  :force-close="forceClose"
 )
   KvMenuButton(
     v-if="userIsAuthor"
+    @click="onToggleEditMode"
   ) Kommentar editieren
   KvMenuButton(
     @click="onCommentDeleteClick"

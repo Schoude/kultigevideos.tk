@@ -50,6 +50,27 @@ export const useCommentStore = defineStore('comments-store', {
         this.count = this.count + 1;
       }
     },
+    editCommentlocal({
+      _id,
+      parentId,
+      commentText,
+      isReply,
+    }: {
+      _id: string;
+      parentId?: string;
+      commentText: string;
+      isReply: boolean;
+    }) {
+      if (isReply) {
+        (this.getReplyByid(_id, parentId as string) as Comment).text =
+          commentText;
+
+        (this.getReplyByid(_id, parentId as string) as Comment).edited = true;
+      } else {
+        (this.getCommentById(_id) as Comment).text = commentText;
+        (this.getCommentById(_id) as Comment).edited = true;
+      }
+    },
     fillNewCommentData(
       comment: Comment,
       newCommentId: string,

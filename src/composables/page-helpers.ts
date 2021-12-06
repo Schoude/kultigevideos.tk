@@ -74,6 +74,23 @@ export const usePageHelpers = () => {
     }
   }
 
+  function placeCursorAtPosition(el: Node, position: 'start' | 'end') {
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    switch (position) {
+      case 'end':
+        range.collapse(false);
+        break;
+
+      case 'start':
+        range.collapse(true);
+    }
+
+    const sel = window.getSelection() as Selection;
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
+
   return {
     isDarkMode,
     getLogoPath,
@@ -83,6 +100,7 @@ export const usePageHelpers = () => {
     setMediaSession,
     setPageTitle,
     handleClickOutside,
+    placeCursorAtPosition,
   };
 };
 

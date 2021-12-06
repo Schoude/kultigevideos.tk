@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { usePageHelpers } from '../../composables/page-helpers';
 import { useAuthStore } from '../../stores/auth';
 import { useCommentStore } from '../../stores/comments';
@@ -10,6 +10,7 @@ import CommentMetaActions from './CommentMetaActions.vue';
 import CommentCreate from './CommentCreate.vue';
 import type { UserSlim } from '../../types/models/user';
 import { useMediaMatcher } from '../../composables/media-matcher';
+import CommentEdit from './CommentEdit.vue';
 
 const props = withDefaults(defineProps<{ comment: Comment, isReply?: boolean }>(), { isReply: false });
 
@@ -35,7 +36,10 @@ const showMoreOpen = ref(false);
 
 const showReplyInput = ref(false);
 const showReplies = ref(false);
-const showReplyToggle = computed(() => props.comment.replyCount as number > 0)
+const showReplyToggle = computed(() => props.comment.replyCount as number > 0);
+const showEditMode = ref(false);
+
+const getCommentId = computed(() => props.comment._id as string);
 
 const uploaderWroteEveryReply = computed(() => {
   return props.comment.replies?.every(reply => reply.author?._id === props.comment.uploader?._id);
@@ -75,6 +79,13 @@ const getReplyToggleText = computed(() => {
 onMounted(() => {
   commentHasOverFlow.value = (commentTextInner.value as HTMLParagraphElement).scrollHeight > (commentText.value as HTMLDivElement).clientHeight;
 });
+
+watch(() => props.comment.text, () => {
+  // wait for transition to finish
+  setTimeout(async () => {
+    await nextTick(() => commentHasOverFlow.value = (commentTextInner.value as HTMLParagraphElement).scrollHeight > (commentText.value as HTMLDivElement).clientHeight);
+  }, 200);
+})
 
 onBeforeUnmount(() => useMediaMatcher().destroy());
 
@@ -116,18 +127,25 @@ function onShowReplyInput() {
 function onShowRepliesClick() {
   showReplies.value = !showReplies.value;
 }
+
+function onEditModeClose() {
+  showEditMode.value = false;
+}
 </script>
 
 <template lang='pug'>
 article.comment-list-item
-  CommentMetaActions.meta-actions(
-    v-if="userIsAuthorOrAdmin"
-    :comment="comment"
-    @loading:delete-start=""
-  )
+  Transition(name="fade-fast")
+    CommentMetaActions.meta-actions(
+      v-if="userIsAuthorOrAdmin && showEditMode === false"
+      :comment="comment"
+      @toggle:edit-mode="() => showEditMode = true"
+    )
+
   .avatar-col
     RouterLink(:to="`/profile/${comment.author?._id}`")
       img.avatar.avatar__comment(:src="comment.author?.meta.avatarUrl" :alt="`Profilbild von ${comment.author?.username}`")
+
   .content-col
     .author-info
       RouterLink(:to="`/profile/${comment.author?._id}`")
@@ -135,11 +153,23 @@ article.comment-list-item
           :class="{ 'is-uploader': authorIsUploader }"
         ) {{ comment.author?.username }}
       span.date {{ getLocaleDateString(comment.createdAt, true) }}
+      span.edited(v-if="comment.edited") (editiert)
 
-    .comment-text(ref="commentText" :class="{ open: showMoreOpen }")
-      p.comment-text__inner(ref='commentTextInner') {{ comment.text }}
-    .comment-text__actions(v-if="commentHasOverFlow")
-      button.more-button(@click="onToggleShowMore") {{ showMoreOpen ? 'WENIGER ANZEIGEN' : 'MEHR ANZEIGEN' }}
+    Transition(name="fade-fast" mode="out-in")
+      template(v-if="showEditMode === false")
+        .comment-display
+          .comment-text(ref="commentText" :class="{ open: showMoreOpen }")
+            p.comment-text__inner(ref='commentTextInner') {{ comment.text }}
+          .comment-text__actions(v-if="commentHasOverFlow")
+            button.more-button(@click="onToggleShowMore") {{ showMoreOpen ? 'WENIGER ANZEIGEN' : 'MEHR ANZEIGEN' }}
+      template(v-else)
+        CommentEdit(
+          :is-reply="isReply"
+          :comment-id="getCommentId"
+          :parent-id="props.comment.parentId"
+          :comment-text="props.comment.text"
+          @close="onEditModeClose"
+        )
 
     .comment-actions
       .sentiment
@@ -224,7 +254,8 @@ article.comment-list-item
   }
 }
 
-.date {
+.date,
+.edited {
   font-size: 14px;
   opacity: 0.7;
 }
