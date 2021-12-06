@@ -35,6 +35,8 @@ const rules = computed(() => ({
 
 const v$ = useVuelidate(rules, editedCommentData, { $rewardEarly: true });
 
+const textNotEdited = computed(() => props.commentText === editedCommentData.editedComment);
+
 function onFocus() {
   wasFocused.value = true;
 }
@@ -61,37 +63,26 @@ async function onEditCommentClick() {
     editedText: editedCommentData.editedComment
   };
 
-  let res;
+  let res = await commentsStore.editComment(editedComment._ìd, editedComment.editedText)
 
-  console.log(editedComment);
+  if (res?.status === 200) {
+    if (props.isReply) {
+      commentsStore.editCommentlocal({
+        _id: props.commentId,
+        parentId: props.parentId,
+        isReply: props.isReply,
+        commentText: editedComment.editedText
+      });
+    } else {
+      commentsStore.editCommentlocal({
+        _id: props.commentId,
+        isReply: props.isReply,
+        commentText: editedComment.editedText
+      });
+    }
 
-
-  if (props.isReply) {
-
-    // res = await commentsStore.editCommentlocal(editedComment)
-    commentsStore.editCommentlocal({
-      _id: props.commentId,
-      parentId: props.parentId,
-      isReply: props.isReply,
-      commentText: editedComment.editedText
-    });
-  } else {
-    // res = await commentsStore.editCommentlocal(editedComment)
-    commentsStore.editCommentlocal({
-      _id: props.commentId,
-      isReply: props.isReply,
-      commentText: editedComment.editedText
-    });
+    onCancelClick();
   }
-
-  onCancelClick();
-
-  // if (res?.status === 201) {
-  //   onCancelClick();
-
-  //   const filledComment = commentsStore.fillNewCommentData(editedComment, res.data.commentId, res.data.editdAt);
-  //   commentsStore.editCommentLocal(filledComment);
-  // }
 
   isLoading.value = false;
 }
@@ -99,7 +90,7 @@ async function onEditCommentClick() {
 
 <template lang='pug'>
 .comment-edit
-  LoaderIndeterminate(:class="{ visible: isLoading }")
+  LoaderIndeterminate(:class="{ visible: isLoading }" style="margin-top: 1em;")
   form.comment-edit__inner(
     :id="editedCommentId"
     @submit.prevent="onEditCommentClick"
@@ -125,7 +116,7 @@ async function onEditCommentClick() {
         button.btn.btn_primary(
           type="submit"
           :form="editedCommentId"
-          :disabled="v$.$invalid || isLoading"
+          :disabled="v$.$invalid || isLoading || textNotEdited"
         ) Änderungen speichern
 </template>
 

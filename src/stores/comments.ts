@@ -50,6 +50,19 @@ export const useCommentStore = defineStore('comments-store', {
         this.count = this.count + 1;
       }
     },
+    async editComment(commentId: string, commentText: string) {
+      try {
+        const res = await apiClient.put({
+          url: '/api/v1/comment',
+          mode: 'cors',
+          body: JSON.stringify({ commentId, commentText }),
+        });
+
+        return res;
+      } catch (error) {
+        console.log((error as Error).message);
+      }
+    },
     editCommentlocal({
       _id,
       parentId,
