@@ -64,7 +64,8 @@ async function onCreateCommentClick() {
     likes: [],
     dislikes: [],
     replies: [],
-    likedByUploader: false
+    likedByUploader: false,
+    edited: false
   };
 
   let res;
@@ -85,7 +86,7 @@ async function onCreateCommentClick() {
 
   isLoading.value = false;
 }
-</script>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </script>
 
 <template lang='pug'>
 .comment-create

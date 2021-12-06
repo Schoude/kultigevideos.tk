@@ -15,4 +15,5 @@ export interface Comment {
   createdAt?: string;
   replies?: Comment[];
   replyCount?: number;
+  edited: boolean;
 }
