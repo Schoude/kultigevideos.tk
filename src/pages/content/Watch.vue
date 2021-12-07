@@ -19,5 +19,7 @@ main.watch
     display: flex;
     justify-content: center;
   }
+
+  padding-bottom: 4em;
 }
 </style>
