@@ -237,9 +237,22 @@ export const useCommentStore = defineStore('comments-store', {
         }
       }
     },
-    toggleHeartOfComment(comment: Comment, status: boolean) {
-      // await send data to db, on success set locally
-      this.toggleHeartOfCommentLocal(comment, status);
+    async toggleHeartOfComment(comment: Comment, status: boolean) {
+      try {
+        const res = await apiClient.post({
+          url: '/api/v1/comment/heart',
+          mode: 'cors',
+          body: JSON.stringify({ commentId: comment._id, status }),
+        });
+
+        if (res.status === 200) {
+          this.toggleHeartOfCommentLocal(comment, status);
+        }
+
+        return res;
+      } catch (error) {
+        console.log((error as Error).message);
+      }
     },
     toggleHeartOfCommentLocal(comment: Comment, status: boolean) {
       if (comment.parentId) {

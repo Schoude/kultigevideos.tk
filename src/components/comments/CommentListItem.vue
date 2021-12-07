@@ -139,11 +139,7 @@ async function onToggleHeartClick(status: boolean) {
   if (sentimentLoading.value) return
   sentimentLoading.value = true;
 
-  commentsStore.toggleHeartOfComment(props.comment, status);
-
-  // 1) set local state of comment/reply as liked by uploader
-
-  // 2) send liked by uploader data to backend
+  await commentsStore.toggleHeartOfComment(props.comment, status);
 
   sentimentLoading.value = false;
 }
@@ -277,6 +273,7 @@ article.comment-list-item
   a {
     text-decoration: none;
     color: inherit;
+    align-self: flex-start;
   }
 }
 
