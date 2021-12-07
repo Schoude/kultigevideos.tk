@@ -64,7 +64,9 @@ function onBlur() {
 
   .kv-textarea__textcontent(
     ref="textbox"
-    role="texarea"
+    role="textbox"
+    name="custom-textarea"
+    aria-label="custom-textarea"
     contenteditable
     @input="onInput"
     @focus="onFocus"

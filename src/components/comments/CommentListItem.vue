@@ -11,6 +11,7 @@ import CommentCreate from './CommentCreate.vue';
 import type { UserSlim } from '../../types/models/user';
 import { useMediaMatcher } from '../../composables/media-matcher';
 import CommentEdit from './CommentEdit.vue';
+import KvUploaderLike from '../gfx/KvUploaderLike';
 
 const props = withDefaults(defineProps<{ comment: Comment, isReply?: boolean }>(), { isReply: false });
 
@@ -20,6 +21,7 @@ const { getLocaleDateString } = usePageHelpers();
 
 const authorIsUploader = computed(() => props.comment.author?._id === props.comment.uploader?._id);
 const userIsAuthorOrAdmin = computed(() => props.comment.author?._id === authStore.getUserId || authStore.userIsAdmin);
+const userIsUploader = computed(() => authStore.getUserId === props.comment.uploader?._id);
 
 const getIconLike = computed(() => props.comment.likes.includes(authStore.user?._id as string)
   ? 'thumbs-up-solid' : 'thumbs-up');
@@ -49,7 +51,7 @@ const uploaderWroteReply = computed(() => {
   return props.comment.replies?.some(reply => reply.author?._id === props.comment.uploader?._id);
 });
 
-const getUploaderData = computed(() => props.comment.uploader);
+const getUploaderData = computed(() => props.comment.uploader as UserSlim);
 
 const getReplyToggleText = computed(() => {
   const answerString = (props.comment.replyCount as number) > 1 ? 'Antworten' : 'Antwort';
@@ -179,6 +181,17 @@ article.comment-list-item
         button.count(data-cy="btn-dislike" title="Mag ich nicht" @click="dislikeComment")
           SvgIcon.icon.icon-dislike(:icon-name="getIconDislike" :size="ICON_SIZE.xxs")
           span.counter(data-cy="counter-dislikes") {{ comment.dislikes.length }}
+
+      // Uploader like/heart
+      .uploader-like-display(v-if="props.comment.likedByUploader && !userIsUploader")
+        KvUploaderLike(:imageUrl="getUploaderData.meta.avatarUrl" :isLiked="true")
+      .uploader-like-toggle(v-if="userIsUploader")
+        Transition(name="fade-fast" mode="out-in")
+          template(v-if="props.comment.likedByUploader")
+            KvUploaderLike(:imageUrl="getUploaderData.meta.avatarUrl" :isLiked="true" title="Herz entfernen")
+          template(v-else)
+            KvUploaderLike(:imageUrl="getUploaderData.meta.avatarUrl" :isLiked="false" title="Herz verteilen")
+
       .reply-toggle(v-if="isReply === false")
         button.btn__reply.more-button(@click="onShowReplyInput") Antworten
 
@@ -289,6 +302,7 @@ article.comment-list-item
 .comment-actions {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 1em;
 }
 

@@ -1,0 +1,11 @@
+.kv-uploader-like {
+  width: 40px;
+  position: relative;
+
+  .svg-icon {
+    fill: rgb(255, 53, 53);
+    position: absolute;
+    top: -4px;
+    right: -2px;
+  }
+}
