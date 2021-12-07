@@ -24,7 +24,7 @@ function onTriggerShowMore() {
       RouterLink(:to="`/profile/${videoStore.currentVideo?.uploader?._id}`") {{ videoStore.currentVideo?.uploader?.username }}
   .description-container
     .description-text(
-      :class="{ 'open': showMore }"
+      :class="{ 'open': showMore, 'clamp': !showMore }"
       data-cy="description-text"
     ) {{ videoStore.currentVideo?.description === '' ? "Keine Beschreibung vorhanden" : videoStore.currentVideo?.description }}
     button.more-button(
@@ -80,6 +80,10 @@ a {
 
   @include mq("laptop") {
     max-width: 50%;
+  }
+
+  &.clamp {
+    @include line-clamp();
   }
 
   &.open {
