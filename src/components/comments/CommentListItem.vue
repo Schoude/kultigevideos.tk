@@ -134,6 +134,19 @@ function onShowRepliesClick() {
 function onEditModeClose() {
   showEditMode.value = false;
 }
+
+async function onToggleHeartClick(status: boolean) {
+  if (sentimentLoading.value) return
+  sentimentLoading.value = true;
+
+  commentsStore.toggleHeartOfComment(props.comment, status);
+
+  // 1) set local state of comment/reply as liked by uploader
+
+  // 2) send liked by uploader data to backend
+
+  sentimentLoading.value = false;
+}
 </script>
 
 <template lang='pug'>
@@ -186,12 +199,22 @@ article.comment-list-item
       // Uploader like/heart
       .uploader-like-display(v-if="props.comment.likedByUploader && !userIsUploader")
         KvUploaderLikeDisplay(:imageUrl="getUploaderData.meta.avatarUrl" :title='`Herz von ${getUploaderData.username}`')
-      .uploader-like-toggle(v-if="userIsUploader")
+      .uploader-like-toggle(v-if="userIsUploader && !authorIsUploader")
         Transition(name="fade-fast" mode="out-in")
           template(v-if="props.comment.likedByUploader")
-            KvUploaderLike(:imageUrl="getUploaderData.meta.avatarUrl" :isLiked="true" title="Herz entfernen")
+            KvUploaderLike(
+              :imageUrl="getUploaderData.meta.avatarUrl"
+              :isLiked="true"
+              title="Herz entfernen"
+              @click="onToggleHeartClick(false)"
+            )
           template(v-else)
-            KvUploaderLike(:imageUrl="getUploaderData.meta.avatarUrl" :isLiked="false" title="Herz verteilen")
+            KvUploaderLike(
+              :imageUrl="getUploaderData.meta.avatarUrl"
+              :isLiked="false"
+              title="Herz verteilen"
+              @click="onToggleHeartClick(true)"
+            )
 
       .reply-toggle(v-if="isReply === false")
         button.btn__reply.more-button(@click="onShowReplyInput") Antworten

@@ -237,6 +237,24 @@ export const useCommentStore = defineStore('comments-store', {
         }
       }
     },
+    toggleHeartOfComment(comment: Comment, status: boolean) {
+      // await send data to db, on success set locally
+      this.toggleHeartOfCommentLocal(comment, status);
+    },
+    toggleHeartOfCommentLocal(comment: Comment, status: boolean) {
+      if (comment.parentId) {
+        (
+          this.getReplyByid(
+            comment._id as string,
+            comment.parentId as string
+          ) as Comment
+        ).likedByUploader = status;
+      } else {
+        (
+          this.getCommentById(comment._id as string) as Comment
+        ).likedByUploader = status;
+      }
+    },
     async deleteComment(commentId: string, userId: string, parentId?: string) {
       try {
         const res = await apiClient.delete({
