@@ -12,6 +12,7 @@ import type { UserSlim } from '../../types/models/user';
 import { useMediaMatcher } from '../../composables/media-matcher';
 import CommentEdit from './CommentEdit.vue';
 import KvUploaderLike from '../gfx/KvUploaderLike';
+import KvUploaderLikeDisplay from '../gfx/KvUploaderLikeDisplay';
 
 const props = withDefaults(defineProps<{ comment: Comment, isReply?: boolean }>(), { isReply: false });
 
@@ -184,7 +185,7 @@ article.comment-list-item
 
       // Uploader like/heart
       .uploader-like-display(v-if="props.comment.likedByUploader && !userIsUploader")
-        KvUploaderLike(:imageUrl="getUploaderData.meta.avatarUrl" :isLiked="true")
+        KvUploaderLikeDisplay(:imageUrl="getUploaderData.meta.avatarUrl" :title='`Herz von ${getUploaderData.username}`')
       .uploader-like-toggle(v-if="userIsUploader")
         Transition(name="fade-fast" mode="out-in")
           template(v-if="props.comment.likedByUploader")
