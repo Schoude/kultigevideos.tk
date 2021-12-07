@@ -12,4 +12,7 @@ main.videos-overview
 </template>
 
 <style lang='scss' scoped>
+.videos-overview {
+  padding: 1em;
+}
 </style>
