@@ -1,22 +1,16 @@
 <script setup lang='ts'>
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import KvMenu from '../forms/elements/KvMenu.vue';
 import KvMenuButton from '../forms/elements/KvMenuButton';
+import { useCommentStore } from '../../stores/comments';
+import type { SortingType } from '../../stores/comments';
 
-type SortingType = 'newest' | 'most-liked' | 'most-disliked';
+const commentStore = useCommentStore();
 
 const forceClose = ref(false);
-const selectedSorting = ref<SortingType>('newest');
-
-const isSelected = computed(() => {
-  return (sortingType: SortingType) => {
-    return sortingType === selectedSorting.value;
-  }
-})
 
 function onSelectSortingClick(sortingType: SortingType) {
-  if (selectedSorting.value === sortingType) return;
-  selectedSorting.value = sortingType;
+  commentStore.setSelectedSortingType(sortingType);
   forceClose.value = true;
 }
 
@@ -37,15 +31,15 @@ KvMenu.comment-sorter(
   @menu:toggled="onMenuToggled"
 )
   KvMenuButton(
-    :class="{ selected: isSelected('newest') }"
+    :class="{ selected: commentStore.isSelectedSortingType('newest') }"
     @click="onSelectSortingClick('newest')"
   ) Neuste zuerst
   KvMenuButton(
-    :class="{ selected: isSelected('most-liked') }"
+    :class="{ selected: commentStore.isSelectedSortingType('most-liked') }"
     @click="onSelectSortingClick('most-liked')"
   ) meiste Likes
   KvMenuButton(
-    :class="{ selected: isSelected('most-disliked') }"
+    :class="{ selected: commentStore.isSelectedSortingType('most-disliked') }"
     @click="onSelectSortingClick('most-disliked')"
   ) meiste Dislikes
 </template>

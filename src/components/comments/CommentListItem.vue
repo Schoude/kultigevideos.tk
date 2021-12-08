@@ -3,7 +3,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { usePageHelpers } from '../../composables/page-helpers';
 import { useAuthStore } from '../../stores/auth';
 import { useCommentStore } from '../../stores/comments';
-import type { Comment } from '../../types/models/comment'
+import type { IComment } from '../../types/models/comment'
 import { ICON_SIZE } from '../gfx/icons/icon-data';
 import SvgIcon from '../gfx/icons/SvgIcon.vue';
 import CommentMetaActions from './CommentMetaActions.vue';
@@ -14,7 +14,7 @@ import CommentEdit from './CommentEdit.vue';
 import KvUploaderLike from '../gfx/KvUploaderLike';
 import KvUploaderLikeDisplay from '../gfx/KvUploaderLikeDisplay';
 
-const props = withDefaults(defineProps<{ comment: Comment, isReply?: boolean }>(), { isReply: false });
+const props = withDefaults(defineProps<{ comment: IComment, isReply?: boolean }>(), { isReply: false });
 
 const authStore = useAuthStore();
 const commentsStore = useCommentStore();

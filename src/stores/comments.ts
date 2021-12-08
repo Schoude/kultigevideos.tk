@@ -2,20 +2,24 @@ import { useVideoStore } from './video';
 import { useAuthStore } from './auth';
 import { defineStore } from 'pinia';
 import { apiClient } from '../api';
-import type { Comment } from '../types/models/comment';
+import type { IComment } from '../types/models/comment';
 
 interface CommentsState {
   count: number;
-  comments: Comment[];
+  comments: IComment[];
+  selectedSortingType: SortingType;
 }
+
+export type SortingType = 'newest' | 'most-liked' | 'most-disliked';
 
 export const useCommentStore = defineStore('comments-store', {
   state: (): CommentsState => ({
     count: 0,
     comments: [],
+    selectedSortingType: 'newest',
   }),
   actions: {
-    async createComment(comment: Comment) {
+    async createComment(comment: IComment) {
       try {
         const res = await apiClient.post<{
           message: string;
@@ -32,11 +36,11 @@ export const useCommentStore = defineStore('comments-store', {
         console.log((error as Error).message);
       }
     },
-    createCommentLocal(newComment: Comment) {
+    createCommentLocal(newComment: IComment) {
       if (newComment.parentId) {
         const parentComment = this.comments.find(
           comment => comment._id === newComment.parentId
-        ) as Comment;
+        ) as IComment;
 
         if (parentComment.replies?.length === 0) {
           parentComment.replies?.push(newComment);
@@ -75,17 +79,17 @@ export const useCommentStore = defineStore('comments-store', {
       isReply: boolean;
     }) {
       if (isReply) {
-        (this.getReplyByid(_id, parentId as string) as Comment).text =
+        (this.getReplyByid(_id, parentId as string) as IComment).text =
           commentText;
 
-        (this.getReplyByid(_id, parentId as string) as Comment).edited = true;
+        (this.getReplyByid(_id, parentId as string) as IComment).edited = true;
       } else {
-        (this.getCommentById(_id) as Comment).text = commentText;
-        (this.getCommentById(_id) as Comment).edited = true;
+        (this.getCommentById(_id) as IComment).text = commentText;
+        (this.getCommentById(_id) as IComment).edited = true;
       }
     },
     fillNewCommentData(
-      comment: Comment,
+      comment: IComment,
       newCommentId: string,
       createdAt: string
     ) {
@@ -111,7 +115,7 @@ export const useCommentStore = defineStore('comments-store', {
         totalCount: {
           value: number;
         };
-        comments: Comment[];
+        comments: IComment[];
       }
 
       this.resetCommentData();
@@ -133,12 +137,13 @@ export const useCommentStore = defineStore('comments-store', {
     setCommentCount(count: number) {
       this.count = count;
     },
-    setVideoComments(comments: Comment[]) {
+    setVideoComments(comments: IComment[]) {
       this.comments = comments;
     },
     resetCommentData() {
       this.count = 0;
       this.comments = [];
+      this.selectedSortingType = 'newest';
     },
     async likeComment(commentId: string, userId: string, parentId?: string) {
       try {
@@ -237,7 +242,7 @@ export const useCommentStore = defineStore('comments-store', {
         }
       }
     },
-    async toggleHeartOfComment(comment: Comment, status: boolean) {
+    async toggleHeartOfComment(comment: IComment, status: boolean) {
       try {
         const res = await apiClient.post({
           url: '/api/v1/comment/heart',
@@ -254,17 +259,17 @@ export const useCommentStore = defineStore('comments-store', {
         console.log((error as Error).message);
       }
     },
-    toggleHeartOfCommentLocal(comment: Comment, status: boolean) {
+    toggleHeartOfCommentLocal(comment: IComment, status: boolean) {
       if (comment.parentId) {
         (
           this.getReplyByid(
             comment._id as string,
             comment.parentId as string
-          ) as Comment
+          ) as IComment
         ).likedByUploader = status;
       } else {
         (
-          this.getCommentById(comment._id as string) as Comment
+          this.getCommentById(comment._id as string) as IComment
         ).likedByUploader = status;
       }
     },
@@ -298,7 +303,7 @@ export const useCommentStore = defineStore('comments-store', {
       } else {
         const foundParent = this.comments.find(
           comment => comment._id === parentId
-        ) as Comment;
+        ) as IComment;
 
         const deleteFromIndex = foundParent.replies?.findIndex(
           reply => reply._id === commentId
@@ -307,6 +312,9 @@ export const useCommentStore = defineStore('comments-store', {
         foundParent.replies?.splice(deleteFromIndex as number, 1);
         foundParent.replyCount = (foundParent.replyCount as number) - 1;
       }
+    },
+    setSelectedSortingType(sortingType: SortingType) {
+      this.selectedSortingType = sortingType;
     },
   },
   getters: {
@@ -327,6 +335,33 @@ export const useCommentStore = defineStore('comments-store', {
           .find(comment => comment._id === parentId)
           ?.replies?.find(reply => reply._id === id);
       };
+    },
+    isSelectedSortingType: state => {
+      return (sortingType: SortingType) => {
+        return sortingType === state.selectedSortingType;
+      };
+    },
+    getSortedComments: state => {
+      let sortedComments = [...state.comments];
+
+      switch (state.selectedSortingType) {
+        case 'newest':
+          return sortedComments;
+
+        case 'most-liked':
+          sortedComments = sortedComments.sort(
+            (a, b) => b.likes.length - a.likes.length
+          );
+          break;
+
+        case 'most-disliked':
+          sortedComments = sortedComments.sort(
+            (a, b) => b.dislikes.length - a.dislikes.length
+          );
+          break;
+      }
+
+      return sortedComments;
     },
   },
 });

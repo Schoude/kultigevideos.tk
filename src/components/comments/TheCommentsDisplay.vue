@@ -29,7 +29,9 @@ section.the-comment-display
     p.comments-count {{ commentsStore.getCommentsCount }} {{ getCommentCountLabel }}
     // CommentSorter with composition fn that returns the sorted comments
     // pass them to TheCommentsList
-    CommentSorter(v-if="commentsStore.getCommentsCount > 1")
+    CommentSorter(
+      v-if="commentsStore.getCommentsCount > 1"
+    )
   CommentCreate
   TheCommentsList
 </template>

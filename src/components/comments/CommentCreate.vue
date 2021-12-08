@@ -6,7 +6,7 @@ import { useAuthStore } from '../../stores/auth';
 import { useCommentStore } from '../../stores/comments';
 import { useVideoStore } from '../../stores/video';
 import LoaderIndeterminate from '../gfx/loaders/LoaderIndeterminate.vue';
-import type { Comment } from '../../types/models/comment'
+import type { IComment } from '../../types/models/comment'
 import KvTextarea from '../forms/elements/KvTextarea.vue';
 
 const props = withDefaults(defineProps<{ isReply?: boolean, commentId?: string }>(), { isReply: false });
@@ -56,7 +56,7 @@ async function onCreateCommentClick() {
   if (v$.value.$invalid || isLoading.value) return;
   isLoading.value = true;
 
-  const newComment: Comment = {
+  const newComment: IComment = {
     authorId: authStore.getUserId,
     uploaderId: videoStore.getCurrentVideoUploaderId,
     text: newCommentData.newComment,
@@ -86,7 +86,7 @@ async function onCreateCommentClick() {
 
   isLoading.value = false;
 }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </script>
+</script>
 
 <template lang='pug'>
 .comment-create

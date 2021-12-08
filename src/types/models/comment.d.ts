@@ -1,6 +1,6 @@
 import type { UserSlim } from './user';
 
-export interface Comment {
+export interface IComment {
   _id?: string;
   authorId?: string;
   author?: UserSlim;
@@ -13,7 +13,7 @@ export interface Comment {
   dislikes: string[];
   likedByUploader?: boolean;
   createdAt?: string;
-  replies?: Comment[];
+  replies?: IComment[];
   replyCount?: number;
   edited: boolean;
 }

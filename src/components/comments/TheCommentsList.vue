@@ -7,7 +7,7 @@ const commentStore = useCommentStore();
 
 <template lang='pug'>
 .the-comments-list
-  template(v-for="comment of commentStore.getComments" :key="comment._id")
+  template(v-for="comment of commentStore.getSortedComments" :key="comment._id")
     CommentListItem(:comment="comment")
 </template>
 

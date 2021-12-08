@@ -2,13 +2,13 @@
 import { computed, ref, watch, onBeforeUnmount } from 'vue';
 import { useAuthStore } from '../../stores/auth';
 import { useCommentStore } from '../../stores/comments';
-import type { Comment } from '../../types/models/comment';
+import type { IComment } from '../../types/models/comment';
 import KvMenu from '../forms/elements/KvMenu.vue';
 import KvMenuButton from '../forms/elements/KvMenuButton';
 
 const authStore = useAuthStore();
 const commentStore = useCommentStore();
-const props = defineProps<{ comment: Comment }>();
+const props = defineProps<{ comment: IComment }>();
 const emit = defineEmits(['toggle:edit-mode']);
 
 const userIsAuthor = computed(() => props.comment.author?._id === authStore.getUserId);
