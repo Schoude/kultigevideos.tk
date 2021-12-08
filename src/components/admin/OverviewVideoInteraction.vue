@@ -3,7 +3,8 @@ import { ref } from 'vue';
 import { usePageHelpers } from '../../composables/page-helpers';
 import { useAuthStore } from '../../stores/auth';
 import { useVideoStore } from '../../stores/video';
-import type { Uploader, Video } from '../../types/models/video';
+import { UserSlim } from '../../types/models/user';
+import type { Video } from '../../types/models/video';
 import KvCheckbox from '../forms/elements/KvCheckbox.vue';
 import LoaderIndeterminate from '../gfx/loaders/LoaderIndeterminate.vue';
 
@@ -41,7 +42,7 @@ async function onDeleteVideoClick(id: string, hash: string) {
   emits('reload:overiew');
 }
 
-function getUsername(uploader: Uploader | undefined) {
+function getUsername(uploader: UserSlim | undefined) {
   return authStore.getUserId === uploader?._id ? 'dir' : uploader?.username;
 }
 </script>

@@ -1,6 +1,4 @@
-import type { User, UserMetaData } from './user.d';
-
-type Uploader = Pick<User, '_id' | 'username' | 'meta'>;
+import type { UserMetaData, UserSlim } from './user.d';
 
 interface VideoMetaData {
   duration: number;
@@ -24,7 +22,7 @@ export interface Video {
   };
   approvedAt?: string;
   uploaderId: string;
-  uploader?: Uploader;
+  uploader?: UserSlim;
   uploadedAt: string;
   likes: string[];
   dislikes: string[];
