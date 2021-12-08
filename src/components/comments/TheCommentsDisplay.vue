@@ -1,15 +1,18 @@
 <script setup lang='ts'>
-import { onUnmounted, watch } from 'vue';
+import { computed, onUnmounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useCommentStore } from '../../stores/comments';
 import { useVideoStore } from '../../stores/video';
 import CommentCreate from './CommentCreate.vue';
 import TheCommentsList from './TheCommentsList.vue';
+import CommentSorter from './CommentSorter.vue';
 
 const commentsStore = useCommentStore();
 const videoStore = useVideoStore();
 
 const router = useRouter();
+
+const getCommentCountLabel = computed(() => commentsStore.getCommentsCount !== 1 ? 'Kommentare' : 'Kommentar');
 
 watch(() => videoStore.currentVideo, async (newVideo) => {
   await commentsStore.fetchCommentsOfVideo(newVideo?.hash as string);
@@ -23,8 +26,10 @@ await commentsStore.fetchCommentsOfVideo(router.currentRoute.value.params.hash a
 <template lang='pug'>
 section.the-comment-display
   .comments-meta-data
-    p.comments-count {{ commentsStore.getCommentsCount }} Kommentare
-    .comments-sort Sortieren nach...
+    p.comments-count {{ commentsStore.getCommentsCount }} {{ getCommentCountLabel }}
+    // CommentSorter with composition fn that returns the sorted comments
+    // pass them to TheCommentsList
+    CommentSorter(v-if="commentsStore.getCommentsCount > 1")
   CommentCreate
   TheCommentsList
 </template>
@@ -44,8 +49,7 @@ section.the-comment-display
   }
 }
 
-.comments-count,
-.comments-sort {
+.comments-count {
   font-size: 20px;
 }
 </style>

@@ -1,5 +1,4 @@
 .kv-menu {
-  z-index: 1;
 
   .icon {
     --border-color: white;
@@ -35,24 +34,49 @@
   position: relative;
 }
 
+.kv-menu-btn--toggle {
+  display: flex;
+  align-items: center;
+  gap: .5em;
+  outline: none;
+
+  &:focus-visible,
+  &:hover {
+    background-color: var(--color-ui);
+  }
+}
+
 .kv-menu__buttons {
   display: flex;
   flex-direction: column;
   background-color: var(--color-header);
   position: absolute;
-  right: 0;
   transform: translateY(5px);
   width: max-content;
   padding-block: 0.5em;
+  z-index: 1;
+
+  &.right {
+    right: 0;
+  }
+
+  &.left {
+    left: 0;
+  }
 }
 
 .kv-menu-button {
   padding-block: 0.5em;
   transition: background-color 0.2s ease;
   outline: none;
+  text-align: left;
 
   &:hover,
   &:focus-visible {
+    background-color: var(--color-ui);
+  }
+
+  &.selected {
     background-color: var(--color-ui);
   }
 }
