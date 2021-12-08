@@ -45,8 +45,18 @@ KvMenu.comment-sorter(
 </template>
 
 <style lang='scss' scoped>
+@use '../../styles/mixins' as *;
+
 .kv-menu {
   &:deep() {
+    .kv-menu-btn--toggle {
+      padding: 0;
+
+      @include mq("t-p") {
+        padding: revert;
+      }
+    }
+
     .label-toggle-button {
       font-size: 20px;
     }
