@@ -332,6 +332,12 @@ article.comment-list-item
   gap: 0.5em;
 }
 
+.uploader-like-display,
+.uploader-like-toggle {
+  display: flex;
+  align-items: center;
+}
+
 .count {
   display: flex;
   gap: 0.5em;
