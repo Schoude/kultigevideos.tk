@@ -14,7 +14,7 @@ const KvUploaderLike = (props: Props, context: SetupContext) => {
     h('img', {
       class: 'avatar',
       alt: 'Profilbild des Uploaders',
-      src: `${props.imageUrl}`,
+      src: props.imageUrl,
       ...context.attrs,
     }),
     h(SvgIcon, { iconName: 'heart', size: ICON_SIZE.s }),
