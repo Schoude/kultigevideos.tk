@@ -19,7 +19,7 @@ const editedCommentId = ref(`edited-comment-${props.commentId}`);
 const commentsStore = useCommentStore();
 
 const editedCommentData = reactive({ editedComment: props.commentText });
-const editedCommentMinLength = 3;
+const editedCommentMinLength = 1;
 const editedCommentMaxLength = 1000;
 
 const wasFocused = ref(false);

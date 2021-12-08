@@ -19,7 +19,7 @@ const commentsStore = useCommentStore();
 const videoStore = useVideoStore();
 
 const newCommentData = reactive({ newComment: '' });
-const newCommentMinLength = 3;
+const newCommentMinLength = 1;
 const newCommentMaxLength = 1000;
 
 const wasFocused = ref(false);
