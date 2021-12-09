@@ -37,11 +37,11 @@ KvMenu.comment-sorter(
   KvMenuButton(
     :class="{ selected: commentStore.isSelectedSortingType('most-liked') }"
     @click="onSelectSortingClick('most-liked')"
-  ) meiste Likes
+  ) Meiste Likes
   KvMenuButton(
     :class="{ selected: commentStore.isSelectedSortingType('most-disliked') }"
     @click="onSelectSortingClick('most-disliked')"
-  ) meiste Dislikes
+  ) Meiste Dislikes
 </template>
 
 <style lang='scss' scoped>
