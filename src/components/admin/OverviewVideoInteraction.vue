@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { usePageHelpers } from '../../composables/page-helpers';
 import { useAuthStore } from '../../stores/auth';
 import { useVideoStore } from '../../stores/video';
-import { UserSlim } from '../../types/models/user';
+import type { UserSlim } from '../../types/models/user';
 import type { Video } from '../../types/models/video';
 import KvCheckbox from '../forms/elements/KvCheckbox.vue';
 import LoaderIndeterminate from '../gfx/loaders/LoaderIndeterminate.vue';

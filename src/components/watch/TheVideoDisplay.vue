@@ -92,6 +92,10 @@ section.the-video-display
   }
 }
 
+.recommended-col {
+  max-width: 400px;
+}
+
 .video-player {
   width: 100%;
   margin: 0 auto;
