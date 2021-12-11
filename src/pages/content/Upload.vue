@@ -9,6 +9,7 @@ import ProgressBar from '../../components/gfx/loaders/ProgressBar.vue';
 import { ROUTE_NAMES } from '../../router/routing-info';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../../stores/auth';
+import KvTextarea from '../../components/forms/elements/KvTextarea.vue';
 
 const router = useRouter();
 const newVideoStore = useNewVideoStore();
@@ -98,11 +99,8 @@ main.upload
         .field_container
           h2.heading(data-cy="heading-video-description") Videobeschreibung
           .form-field
-            textarea.description(
-              data-cy="video-description"
-              v-model.trim='newVideoTextdata.description'
-              maxlength="1000"
-              @blur="v$.description.$validate()"
+            KvTextarea.description(
+              v-model.trim="newVideoTextdata.description"
             )
           Transition(name="fade-fast" mode="out-in")
             template(v-if="v$.description.$dirty && v$.description.$invalid")

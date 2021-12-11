@@ -4,7 +4,7 @@ import { usePageHelpers } from '../../../composables/page-helpers';
 
 const props = withDefaults(defineProps<{
   modelValue: string,
-  autofocus: boolean;
+  autofocus?: boolean;
   placeholderText?: string;
 }>(), {
   autofocus: false
