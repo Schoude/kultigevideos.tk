@@ -11,22 +11,22 @@
     "cy:run-ct": "cypress run-ct"
   },
   "dependencies": {
-    "firebase": "^9.5.0",
-    "vue": "^3.2.23",
+    "firebase": "^9.6.1",
+    "vue": "^3.2.24",
     "vue-router": "^4.0.12"
   },
   "devDependencies": {
     "@cypress/vite-dev-server": "^2.2.1",
     "@cypress/vue": "^3.0.5",
-    "@vitejs/plugin-vue": "^1.10.1",
+    "@vitejs/plugin-vue": "^1.10.2",
     "@vuelidate/core": "^2.0.0-alpha.32",
     "@vuelidate/validators": "^2.0.0-alpha.25",
     "cypress": "^9.0.0",
     "cypress-file-upload": "^5.0.8",
-    "pinia": "^2.0.4",
-    "sass": "^1.44.0",
-    "typescript": "^4.5.2",
-    "vite": "^2.6.14",
+    "pinia": "^2.0.6",
+    "sass": "^1.45.0",
+    "typescript": "^4.5.3",
+    "vite": "^2.7.1",
     "vue-tsc": "^0.29.8"
   }
 }
