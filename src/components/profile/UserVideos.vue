@@ -1,10 +1,15 @@
 <script setup lang='ts'>
-import { computed } from '@vue/reactivity';
+import { computed } from 'vue';
 import { usePageHelpers } from '../../composables/page-helpers';
 import { useAuthStore } from '../../stores/auth';
 import { useUserStore } from '../../stores/user';
+import SvgIcon from '../gfx/icons/SvgIcon.vue';
 
+const authStore = useAuthStore();
 const userStore = useUserStore();
+
+const authUserIsProfileUser = computed(() => authStore.getUserId === userStore.getUserProfileData?._id)
+
 const { createFormattedDurationStringFromSeconds, getLocaleDateString } = usePageHelpers();
 </script>
 
@@ -21,11 +26,27 @@ section.user-videos
           :src="video.thumb"
         )
       .info
-        h3.title(data-cy="title")
+        h2.title(data-cy="title")
           RouterLink(:to="`/watch/${video.hash}`") {{ video.title }}
         .metadata-line
           span.video-meta-block.viewcount(data-cy="viewcount") {{ video.viewCount }} Aufrufe
           span.video-meta-block.upload-date(data-cy="upload-date") am {{ getLocaleDateString(video.uploadedAt) }}
+
+      .status(v-if="authUserIsProfileUser")
+        p.status__entry
+          SvgIcon(
+            :style="{ fill: video.approved ? 'green' : 'red' }"
+            :icon-name="video.approved ? 'check' : 'times'"
+            :aria-label="video.approved ? 'Video ist freigegeben.' : 'Video ist nicht freigegeben.'"
+          )
+          span freigegeben?
+        p.status__entry
+          SvgIcon(
+            :style="{ fill: video.listed ? 'green' : 'red' }"
+            :icon-name="video.listed ? 'check' : 'times'"
+            :aria-label="video.approved ? 'Video ist gelistet.' : 'Video ist nicht gelistet.'"
+          )
+          span gelisted?
 
       .actions(v-if="userStore.userIsAuthUser")
         button.btn.btn_cancel(type="button") Video löschen
@@ -91,8 +112,22 @@ section.user-videos
   }
 }
 
+.status {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding-block: 1em;
+}
+
+.status__entry {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .title {
   font-weight: 500;
+  font-size: 18px;
 }
 
 .viewcount {
