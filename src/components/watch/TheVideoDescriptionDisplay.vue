@@ -73,6 +73,7 @@ a {
 .description-text {
   max-height: 3em;
   overflow: hidden;
+  white-space: pre-wrap;
 
   @include mq("t-p") {
     max-width: 75%;
