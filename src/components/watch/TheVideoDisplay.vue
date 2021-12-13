@@ -1,4 +1,5 @@
 <script setup lang='ts'>
+import { ref } from "vue";
 import { onBeforeRouteUpdate, useRouter } from 'vue-router';
 import { useVideoStore } from '../../stores/video';
 import VideoPlayer from '../../components/video/VideoPlayer.vue';
@@ -12,6 +13,7 @@ import TheCommentsDisplay from '../comments/TheCommentsDisplay.vue';
 const router = useRouter();
 const videoStore = useVideoStore();
 const { setMediaSession, setPageTitle } = usePageHelpers();
+const aspectRatio = ref('16/9');
 
 watch(() => videoStore.currentVideo, (currentVideo) => {
   if (currentVideo != null) {
@@ -29,6 +31,10 @@ onBeforeRouteUpdate(async to => {
   await videoStore.getByHash(to.params.hash as string);
 })
 
+function onLoadedMetadata(event: { width: number, height: number }) {
+  aspectRatio.value = `${event.width}/${event.height}`;
+}
+
 await videoStore.getByHash(router.currentRoute.value.params.hash as string)
 setPageTitle(videoStore.currentVideo?.title);
 </script>
@@ -40,6 +46,7 @@ section.the-video-display
       :url="videoStore.getCurrentVideoUrl"
       :poster="videoStore.currentVideo?.thumb"
       :autoplay="true"
+      @loadedmetadata="onLoadedMetadata"
     )
     .video-col__inner
       TheVideoMetadataDisplay
@@ -70,15 +77,6 @@ section.the-video-display
   }
 }
 
-.video-col,
-.recommended-col {
-  flex: 1;
-}
-
-.video-col {
-  flex-basis: 33%;
-}
-
 .video-col__inner,
 .recommended-col__inner {
   margin: 0 0.5em;
@@ -94,11 +92,13 @@ section.the-video-display
 
 .recommended-col {
   max-width: 400px;
+  width: 100%;
 }
 
 .video-player {
   width: 100%;
-  margin: 0 auto;
+  aspect-ratio: v-bind(aspectRatio);
+  background-color: #000;
 
   @include mq("t-l") {
     height: 500px;
