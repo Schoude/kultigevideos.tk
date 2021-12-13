@@ -56,9 +56,10 @@ article.overview-video-interaction
         span.duration-display {{ createFormattedDurationStringFromSeconds(video.meta.duration) }}
         img.thumb(:src="video.thumb")
       a(:href="video.url" target="_blank" rel="noopener") {{ video.title }}
-    p.description {{ video.description }}
+    p.description {{ video.description === '' ? 'Keine Beschreibung vorhanden' : video.description }}
 
     section.uploader-data
+      hr
       p.uploader Hochgeladen von&nbsp;
         RouterLink.user-link(:to="`/profile/${video.uploader?._id}`") {{ getUsername(video.uploader) }}
       p.uploaded-at am {{ getLocaleDateString(video.uploadedAt) }}
@@ -68,6 +69,7 @@ article.overview-video-interaction
       p.approved-at Freigegeben am {{ getLocaleDateString(video.approvedAt) }}
       p.approved-by von&nbsp;
         RouterLink.user-link(:to="`/profile/${video.approvedBy?._id}`") {{ getUsername(video.approvedBy) }}
+      RouterLink.video-link(:to="`/watch/${video.hash}`" target="_blank") Link zum Video
 
     .actions(v-if="type === 'approve'")
       .negavive
@@ -149,7 +151,8 @@ article.overview-video-interaction
   margin-top: 1em;
 }
 
-.user-link {
+.user-link,
+.video-link {
   display: inline;
   color: inherit;
   text-decoration: none;
@@ -164,15 +167,15 @@ article.overview-video-interaction
 .description {
   max-height: 120px;
   overflow: auto;
+  white-space: pre-wrap;
 
   @include scrollbar(thin);
 }
 
-.approval-data {
-  hr {
-    opacity: 0.5;
-  }
+hr {
+  opacity: 0.5;
 }
+
 .actions {
   display: flex;
   align-items: center;
