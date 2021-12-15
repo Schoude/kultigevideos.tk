@@ -46,7 +46,7 @@ section.user-videos
             :icon-name="video.listed ? 'check' : 'times'"
             :aria-label="video.approved ? 'Video ist gelistet.' : 'Video ist nicht gelistet.'"
           )
-          span gelisted?
+          span gelistet?
 
       .actions(v-if="userStore.userIsAuthUser")
         button.btn.btn_cancel(type="button") Video löschen
