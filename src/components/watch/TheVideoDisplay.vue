@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { ref } from "vue";
+import { onErrorCaptured, ref } from "vue";
 import { onBeforeRouteUpdate, useRouter } from 'vue-router';
 import { useVideoStore } from '../../stores/video';
 import VideoPlayer from '../../components/video/VideoPlayer.vue';
@@ -9,11 +9,13 @@ import { onUnmounted, watch } from 'vue';
 import TheRecommendedDisplay from './TheRecommendedDisplay.vue';
 import { usePageHelpers } from '../../composables/page-helpers';
 import TheCommentsDisplay from '../comments/TheCommentsDisplay.vue';
+import SvgIcon from "../gfx/icons/SvgIcon.vue";
 
 const router = useRouter();
 const videoStore = useVideoStore();
 const { setMediaSession, setPageTitle } = usePageHelpers();
 const aspectRatio = ref('16/9');
+const hasError = ref(false);
 
 watch(() => videoStore.currentVideo, (currentVideo) => {
   if (currentVideo != null) {
@@ -25,33 +27,57 @@ watch(() => videoStore.currentVideo, (currentVideo) => {
 onUnmounted(() => {
   videoStore.setCurrentVideo(null);
   setPageTitle();
+  hasError.value = false;
 });
 
 onBeforeRouteUpdate(async to => {
-  await videoStore.getByHash(to.params.hash as string);
+  try {
+    await videoStore.getByHash(to.params.hash as string);
+    hasError.value = false;
+  } catch (error) {
+    aspectRatio.value = '16/9';
+    hasError.value = true;
+    setPageTitle('Video nicht verfügbar');
+  }
 })
 
 function onLoadedMetadata(event: { width: number, height: number }) {
   aspectRatio.value = `${event.width}/${event.height}`;
 }
 
-await videoStore.getByHash(router.currentRoute.value.params.hash as string)
-setPageTitle(videoStore.currentVideo?.title);
+try {
+  await videoStore.getByHash(router.currentRoute.value.params.hash as string)
+  setPageTitle(videoStore.currentVideo?.title);
+  hasError.value = false;
+} catch (error) {
+  aspectRatio.value = '16/9';
+  hasError.value = true;
+  setPageTitle('Video nicht verfügbar');
+}
+
 </script>
 
 <template lang='pug'>
 section.the-video-display
-  .video-col
-    VideoPlayer.video-player(
-      :url="videoStore.getCurrentVideoUrl"
-      :poster="videoStore.currentVideo?.thumb"
-      :autoplay="true"
-      @loadedmetadata="onLoadedMetadata"
-    )
-    .video-col__inner
-      TheVideoMetadataDisplay
-      TheVideoDescriptionDisplay
-      TheCommentsDisplay.comments
+  template(v-if="hasError === false")
+    .video-col
+      VideoPlayer.video-player(
+        :url="videoStore.getCurrentVideoUrl"
+        :poster="videoStore.currentVideo?.thumb"
+        :autoplay="true"
+        @loadedmetadata="onLoadedMetadata"
+      )
+      .video-col__inner
+        TheVideoMetadataDisplay
+        TheVideoDescriptionDisplay
+        TheCommentsDisplay.comments
+
+  template(v-else)
+    section.video-error-display
+      SvgIcon(icon-name="sad-cry")
+      h1 &nbsp;Das Video ist nicht verfügbar...&nbsp;
+      SvgIcon(icon-name="sad-cry")
+
   TheRecommendedDisplay.recommended-col
 </template>
 
@@ -95,7 +121,8 @@ section.the-video-display
   width: 100%;
 }
 
-.video-player {
+.video-player,
+.video-error-display {
   width: 100%;
   aspect-ratio: v-bind(aspectRatio);
   background-color: #000;
@@ -122,6 +149,16 @@ section.the-video-display
 
   @include mq("4k") {
     height: 1350px;
+  }
+}
+
+.video-error-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  h1 {
+    font-size: 1.5em;
   }
 }
 </style>

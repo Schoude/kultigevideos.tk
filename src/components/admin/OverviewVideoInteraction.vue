@@ -29,7 +29,7 @@ async function onApproveClick(videoId: string) {
 async function listVideoToggle(videoId: string, listVideo: boolean) {
   if (isLoading.value) return;
 
-  isLoading.value = true
+  isLoading.value = true;
   await videoStore.listVideo({ videoId, listVideo });
   emits('reload:overiew');
 }
@@ -69,7 +69,11 @@ article.overview-video-interaction
       p.approved-at Freigegeben am {{ getLocaleDateString(video.approvedAt) }}
       p.approved-by von&nbsp;
         RouterLink.user-link(:to="`/profile/${video.approvedBy?._id}`") {{ getUsername(video.approvedBy) }}
-      RouterLink.video-link(:to="`/watch/${video.hash}`" target="_blank") Link zum Video
+      RouterLink.video-link(
+        v-if="video.listed"
+        :to="`/watch/${video.hash}`"
+        target="_blank"
+      ) Link zum Video
 
     .actions(v-if="type === 'approve'")
       .negavive

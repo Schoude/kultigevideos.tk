@@ -41,14 +41,15 @@ export const useVideoStore = defineStore('video-store', {
       }
     },
     async getByHash(hash: string) {
-      try {
-        const res = await apiClient.get<Video>({
-          url: `/api/v1/video/${hash}`,
-          mode: 'cors',
-        });
+      const res = await apiClient.get<Video>({
+        url: `/api/v1/video/${hash}`,
+        mode: 'cors',
+      });
+
+      if (res.status === 200) {
         this.currentVideo = res.data;
-      } catch (error) {
-        console.log((error as Error).message);
+      } else {
+        throw new Error('Video unavailable.');
       }
     },
     async likeVideo() {
