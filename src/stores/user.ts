@@ -33,15 +33,15 @@ export const useUserStore = defineStore('user', {
       }
     },
     async fetchUserProfileData(userId: string) {
-      try {
-        const res = await apiClient.get<ProfileUser>({
-          url: `/api/v1/user/${userId}`,
-          mode: 'cors',
-        });
+      const res = await apiClient.get<ProfileUser>({
+        url: `/api/v1/user/${userId}`,
+        mode: 'cors',
+      });
 
+      if (res.status === 200) {
         this.setUserProfileData(res.data);
-      } catch (error) {
-        console.log((error as Error).message);
+      } else {
+        throw new Error('Internal Server Error');
       }
     },
     setUserProfileData(profileData: ProfileUser | null) {

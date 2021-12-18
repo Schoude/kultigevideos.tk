@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { onUnmounted } from 'vue';
+import { onUnmounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '../../stores/user';
 import UserDetails from './UserDetails.vue';
@@ -7,16 +7,25 @@ import UserVideos from './UserVideos.vue';
 
 const router = useRouter();
 const userStore = useUserStore();
+const hasError = ref(false);
 
-await userStore.fetchUserProfileData(router.currentRoute.value.params.id as string);
+try {
+  await userStore.fetchUserProfileData(router.currentRoute.value.params.id as string);
+} catch (e) {
+  hasError.value = true;
+}
 
 onUnmounted(() => userStore.setUserProfileData(null))
 </script>
 
 <template lang='pug'>
-section.user-data-display
+section.user-data-display(
+  v-if="hasError === false"
+)
   UserDetails
   UserVideos
+section.user-error(v-else)
+  h1 Nutzer nicht gefunden.
 </template>
 
 <style lang='scss' scoped>
@@ -29,5 +38,9 @@ section.user-data-display
   @include mq("4k") {
     max-width: 1600px;
   }
+}
+
+.user-error {
+  text-align: center;
 }
 </style>
