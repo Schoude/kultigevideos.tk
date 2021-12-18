@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { onErrorCaptured, ref } from "vue";
+import { ref } from "vue";
 import { onBeforeRouteUpdate, useRouter } from 'vue-router';
 import { useVideoStore } from '../../stores/video';
 import VideoPlayer from '../../components/video/VideoPlayer.vue';
@@ -9,7 +9,6 @@ import { onUnmounted, watch } from 'vue';
 import TheRecommendedDisplay from './TheRecommendedDisplay.vue';
 import { usePageHelpers } from '../../composables/page-helpers';
 import TheCommentsDisplay from '../comments/TheCommentsDisplay.vue';
-import SvgIcon from "../gfx/icons/SvgIcon.vue";
 
 const router = useRouter();
 const videoStore = useVideoStore();
@@ -74,9 +73,11 @@ section.the-video-display
 
   template(v-else)
     section.video-error-display
-      SvgIcon(icon-name="sad-cry")
-      h1 &nbsp;Das Video ist nicht verfügbar...&nbsp;
-      SvgIcon(icon-name="sad-cry")
+      h1 Ah, ah, ah! You didn't say the magic word!
+      img(
+        src="/images/magic-word.gif"
+        alt="Ah, ah, ah! You didn't say the magic word!"
+      )
 
   TheRecommendedDisplay.recommended-col
 </template>
@@ -125,7 +126,9 @@ section.the-video-display
 .video-error-display {
   width: 100%;
   aspect-ratio: v-bind(aspectRatio);
-  background-color: #000;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
 
   @include mq("t-l") {
     height: 500px;
@@ -149,6 +152,13 @@ section.the-video-display
 
   @include mq("4k") {
     height: 1350px;
+  }
+
+  h1 {
+    color: black;
+    margin-bottom: 1em;
+    font-weight: 500;
+    text-align: center;
   }
 }
 
