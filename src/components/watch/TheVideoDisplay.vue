@@ -126,7 +126,7 @@ section.the-video-display
 .video-error-display {
   width: 100%;
   aspect-ratio: v-bind(aspectRatio);
-  background-color: #fff;
+  background-color: #000;
   display: flex;
   flex-direction: column;
 
@@ -166,6 +166,7 @@ section.the-video-display
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #fff;
 
   h1 {
     font-size: 1.5em;
