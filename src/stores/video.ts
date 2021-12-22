@@ -28,6 +28,31 @@ export const useVideoStore = defineStore('video-store', {
         console.log((error as Error).message);
       }
     },
+    async reloadFeed(excludeHashes: string[]) {
+      let newAdded: boolean;
+
+      try {
+        const res = await apiClient.put<Video[]>({
+          url: '/api/v1/videos/feed',
+          mode: 'cors',
+          body: JSON.stringify({
+            excludeHashesString: JSON.stringify(excludeHashes),
+          }),
+        });
+
+        this.videos.push(...res.data);
+
+        if (res.data.length > 0) {
+          newAdded = true;
+        } else {
+          newAdded = false;
+        }
+
+        return newAdded;
+      } catch (error) {
+        console.log((error as Error).message);
+      }
+    },
     async fetchRecommended(excludeHash: string) {
       try {
         const res = await apiClient.get<Video[]>({
